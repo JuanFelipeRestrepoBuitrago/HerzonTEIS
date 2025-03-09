@@ -7,7 +7,7 @@ on:
 
 jobs:
   checkstyle:
-    name: Checkstyle Validation
+    name: 'Checkstyle Validation'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,4 +19,4 @@ jobs:
           cache: maven
       
       - name: Run Checkstyle
-        run: ./mvnw clean checkstyle:check
+        run: mvn clean checkstyle:check
