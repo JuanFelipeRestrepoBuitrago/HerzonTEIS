@@ -55,6 +55,15 @@ http://localhost:8080
 docker-compose down
 ```
 
+## Google Style Guide for Java Testing Setup
+
+1. Download the Google Java Style Guide from the following link:
+```bash
+wget https://raw.githubusercontent.com/checkstyle/checkstyle/master/src/main/resources/google_checks.xml
+```
+
+
+
 ## Contributors
 
 - [Juan Felipe Restrepo Buitrago](https://github.com/JuanFelipeRestrepoBuitrago)
