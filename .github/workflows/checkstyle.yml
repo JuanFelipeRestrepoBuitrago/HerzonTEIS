@@ -14,4 +14,4 @@ jobs:
           distribution: oracle
       
       - name: Run Checkstyle
-        run: mvn checkstyle:check
+        run: mvn clean install && mvn checkstyle:check
