@@ -19,4 +19,4 @@ jobs:
           cache: maven
       
       - name: Run Checkstyle
-        run: mvn clean checkstyle:check
+        run: ./mvnw clean checkstyle:check
