@@ -28,6 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+    <maven.compiler.parameters>--enable-preview</maven.compiler.parameters>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -102,13 +103,6 @@
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
 
-    <!-- Guava from Google -->
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>30.1.1-jre</version>
-    </dependency>
-
 	</dependencies>
 
 	<build>
@@ -122,22 +116,19 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.3.0</version>
-        <dependencies>
+        <!-- <dependencies>
             <dependency>
                 <groupId>com.puppycrawl.tools</groupId>
                 <artifactId>checkstyle</artifactId>
                 <version>10.14.0</version>
             </dependency>
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>30.1.1-jre</version>
-            </dependency>
-        </dependencies>
+        </dependencies> -->
 				<configuration>
 					<configLocation>google_checks.xml</configLocation>
-					<violationSeverity>warning</violationSeverity>
+          <failOnViolation>true</failOnViolation>
 					<includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <violationSeverity>error</violationSeverity>
+          <toolVersion>8.45</toolVersion>
 				</configuration>
 				<executions>
 					<execution>
