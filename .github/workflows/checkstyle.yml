@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 jobs:
   checkstyle:
+    name: 'Checkstyle Validation'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,4 +15,4 @@ jobs:
           distribution: oracle
       
       - name: Run Checkstyle
-        run: mvn clean install && mvn checkstyle:check
+        run: ./mvnw clean checkstyle:check

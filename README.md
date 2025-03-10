@@ -14,8 +14,9 @@ HERZON is a high-end jewelry e-commerce platform bridging Colombian craftsmanshi
 
 ## Prerequisites
 - Java 21
-- Maven 3.9.9
-- MySQL 8.4.0
+- Docker 20.0.1 (optional)
+- Maven 3.9.9 (optional)
+- MySQL 8.4.0 (optional)
 
 ## Setup
 1. Clone repository:
