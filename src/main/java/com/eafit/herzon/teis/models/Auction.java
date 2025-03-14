@@ -1,19 +1,21 @@
 package com.eafit.herzon.teis.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 // import jakarta.persistence.JoinColumn;
 // import jakarta.persistence.ManyToOne;
 // import jakarta.persistence.FetchType;
 // import jakarta.persistence.OneToMany;
-// import jakarta.persistence.CascadeType;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import org.hibernate.annotations.UpdateTimestamp;
-// import java.util.List;
 
 /**
  * The Auction class represents an auction of a jewel in Herzon.
@@ -73,12 +75,12 @@ public class Auction {
   // @JoinColumn(name = "jewel_id", nullable = false)
   // private Jewel jewel;
 
-  // /**
-  //  * The list of offers which have been made to the auction.
-  //  */
-  // @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval =
-  // true)
-  // private ArrayList<Offer> offers;
+  /**
+   * The list of offers which have been made to the auction.
+   */
+  @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
+  private ArrayList<Offer> offers;
 
   /**
    * Constructor for the Auction class.
@@ -178,14 +180,14 @@ public class Auction {
   //   return jewel;
   // }
 
-  // /**
-  //  * Returns the list of offers which have been made to the auction.
+  /**
+   * Returns the list of offers which have been made to the auction.
 
-  //  * @return The list of offers which have been made to the auction.
-  //  */
-  // public ArrayList<Offer> getOffers() {
-  //   return offers;
-  // }
+   * @return The list of offers which have been made to the auction.
+   */
+  public ArrayList<Offer> getOffers() {
+    return offers;
+  }
 
   /**
    * Sets the date and time when the auction starts.
@@ -232,12 +234,12 @@ public class Auction {
   //   this.jewel = jewel;
   // }
 
-  // /**
-  //  * Sets the list of offers which have been made to the auction.
+  /**
+   * Sets the list of offers which have been made to the auction.
 
-  //  * @param offers The list of offers which have been made to the auction.
-  //  */
-  // public void setOffers(ArrayList<Offer> offers) {
-  //   this.offers = offers;
-  // }
+   * @param offers The list of offers which have been made to the auction.
+   */
+  public void setOffers(ArrayList<Offer> offers) {
+    this.offers = offers;
+  }
 }
