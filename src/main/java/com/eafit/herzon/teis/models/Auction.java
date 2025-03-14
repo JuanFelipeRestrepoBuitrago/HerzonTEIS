@@ -69,7 +69,7 @@ public class Auction {
   // /**
   //  * The Jewel associated with the auction.
   //  */
-  // @ManyToOne(optional = false)
+  // @ManyToOne(fetch = FetchType.EAGER, optional = false)
   // @JoinColumn(name = "jewel_id", nullable = false)
   // private Jewel jewel;
 
@@ -77,7 +77,7 @@ public class Auction {
   //  * The list of offers which have been made to the auction.
   //  */
   // @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval =
-  // true, fetch = FetchType.EAGER)
+  // true)
   // private ArrayList<Offer> offers;
 
   /**
