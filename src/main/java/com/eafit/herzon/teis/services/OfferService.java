@@ -1,9 +1,11 @@
 package com.eafit.herzon.teis.services;
 
+import com.eafit.herzon.teis.exceptions.InvalidOfferException;
 import com.eafit.herzon.teis.models.Auction;
 import com.eafit.herzon.teis.models.Offer;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
 import com.eafit.herzon.teis.repositories.OfferRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -50,13 +52,14 @@ public class OfferService {
    *
    * @param offerPrice the new offer price.
    * @param auctionId the ID of the auction.
-   * @throws IllegalArgumentException if the new offer price is lower than the current 
+   * @throws InvalidOfferException if the new offer price is lower than the current 
       highest offer price or if the auction is not found.
    */
-  public void placeOffer(double offerPrice, Long auctionId) throws IllegalArgumentException {
+  @Transactional
+  public void placeOffer(double offerPrice, Long auctionId) throws InvalidOfferException {
     // Find the auction with the specified ID
     Auction auction = auctionRepository.findById(auctionId)
-        .orElseThrow(() -> new IllegalArgumentException("Auction not found"));
+        .orElseThrow(() -> new InvalidOfferException("Auction not found"));
     // Get all the offers with active state for the auction
     List<Offer> activeOffers = offerRepository.findByAuctionAndState(auction, true);
 
@@ -66,7 +69,7 @@ public class OfferService {
         offer.setState(false);
         offerRepository.save(offer);
       } else {
-        throw new IllegalArgumentException(
+        throw new InvalidOfferException(
             "The offer price must be higher than the current offer price $" 
             + offer.getOfferPrice()
           );

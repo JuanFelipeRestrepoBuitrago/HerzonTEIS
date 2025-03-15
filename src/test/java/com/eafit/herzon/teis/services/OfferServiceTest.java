@@ -1,5 +1,6 @@
 package com.eafit.herzon.teis.services;
 
+import com.eafit.herzon.teis.exceptions.InvalidOfferException;
 import com.eafit.herzon.teis.models.Auction;
 import com.eafit.herzon.teis.models.Offer;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
@@ -80,7 +81,7 @@ public class OfferServiceTest {
     when(auctionRepository.findById(anyLong()))
         .thenReturn(Optional.empty());
 
-    assertThrows(IllegalArgumentException.class, () -> offerService.placeOffer(150.0, 1L));
+    assertThrows(InvalidOfferException.class, () -> offerService.placeOffer(150.0, 1L));
   }
 
   /**
@@ -99,8 +100,8 @@ public class OfferServiceTest {
 
     // placeOffer should throw an exception when the offer price is lower than the
     // current offer price
-    IllegalArgumentException exception = assertThrows(
-        IllegalArgumentException.class,
+    InvalidOfferException exception = assertThrows(
+      InvalidOfferException.class,
         () -> offerService.placeOffer(150, 1L));
 
     assertTrue(exception.getMessage()
