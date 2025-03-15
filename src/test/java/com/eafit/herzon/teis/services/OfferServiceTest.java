@@ -124,7 +124,7 @@ public class OfferServiceTest {
     offerService.placeOffer(1700.0, 1L);
 
     // Assert
-    verify(offerRepository, times(1)).save(any(Offer.class));
+    verify(offerRepository, times(2)).save(any(Offer.class));
     verify(auctionRepository, times(1)).save(auction);
     verify(messagingTemplate, times(1))
         .convertAndSend(anyString(), any(Auction.class));
