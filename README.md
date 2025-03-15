@@ -42,15 +42,15 @@ or if you don't have Maven installed:
 5. Set the following environment variables in your system:
 Linux or MacOS:
 ```bash
-export DB_URL=jdbc:mysql://localhost:YOUR_DB_PORT/name_of_your_database
-export DB_USER=YOUR_USERNAME
-export DB_PASSWORD=YOUR_PASSWORD
+export DATABASE_URL=jdbc:mysql://localhost:YOUR_DB_PORT/name_of_your_database
+export DATABASE_USER=YOUR_USERNAME
+export DATABASE_PASSWORD=YOUR_PASSWORD
 ```
 Windows:
 ```bash
-set DB_URL=jdbc:mysql://localhost:YOUR_DB_PORT/name_of_your_database
-set DB_USER=YOUR_USERNAME
-set DB_PASSWORD=YOUR_PASSWORD
+set DATABASE_URL=jdbc:mysql://localhost:YOUR_DB_PORT/name_of_your_database
+set DATABASE_USER=YOUR_USERNAME
+set DATABASE_PASSWORD=YOUR_PASSWORD
 ```
 Replace `YOUR_DB_PORT`, `YOUR_USERNAME`, and `YOUR_PASSWORD` with your MySQL port, username, and password respectively.
 

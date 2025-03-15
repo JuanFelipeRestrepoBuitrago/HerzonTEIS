@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{fragments/head :: head}"></div>
+
+<body>
+  <div th:replace="~{fragments/header :: header}"></div>
+
+  <div class="container-fluid full-height bg-primary d-flex justify-content-center align-items-center">
+    <div class="row justify-content-center w-100">
+      <div class="col-md-6 col-lg-4">
+        <!-- Placeholder for error messages -->
+        <div id="errorAlert" class="alert alert-danger alert-dismissible fade show d-none" role="alert">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-circle-fill me-2"></i>
+            <strong>Oops! Please fix the following errors:</strong>
+          </div>
+          <ul id="errorList" class="list-group list-group-flush mt-2">
+            <!-- Error messages will be dynamically inserted here -->
+          </ul>
+          <button onclick="dismissError()" type="button" class="btn-close" data-bs-dismiss="alert"
+            aria-label="Close"></button>
+        </div>
+        
+        <div class="card shadow-lg">
+          <div class="card-header bg-secondary text-primary text-center">
+            <h4 class="mb-0">Auction Details</h4>
+          </div>
+          <div class="card-body bg-third p-4">
+            <p><strong>ID:</strong> <span th:text="${auction.id}" id="auctionId"></span></p>
+            <p><strong>Current Price:</strong> <span th:text="${auction.currentPrice}" id="current-price"></span></p>
+            <p><strong>Start Price:</strong> <span th:text="${auction.startPrice}"></span></p>
+            <p><strong>Start Date:</strong> <span
+                th:text="${#temporals.format(auction.startDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+            <p><strong>End Date:</strong> <span
+                th:text="${#temporals.format(auction.endDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+
+            <p><strong>Make an Offer!</strong></p>
+            <div class="mb-3">
+              <label for="offerAmount" class="form-label">Offer Amount:</label>
+              <input type="number" id="offerAmount" name="offerAmount" class="form-control"
+                placeholder="Enter your Offer">
+            </div>
+
+            <div class="d-grid">
+              <button type="button" onclick="placeOffer()" id="offerButton" class="btn btn-primary">Offer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div th:replace="~{fragments/footer :: footer}"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+  <script th:src="@{/js/auction/index.js}"></script>
+</body>
+
+</html>

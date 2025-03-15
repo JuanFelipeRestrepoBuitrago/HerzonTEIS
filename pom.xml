@@ -158,9 +158,9 @@
         <version>11.4.0</version>
         <configuration>
           <url>${env.DATABASE_URL}</url>
-            <user>${env.DATABASE_USERNAME}</user>
-            <password>${env.DATABASE_PASSWORD}</password>
-            <cleanDisabled>false</cleanDisabled>
+          <user>${env.DATABASE_USERNAME}</user>
+          <password>${env.DATABASE_PASSWORD}</password>
+          <cleanDisabled>false</cleanDisabled>
         </configuration>
       </plugin>
 

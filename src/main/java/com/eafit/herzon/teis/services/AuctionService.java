@@ -20,7 +20,7 @@ public class AuctionService {
 
   /**
    * Constructor of the AuctionService class.
-   *
+
    * @param auctionRepository the AuctionRepository object.
    */
   public AuctionService(AuctionRepository auctionRepository) {
@@ -33,9 +33,18 @@ public class AuctionService {
    * @return List of all the auctions in the database
    */
   @Transactional(readOnly = true)
-  public List<Auction> getAllAuctions() {
-    System.out.println(LocalDateTime.now());
-    System.out.println(auctionRepository.findAllActiveAuctions(LocalDateTime.now()));
+  public List<Auction> getAllActiveAuctions() {
     return auctionRepository.findAllActiveAuctions(LocalDateTime.now());
+  }
+
+  /**
+   * Method to get the auction with the specified ID.
+
+   * @param auctionId the ID of the auction.
+   * @return the auction with the specified ID.
+   */
+  @Transactional(readOnly = true)
+  public Auction getAuctionById(Long auctionId) {
+    return auctionRepository.findById(auctionId).orElse(null);
   }
 }
