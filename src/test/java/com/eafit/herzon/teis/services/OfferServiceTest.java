@@ -1,0 +1,132 @@
+package com.eafit.herzon.teis.services;
+
+import com.eafit.herzon.teis.models.Auction;
+import com.eafit.herzon.teis.models.Offer;
+import com.eafit.herzon.teis.repositories.AuctionRepository;
+import com.eafit.herzon.teis.repositories.OfferRepository;
+import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+
+/**
+ * Unit tests for the OfferService class.
+ */
+@ExtendWith(MockitoExtension.class)
+public class OfferServiceTest {
+
+  /**
+   * The mock repository used to simulate the OfferRepository dependency.
+   */
+  @Mock
+  private OfferRepository offerRepository;
+
+  /**
+   * The mock repository used to simulate the AuctionRepository dependency.
+   */
+  @Mock
+  private AuctionRepository auctionRepository;
+
+  /**
+   * The mock messaging template used to simulate the SimpMessagingTemplate
+   * dependency.
+   */
+  @Mock
+  private SimpMessagingTemplate messagingTemplate;
+
+  /**
+   * The service to test.
+   */
+  @InjectMocks
+  private OfferService offerService;
+
+  /**
+   * Auction object used in the tests.
+   */
+  private Auction auction;
+
+  /**
+   * The active offers used in the tests.
+   */
+  private Offer activeOffer;
+
+  @BeforeEach
+  public void setUp() {
+    // Initialize test data
+    auction = new Auction(LocalDateTime.now(), LocalDateTime.now().plusDays(1), 100.0, 100.0);
+    activeOffer = new Offer(1500, auction);
+  }
+
+  /**
+   * Test the placeOffer method when the offer is placed with an invalid auction
+   * ID.
+   * The method should throw an exception.
+   */
+  @Test
+  void placeOffer_ShouldThrowWhenAuctionNotFound() {
+    // Arrange the mock repository behavior
+    when(auctionRepository.findById(anyLong()))
+        .thenReturn(Optional.empty());
+
+    assertThrows(IllegalArgumentException.class, () -> offerService.placeOffer(150.0, 1L));
+  }
+
+  /**
+   * Test the placeOffer method when the offer is placed with a invalid price.
+   * The method should throw an exception.
+   */
+  @Test
+  void placeOffer_ShouldRejectLowerPrice() {
+    // Arrange the mock repository behavior and the necessary data to test
+    Auction auction = new Auction();
+
+    when(auctionRepository.findById(anyLong()))
+        .thenReturn(Optional.of(auction));
+    when(offerRepository.findByAuctionAndState(auction, true))
+        .thenReturn(List.of(this.activeOffer));
+
+    // placeOffer should throw an exception when the offer price is lower than the
+    // current offer price
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> offerService.placeOffer(150, 1L));
+
+    assertTrue(exception.getMessage()
+        .contains("must be higher than the current offer price"));
+  }
+
+  /**
+   * Test the placeOffer method when the offer is placed with a valid price.
+   * The method should complete successfully.
+   */
+  @Test
+  void placeOffer_ShouldCompleteSuccessfully() {
+    when(auctionRepository.findById(anyLong()))
+        .thenReturn(Optional.of(this.auction));
+    when(offerRepository.findByAuctionAndState(auction, true))
+        .thenReturn(List.of(this.activeOffer));
+    when(offerRepository.save(any(Offer.class)))
+        .thenAnswer(invocation -> invocation.getArgument(0));
+
+    // Call the method to test
+    offerService.placeOffer(1700.0, 1L);
+
+    // Assert
+    verify(offerRepository, times(1)).save(any(Offer.class));
+    verify(auctionRepository, times(1)).save(auction);
+    verify(messagingTemplate, times(1))
+        .convertAndSend(anyString(), any(Auction.class));
+  }
+}

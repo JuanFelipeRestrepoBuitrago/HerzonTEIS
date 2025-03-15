@@ -5,7 +5,6 @@ import com.eafit.herzon.teis.models.Offer;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
 import com.eafit.herzon.teis.repositories.OfferRepository;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -18,18 +17,32 @@ public class OfferService {
   /**
    * The SimpMessagingTemplate object to send messages to the clients.
    */
-  @Autowired
   private SimpMessagingTemplate simpMessagingTemplate;
   /**
    * The OfferRepository object to access the offers in the database.
    */
-  @Autowired
   private OfferRepository offerRepository;
   /**
    * The AuctionRepository object to access the auctions in the database.
    */
-  @Autowired
   private AuctionRepository auctionRepository;
+
+  /**
+   * Constructor of the OfferService class.
+   *
+   * @param simpMessagingTemplate the SimpMessagingTemplate object.
+   * @param offerRepository the OfferRepository object.
+   * @param auctionRepository the AuctionRepository object.
+   */
+  public OfferService(
+      SimpMessagingTemplate simpMessagingTemplate,
+      OfferRepository offerRepository,
+      AuctionRepository auctionRepository
+  ) {
+    this.simpMessagingTemplate = simpMessagingTemplate;
+    this.offerRepository = offerRepository;
+    this.auctionRepository = auctionRepository;
+  }
 
   /**
    * Method to send a message to the clients subscribed to the auction topic
