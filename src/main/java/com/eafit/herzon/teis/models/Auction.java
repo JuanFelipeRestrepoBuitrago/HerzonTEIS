@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -11,10 +12,11 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 // import jakarta.persistence.JoinColumn;
 // import jakarta.persistence.ManyToOne;
-// import jakarta.persistence.FetchType;
-// import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.UpdateTimestamp;
 
 /**
@@ -78,9 +80,11 @@ public class Auction {
   /**
    * The list of offers which have been made to the auction.
    */
-  @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "auction", 
+      cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore
-  private ArrayList<Offer> offers;
+  @Fetch(FetchMode.SUBSELECT)
+  private List<Offer> offers;
 
   /**
    * Constructor for the Auction class.
@@ -105,7 +109,7 @@ public class Auction {
     this.startPrice = startPrice;
     this.currentPrice = currentPrice;
     // this.jewel = jewel;
-    // this.offers = new ArrayList<>();
+    this.offers = new ArrayList<>();
   }
 
   /**
@@ -185,7 +189,7 @@ public class Auction {
 
    * @return The list of offers which have been made to the auction.
    */
-  public ArrayList<Offer> getOffers() {
+  public List<Offer> getOffers() {
     return offers;
   }
 
@@ -239,7 +243,7 @@ public class Auction {
 
    * @param offers The list of offers which have been made to the auction.
    */
-  public void setOffers(ArrayList<Offer> offers) {
+  public void setOffers(List<Offer> offers) {
     this.offers = offers;
   }
 }

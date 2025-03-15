@@ -10,6 +10,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.UpdateTimestamp;
 
 /**
@@ -44,7 +46,7 @@ public class Offer {
   /**
    * The auction for which the offer was made.
    */
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @ManyToOne(optional = false)
   @JoinColumn(name = "auction_id", nullable = false)
   private Auction auction;
 
