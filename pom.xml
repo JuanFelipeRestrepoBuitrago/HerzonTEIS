@@ -81,13 +81,6 @@
 			<version>3.1.0</version>
 		</dependency>
 
-		<!-- JUnit 5 -->
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<scope>test</scope>
-		</dependency>
-
 		<!-- Spring Boot DevTools for Development -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -100,6 +93,22 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+
+    <!-- Testing Dependencies -->
+
+		<!-- Spring Boot Starter for Test -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- JUnit 5 -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
