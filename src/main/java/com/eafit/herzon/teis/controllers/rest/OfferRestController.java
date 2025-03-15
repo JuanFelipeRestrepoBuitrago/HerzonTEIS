@@ -6,7 +6,6 @@ import com.eafit.herzon.teis.exceptions.InvalidOfferException;
 import com.eafit.herzon.teis.services.OfferService;
 import jakarta.validation.Valid;
 import java.util.Collections;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
