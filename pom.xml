@@ -39,12 +39,6 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-
 		<!-- Custom Dependencies -->
 
 		<!-- Spring Boot Starter for Validation -->
@@ -68,10 +62,9 @@
 
 		<!-- MySQL Driver -->
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
       <version>8.0.32</version>
-			<scope>runtime</scope>
 		</dependency>
 
 		<!-- Jakarta Persistence API -->
@@ -94,6 +87,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+
+    <!-- Flyway Core -->
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+    </dependency>
+
+    <!-- Flyway MySQL -->
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-mysql</artifactId>
+    </dependency>
 
     <!-- Testing Dependencies -->
 
@@ -146,6 +151,17 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <version>11.4.0</version>
+        <configuration>
+          <url>${env.DATABASE_URL}</url>
+            <user>${env.DATABASE_USERNAME}</user>
+            <password>${env.DATABASE_PASSWORD}</password>
+            <cleanDisabled>false</cleanDisabled>
+        </configuration>
       </plugin>
 
 		</plugins>

@@ -63,6 +63,13 @@ public class OfferService {
     // Get all the offers with active state for the auction
     List<Offer> activeOffers = offerRepository.findByAuctionAndState(auction, true);
 
+    if (offerPrice < auction.getCurrentPrice()) {
+      throw new InvalidOfferException(
+          "The offer price must be higher than the current price $" 
+          + auction.getCurrentPrice()
+        );
+    }
+
     for (Offer offer : activeOffers) {
       // If the offer price is higher than the current offer price
       if (offerPrice > offer.getOfferPrice()) {
@@ -76,7 +83,7 @@ public class OfferService {
       }
     }
 
-    Offer newOffer = new Offer(offerPrice, true, auction);
+    Offer newOffer = new Offer(offerPrice, auction);
     offerRepository.save(newOffer);
 
     // Update the current price of the auction
