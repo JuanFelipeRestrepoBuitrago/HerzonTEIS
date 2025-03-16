@@ -1,4 +1,4 @@
-package com.eafit.herzon.teis.services;
+package com.eafit.herzon.teis.exceptions;
 
 /**
  * Exception thrown when a user is not found in the system.

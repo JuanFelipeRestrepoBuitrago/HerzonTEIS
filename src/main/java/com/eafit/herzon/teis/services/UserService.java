@@ -1,5 +1,6 @@
 package com.eafit.herzon.teis.services;
 
+import com.eafit.herzon.teis.exceptions.UserNotFoundException;
 import com.eafit.herzon.teis.models.User;
 import com.eafit.herzon.teis.repositories.UserRepository;
 import java.util.List;

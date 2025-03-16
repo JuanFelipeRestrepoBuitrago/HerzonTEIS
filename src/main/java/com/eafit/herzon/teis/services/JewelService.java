@@ -1,5 +1,6 @@
 package com.eafit.herzon.teis.services;
 
+import com.eafit.herzon.teis.exceptions.JewelNotFoundException;
 import com.eafit.herzon.teis.models.Jewel;
 import com.eafit.herzon.teis.repositories.JewelRepository;
 import java.util.List;
