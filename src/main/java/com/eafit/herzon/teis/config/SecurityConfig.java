@@ -41,16 +41,6 @@ public class SecurityConfig {
   }
 
   /**
-   * Provides a custom UserDetailsService for loading user details during authentication.
-   *
-   * @return an instance of CustomUserDetailsService
-   */
-  @Bean
-  public UserDetailsService userDetailsService() {
-    return new CustomUserDetailsService();
-  }
-
-  /**
    * Defines the role hierarchy where ADMIN has higher privileges than USER.
    *
    * @return a RoleHierarchy instance with ADMIN > USER
@@ -72,17 +62,18 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
             .requestMatchers("/jewels", "/jewels/**").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .requestMatchers("/users/dashboard").hasRole("ADMIN")
             .requestMatchers("/", "/home", "/register",
                 "/api/users/register", "/api/users/login",
-                "/login", "/css/**", "/js/**")
+                "/login", "/error")
             .permitAll()
             .anyRequest().authenticated())
         .formLogin(form -> form
             .loginPage("/login")
-            .loginProcessingUrl("/api/users/login")
+            .loginProcessingUrl("/login")
             .successHandler(authenticationSuccessHandler())
             .failureHandler(authenticationFailureHandler())
             .permitAll())

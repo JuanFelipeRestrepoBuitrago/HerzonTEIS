@@ -122,6 +122,12 @@
             <scope>test</scope>
         </dependency>
 
+		   <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-crypto</artifactId>
+        <version>6.1.2</version>  <!-- Verifica la última versión en Maven Repository -->
+    </dependency>
+
         <!-- JUnit 5 -->
         <dependency>
             <groupId>org.mockito</groupId>
