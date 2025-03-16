@@ -13,10 +13,9 @@ public class Formatter {
    * @param number The number to format.
    * @return The number formatted as a currency.
    */
-  public static String formatCurrency(double number) {
+  public static String formatCurrency(double number, int minimumFractionDigits) {
     NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
-    formatter.setMinimumFractionDigits(2);
-    formatter.setMaximumFractionDigits(2);
+    formatter.setMinimumFractionDigits(minimumFractionDigits);
     return formatter.format(number);
   }
 }

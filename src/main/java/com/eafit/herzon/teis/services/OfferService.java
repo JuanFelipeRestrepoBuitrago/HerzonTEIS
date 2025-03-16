@@ -67,7 +67,7 @@ public class OfferService {
     if (offerPrice < auction.getCurrentPrice()) {
       throw new InvalidOfferException(
           "El precio de la oferta debe ser mayor al precio actual: " 
-          + Formatter.formatCurrency(auction.getCurrentPrice())
+          + Formatter.formatCurrency(auction.getCurrentPrice(), 2)
         );
     }
 
@@ -79,7 +79,7 @@ public class OfferService {
       } else {
         throw new InvalidOfferException(
             "El precio de la oferta debe ser mayor al precio actual: " 
-            + Formatter.formatCurrency(offer.getOfferPrice())
+            + Formatter.formatCurrency(offer.getOfferPrice(), 2)
           );
       }
     }
