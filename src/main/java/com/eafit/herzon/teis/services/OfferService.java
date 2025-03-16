@@ -5,6 +5,7 @@ import com.eafit.herzon.teis.models.Auction;
 import com.eafit.herzon.teis.models.Offer;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
 import com.eafit.herzon.teis.repositories.OfferRepository;
+import com.eafit.herzon.teis.utils.Formatter;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -65,8 +66,8 @@ public class OfferService {
 
     if (offerPrice < auction.getCurrentPrice()) {
       throw new InvalidOfferException(
-          "The offer price must be higher than the current price $" 
-          + auction.getCurrentPrice()
+          "El precio de la oferta debe ser mayor al precio actual: " 
+          + Formatter.formatCurrency(auction.getCurrentPrice())
         );
     }
 
@@ -77,8 +78,8 @@ public class OfferService {
         offerRepository.save(offer);
       } else {
         throw new InvalidOfferException(
-            "The offer price must be higher than the current offer price $" 
-            + offer.getOfferPrice()
+            "El precio de la oferta debe ser mayor al precio actual: " 
+            + Formatter.formatCurrency(offer.getOfferPrice())
           );
       }
     }

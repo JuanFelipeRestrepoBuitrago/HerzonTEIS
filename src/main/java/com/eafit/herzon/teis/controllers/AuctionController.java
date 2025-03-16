@@ -26,7 +26,7 @@ public class AuctionController {
    */
   @GetMapping
   public String getAuctions(Model model) {
-    model.addAttribute("title", "Offers - Herzon");
+    model.addAttribute("title", "Subastas - Herzon");
     model.addAttribute("auctions", auctionService.getAllActiveAuctions());
 
     return "auctions/index";
@@ -51,7 +51,7 @@ public class AuctionController {
       return "redirect:/auctions";
     }
 
-    model.addAttribute("title", "Auction " + auction.getId() + " - Herzone");
+    model.addAttribute("title", "Subasta " + auction.getId() + " - Herzone");
     model.addAttribute("auction", auction);
 
     return "auctions/show";

@@ -9,41 +9,36 @@
   <div class="container-fluid full-height bg-primary d-flex justify-content-center align-items-center">
     <div class="row justify-content-center w-100">
       <div class="col-md-6 col-lg-4">
-        <!-- Placeholder for error messages -->
-        <div id="errorAlert" class="alert alert-danger alert-dismissible fade show d-none" role="alert">
-          <div class="d-flex align-items-center">
-            <i class="bi bi-exclamation-circle-fill me-2"></i>
-            <strong>Oops! Please fix the following errors:</strong>
-          </div>
-          <ul id="errorList" class="list-group list-group-flush mt-2">
-            <!-- Error messages will be dynamically inserted here -->
-          </ul>
-          <button onclick="dismissError()" type="button" class="btn-close" data-bs-dismiss="alert"
-            aria-label="Close"></button>
+        <!-- Container for error messages -->
+        <div id="messagesAlert" class="d-none">
+          <!-- Individual error alerts will be dynamically inserted here -->
         </div>
-        
+
         <div class="card shadow-lg">
           <div class="card-header bg-secondary text-primary text-center">
-            <h4 class="mb-0">Auction Details</h4>
+            <h4 class="mb-0">Detalles de la Subasta</h4>
           </div>
           <div class="card-body bg-third p-4">
-            <p><strong>ID:</strong> <span th:text="${auction.id}" id="auctionId"></span></p>
-            <p><strong>Current Price:</strong> <span th:text="${auction.currentPrice}" id="current-price"></span></p>
-            <p><strong>Start Price:</strong> <span th:text="${auction.startPrice}"></span></p>
-            <p><strong>Start Date:</strong> <span
+            <p><strong>Id:</strong> <span th:text="${auction.id}" id="auctionId"></span></p>
+            <p><strong>Precio Actual:</strong> <span
+                th:text="${'$' + #numbers.formatDecimal(auction.currentPrice, 1, 'COMMA', 2, 'POINT')}"
+                id="current-price"></span></p>
+            <p><strong>Precio Inicial:</strong> <span
+                th:text="${'$' + #numbers.formatDecimal(auction.startPrice, 1, 'COMMA', 2, 'POINT')}"></span></p>
+            <p><strong>Comienzo:</strong> <span
                 th:text="${#temporals.format(auction.startDate, 'yyyy-MM-dd HH:mm')}"></span></p>
-            <p><strong>End Date:</strong> <span
+            <p><strong>Finalización:</strong> <span
                 th:text="${#temporals.format(auction.endDate, 'yyyy-MM-dd HH:mm')}"></span></p>
 
-            <p><strong>Make an Offer!</strong></p>
+            <p><strong>¡Haz una Oferta!</strong></p>
             <div class="mb-3">
-              <label for="offerAmount" class="form-label">Offer Amount:</label>
+              <label for="offerAmount" class="form-label">Oferta:</label>
               <input type="number" id="offerAmount" name="offerAmount" class="form-control"
-                placeholder="Enter your Offer">
+                placeholder="Ingresa el monto de tu oferta">
             </div>
 
             <div class="d-grid">
-              <button type="button" onclick="placeOffer()" id="offerButton" class="btn btn-primary">Offer</button>
+              <button type="button" onclick="placeOffer()" id="offerButton" class="btn btn-primary">Pujar</button>
             </div>
           </div>
         </div>

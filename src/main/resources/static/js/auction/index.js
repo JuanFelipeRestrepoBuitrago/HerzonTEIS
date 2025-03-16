@@ -1,28 +1,17 @@
-console.log("Script loaded!");
-
 /**
  * @file Manages real-time bidding functionality for auction updates using WebSocket.
  * @module auctionLive
  */
 
-/** 
- * WebSocket client connection using SockJS and STOMP protocol
- * @type {SockJS}
- */
+// Importing Stomp and SockJS libraries for WebSocket communication
 const socket = new SockJS('/auction/websocket');
-
-/**
- * STOMP client over WebSocket connection
- * @type {Stomp.Client}
- */
 const stompClient = Stomp.over(socket);
 
-/**
- * ID of the current auction extracted from DOM
- * @type {string}
- */
+// Necessary DOM elements5
 const auctionId = document.getElementById('auctionId').textContent;
-console.log("Auction ID:", auctionId);
+const offerInput = document.getElementById('offerAmount');
+const offerButton = document.getElementById('offerButton');
+const messagesContainer = document.getElementById('messagesAlert');
 
 /**
  * Initializes WebSocket connection and subscribes to auction updates
@@ -62,11 +51,10 @@ window.addEventListener('beforeunload', () => {
  * placeOffer(); // Called when user clicks bid button
  */
 async function placeOffer() {
-  const offerInput = document.getElementById('offerAmount');
   const offerAmount = parseFloat(offerInput.value);
-  const button = document.getElementById('offerButton');
-  button.disabled = true;
+  offerButton.disabled = true;
 
+  // Make a POST request to place the offer for the auction
   try {
     const response = await fetch(`/auction/offer/place`, {
       method: 'POST',
@@ -82,22 +70,21 @@ async function placeOffer() {
     const responseData = await response.json();
 
     if (!response.ok) {
-      // Server returned error response (4xx/5xx)
+      // Display error messages if any
       if (responseData.error) {
-        displayErrors(responseData.messages); // Display errors from the server
+        displayMessages(responseData.messages, responseData.error);
       } else {
-        throw new Error(responseData.message || 'Offer failed');
+        throw new Error('Oferta fallida');
       }
     } else {
-      // Success case
       offerInput.value = '';
-      alert("Offer placed successfully!");
+      displayMessages(responseData.messages, responseData.error);
     }
   } catch (error) {
     console.error('Error:', error);
-    displayErrors([error.message || "Failed to place offer"]); // Display generic error
+    displayMessages(["La puja de tu oferta falló"], true);
   } finally {
-    button.disabled = false;
+    offerButton.disabled = false;
   }
 }
 
@@ -118,29 +105,76 @@ function updateAuctionUI(offerAuctionResponse) {
     });
 }
 
-// Function to display error messages
-function displayErrors(errors) {
-  const errorAlert = document.getElementById('errorAlert');
-  const errorList = document.getElementById('errorList');
+/**
+ * Displays error or success messages on the UI
+ * @function
+ * @param {Array} messages - Array of messages to display
+ * @param {boolean} error - Flag to indicate if messages are errors
+ * @example
+ * displayMessages(["Offer failed"], true);
+ */
+function displayMessages(messages, error) {
+  messagesContainer.innerHTML = ''; // Clear any existing messages
 
-  // Clear any existing errors
-  errorList.innerHTML = '';
+  if (error) {
+    //Add error alert
+    messages.forEach(error => {
+      const errorAlert = document.createElement('div');
+      errorAlert.className = 'alert alert-danger alert-dismissible fade show mb-2';
+      errorAlert.setAttribute('role', 'alert');
 
-  // Add each error to the list
-  errors.forEach(error => {
-    const listItem = document.createElement('li');
-    listItem.className = 'list-group-item text-danger bg-transparent border-0';
-    listItem.textContent = error;
-    errorList.appendChild(listItem);
-  });
+      // Add error message content
+      errorAlert.innerHTML = `
+        <div class="d-flex align-items-center">
+          <i class="bi bi-exclamation-circle-fill me-2"></i>
+          <strong>${error}</strong>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="dismissMessage(this)"></button>
+      `;
 
-  // Show the error alert
-  errorAlert.classList.remove('d-none');
+      // Append the error alert to the container
+      messagesContainer.appendChild(errorAlert);
+    });
+  } else {
+    // Add success alert
+    messages.forEach(success => {
+      const successAlert = document.createElement('div');
+      successAlert.className = 'alert alert-success alert-dismissible fade show';
+      successAlert.setAttribute('role', 'alert');
+
+      // Add success message content
+      successAlert.innerHTML = `
+      <div class="d-flex align-items-center">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <strong>${success}</strong>
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="dismissMessage(this)"></button>
+    `;
+
+      // Append the success alert to the container
+      messagesContainer.appendChild(successAlert);
+    });
+  }
+
+  // Show the error container
+  messagesContainer.classList.remove('d-none');
 }
 
-// Function to dismiss the error alert
-function dismissError() {
-  const errorAlert = document.getElementById('errorAlert');
-  errorAlert.classList.add('d-none');
+/**
+ * Dismisses a message from the UI
+ * @function
+ * @param {Element} button - Button element that triggered the dismiss action
+ * @example
+ * dismissMessage(this); // Called when user clicks the close button on an alert
+ */
+function dismissMessage(button) {
+  // Remove the alert
+  const messageAlert = button.closest('.alert');
+  messageAlert.remove(); 
+
+  // Hide the message container if there are no more messages
+  if (messagesContainer.children.length === 0) {
+    messagesContainer.classList.add('d-none');
+  }
 }
 

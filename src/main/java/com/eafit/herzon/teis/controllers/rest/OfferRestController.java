@@ -35,7 +35,7 @@ public class OfferRestController {
       offerService.placeOffer(request.getOfferPrice(), request.getAuctionId());
       return ResponseEntity.ok()
           .body(new ApiMessagesResponse(
-              false, Collections.singletonList("Offer placed successfully")));
+              false, Collections.singletonList("¡Oferta pujada con éxito!")));
 
     } catch (InvalidOfferException e) {
       return ResponseEntity.badRequest()
@@ -44,7 +44,7 @@ public class OfferRestController {
     } catch (Exception e) {
       return ResponseEntity.internalServerError()
           .body(new ApiMessagesResponse(
-              true, Collections.singletonList("An error occurred while placing the offer")));
+              true, Collections.singletonList("Ha ocurrido un error inesperado")));
     }
   }
 }
