@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Controller for handling view requests related to jewels.
+ * Controller for handling view requests related to jewels (public access).
  */
 @Controller
-@RequestMapping("/admin/jewels")
+@RequestMapping("/jewels")
 public class JewelViewController {
 
   private final JewelService jewelService;
@@ -27,8 +27,7 @@ public class JewelViewController {
   }
 
   /**
-   * Displays the list of all jewels.
-   *
+   * Displays the list of all jewels (accessible to all users).
    *
    * @param model the model to add attributes to
    * @return the name of the Thymeleaf template for displaying jewels
@@ -36,6 +35,6 @@ public class JewelViewController {
   @GetMapping
   public String listJewels(Model model) {
     model.addAttribute("jewels", jewelService.getAllJewels());
-    return "jewels/list";
+    return "jewels/jewels";
   }
 }

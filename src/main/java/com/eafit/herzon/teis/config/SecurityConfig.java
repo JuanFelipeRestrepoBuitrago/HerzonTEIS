@@ -72,9 +72,10 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/jewels", "/jewels/**").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .requestMatchers("/users/dashboard").hasRole("ADMIN")
-            .requestMatchers("/", "/home", "/register", "/jewels/**",
+            .requestMatchers("/", "/home", "/register",
                 "/api/users/register", "/api/users/login",
                 "/login", "/css/**", "/js/**")
             .permitAll()
