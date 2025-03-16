@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -51,6 +52,20 @@ public class JewelViewController {
     model.addAttribute("view", view);
     model.addAttribute("currentPageActive", "jewels");
     model.addAttribute("currentViewActive", view);
-    return "jewels/jewels"; // Updated to match templates/jewels/jewels.html
+    return "jewels/jewels";
+  }
+
+  /**
+   * Displays the details of a specific jewel based on its ID.
+   *
+   * @param id the ID of the jewel to display
+   * @param model the model to add attributes to
+   * @return the name of the Thymeleaf template for displaying jewel details
+   */
+  @GetMapping("/details/{id}")
+  public String viewJewelDetails(@PathVariable Long id, Model model) {
+    Jewel jewel = jewelService.getJewelById(id);
+    model.addAttribute("jewel", jewel);
+    return "jewels/details";
   }
 }

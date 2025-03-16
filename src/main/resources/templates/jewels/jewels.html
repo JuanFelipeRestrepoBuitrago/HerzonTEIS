@@ -18,7 +18,7 @@
             <h5 class="card-title text-gold" th:text="${jewel.name}"></h5>
             <p class="card-text text-muted" th:text="${jewel.category}"></p>
             <p class="card-text fw-bold" th:text="'$' + ${#numbers.formatDecimal(jewel.price, 0, 2)}"></p>
-            <a th:href="@{'/jewels/' + ${jewel.id}}" class="btn btn-gold mt-3">Ver Detalles</a>
+            <a th:href="@{/jewels/details/{id}(id=${jewel.id})}" class="btn btn-gold mt-3">Ver Detalles</a>
           </div>
         </div>
       </div>
