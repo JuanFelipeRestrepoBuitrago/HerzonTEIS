@@ -13,11 +13,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 /**
@@ -60,7 +62,7 @@ public class SecurityConfig {
 
   /**
    * Configures HTTP security settings, including CSRF protection, authorization rules,
-   * and login/logout behavior with custom failure handling.
+   * and login/logout behavior with custom success and failure handling.
    *
    * @param http the HttpSecurity object to configure
    * @return the configured SecurityFilterChain
@@ -71,7 +73,8 @@ public class SecurityConfig {
     http.csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/admin/**").hasRole("ADMIN")
-            .requestMatchers("/", "/home", "/register",
+            .requestMatchers("/users/dashboard").hasRole("ADMIN")
+            .requestMatchers("/", "/home", "/register", "/jewels/**",
                 "/api/users/register", "/api/users/login",
                 "/login", "/css/**", "/js/**")
             .permitAll()
@@ -79,7 +82,7 @@ public class SecurityConfig {
         .formLogin(form -> form
             .loginPage("/login")
             .loginProcessingUrl("/api/users/login")
-            .defaultSuccessUrl("/dashboard", true)
+            .successHandler(authenticationSuccessHandler())
             .failureHandler(authenticationFailureHandler())
             .permitAll())
         .logout(logout -> logout
@@ -104,6 +107,17 @@ public class SecurityConfig {
   }
 
   /**
+   * Provides a custom AuthenticationSuccessHandler to redirect users based on their roles
+   * after successful login.
+   *
+   * @return an instance of CustomAuthenticationSuccessHandler
+   */
+  @Bean
+  public AuthenticationSuccessHandler authenticationSuccessHandler() {
+    return new CustomAuthenticationSuccessHandler();
+  }
+
+  /**
    * Provides a custom AuthenticationFailureHandler to handle login failures
    * with specific error messages.
    *
@@ -115,22 +129,33 @@ public class SecurityConfig {
   }
 
   /**
+   * Custom AuthenticationSuccessHandler to redirect users based on their roles after
+   * successful authentication.
+   */
+  static class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+    @Override
+    public void onAuthenticationSuccess(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        Authentication authentication
+    ) throws IOException, ServletException {
+      boolean isAdmin = authentication.getAuthorities().stream()
+          .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+      
+      if (isAdmin) {
+        response.sendRedirect("/users/dashboard");
+      } else {
+        response.sendRedirect("/home");
+      }
+    }
+  }
+
+  /**
    * Custom AuthenticationFailureHandler to handle login failures by setting specific
    * error messages and redirecting to the login page.
    */
   static class CustomAuthenticationFailureHandler
       extends SimpleUrlAuthenticationFailureHandler {
-
-    /**
-     * Handles authentication failures by setting appropriate error messages and
-     * redirecting to the login page.
-     *
-     * @param request   the HTTP request
-     * @param response  the HTTP response
-     * @param exception the authentication exception
-     * @throws IOException      if an I/O error occurs during redirection
-     * @throws ServletException if a servlet error occurs
-     */
     @Override
     public void onAuthenticationFailure(
         HttpServletRequest request,

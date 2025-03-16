@@ -18,6 +18,6 @@ public class LoginController {
    */
   @GetMapping("/login")
   public String getLoginPage(Model model) {
-    return "users/login"; // Especifica el directorio users/
+    return "users/login"; // Coincide con templates/users/login.html
   }
 }

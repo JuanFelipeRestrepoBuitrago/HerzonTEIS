@@ -18,7 +18,7 @@
                 <p>Bienvenido de nuevo a Herzon</p>
             </div>
 
-            <form th:action="@{/login}" method="post">
+            <form th:action="@{/api/users/login}" method="post">
                 <div class="mb-3">
                     <label for="username" class="text-gold">Usuario</label>
                     <input type="text" id="username" name="username" class="form-control" placeholder="Ingresa tu usuario" required>

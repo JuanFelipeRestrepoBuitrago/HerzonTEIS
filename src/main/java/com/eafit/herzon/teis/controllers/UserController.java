@@ -28,7 +28,7 @@ public class UserController {
   @GetMapping("/register")
   public String getRegisterPage(Model model) {
     model.addAttribute("user", new User());
-    return "users/register";
+    return "users/register"; // Coincide con templates/users/register.html
   }
 
   /**
@@ -50,5 +50,25 @@ public class UserController {
       redirectAttributes.addFlashAttribute("error", e.getMessage());
       return "redirect:/register";
     }
+  }
+
+  /**
+   * Displays the home page.
+   *
+   * @return the name of the Thymeleaf template for the home page
+   */
+  @GetMapping("/home")
+  public String getHomePage() {
+    return "home"; // Coincide con templates/home.html
+  }
+
+  /**
+   * Displays the dashboard page (accessible to ADMIN role).
+   *
+   * @return the name of the Thymeleaf template for the dashboard page
+   */
+  @GetMapping("/users/dashboard")
+  public String getDashboardPage() {
+    return "users/dashboard"; // Coincide con templates/users/dashboard.html
   }
 }
