@@ -100,6 +100,13 @@
       <artifactId>flyway-mysql</artifactId>
     </dependency>
 
+    <!-- Java Faker -->
+    <dependency>
+      <groupId>com.github.javafaker</groupId>
+      <artifactId>javafaker</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+
     <!-- Testing Dependencies -->
 
 		<!-- Spring Boot Starter for Test -->

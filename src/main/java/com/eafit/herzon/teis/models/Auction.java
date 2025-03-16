@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -35,6 +36,7 @@ public class Auction {
   /**
    * The date and time when the auction was created.
    */
+  @CreationTimestamp
   @Column(name = "created_at", nullable = false, updatable = false)
   private LocalDateTime createdAt;
 
@@ -90,6 +92,7 @@ public class Auction {
    * Constructor for the Auction class.
    */
   public Auction() {
+    this.offers = new ArrayList<>();
   }
 
   /**
