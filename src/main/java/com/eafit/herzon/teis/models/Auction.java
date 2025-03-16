@@ -45,8 +45,8 @@ public class Auction {
    * updated by Hibernate when the entity is modified.
    */
   @UpdateTimestamp
-  @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
+  @Column(name = "modified_at", nullable = false)
+  private LocalDateTime modifiedAt;
 
   /**
    * The date and time when the auction starts.
@@ -138,8 +138,8 @@ public class Auction {
 
    * @return The date and time when the auction was last updated.
    */
-  public LocalDateTime getUpdatedAt() {
-    return updatedAt;
+  public LocalDateTime getModifiedAt() {
+    return modifiedAt;
   }
 
   /**

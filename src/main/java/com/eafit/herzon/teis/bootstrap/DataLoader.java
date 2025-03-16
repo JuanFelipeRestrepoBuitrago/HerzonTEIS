@@ -2,7 +2,9 @@ package com.eafit.herzon.teis.bootstrap;
 
 import com.eafit.herzon.teis.models.Auction;
 import com.eafit.herzon.teis.models.Offer;
+import com.eafit.herzon.teis.models.Order;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
+import com.eafit.herzon.teis.repositories.OrderRepository;
 import com.github.javafaker.Faker;
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -17,14 +19,16 @@ import org.springframework.stereotype.Component;
 public class DataLoader implements CommandLineRunner {
 
   private final AuctionRepository auctionRepository;
+  private final OrderRepository orderRepository;
 
   /**
    * Constructor for the DataLoader class.
    *
    * @param auctionRepository The repository for auctions.
    */
-  public DataLoader(AuctionRepository auctionRepository) {
+  public DataLoader(AuctionRepository auctionRepository, OrderRepository orderRepository) {
     this.auctionRepository = auctionRepository;
+    this.orderRepository = orderRepository;
   }
 
   /**
@@ -68,6 +72,23 @@ public class DataLoader implements CommandLineRunner {
       }
 
       System.out.println("Initial auctions and offers generated.");
+    }
+    // Generate orders if none exist
+    if (orderRepository.count() == 0) {
+      Faker faker = new Faker(Locale.of("es"));
+      Random random = new Random();
+
+      // Generate 10 fake orders
+      for (int i = 0; i < 10; i++) {
+        Order order = new Order();
+        order.setTotal(Double.parseDouble(
+                faker.commerce().price(100, 2000)
+              )); // Total between $100-$2000
+        order.setStatus(random.nextBoolean()); // Random status (true/false)
+        orderRepository.save(order);
+      }
+
+      System.out.println("Initial orders generated.");
     }
   }
 }
