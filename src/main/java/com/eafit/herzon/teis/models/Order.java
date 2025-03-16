@@ -2,6 +2,8 @@ package com.eafit.herzon.teis.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -61,10 +63,20 @@ public class Order {
   private Double total;
 
   /**
-   * The status of the order. True if the order is closed, false otherwise.
+   * The statuses of the order.
    */
-  @Column(name = "status", nullable = false)
-  private boolean status;
+  public enum OrderStatus {
+    PENDING,
+    PAID,
+    CANCELED
+  }
+
+  /**
+   * The status of the order.
+   */
+  @Enumerated(EnumType.STRING)
+  @Column(columnDefinition = "ENUM('PENDING', 'PAID', 'CANCELED')")
+  private OrderStatus status;
 
   /**
    * Default constructor required by JPA.
@@ -80,7 +92,7 @@ public class Order {
    */
   public Order(Double total) {
     this.total = total;
-    this.status = true;
+    this.status = OrderStatus.PENDING;
   }
 
   /**
@@ -121,7 +133,7 @@ public class Order {
 
   // /**
   // * Returns the user who owns the order.
-  
+
   // * @return the user who owns the order.
   // */
   // public User getUser() {
@@ -142,7 +154,7 @@ public class Order {
 
    * @return the status of the order.
    */
-  public boolean getStatus() {
+  public OrderStatus getStatus() {
     return status;
   }
 
@@ -151,7 +163,7 @@ public class Order {
 
    * @param status the status of the order.
    */
-  public void setStatus(boolean status) {
+  public void setStatus(OrderStatus status) {
     this.status = status;
   }
 

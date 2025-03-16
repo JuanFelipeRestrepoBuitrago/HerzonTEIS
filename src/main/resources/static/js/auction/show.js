@@ -11,7 +11,6 @@ const stompClient = Stomp.over(socket);
 const auctionId = document.getElementById('auctionId').textContent;
 const offerInput = document.getElementById('offerAmount');
 const offerButton = document.getElementById('offerButton');
-const messagesContainer = document.getElementById('messagesAlert');
 
 /**
  * Initializes WebSocket connection and subscribes to auction updates
@@ -102,79 +101,7 @@ function updateAuctionUI(offerAuctionResponse) {
     offerAuctionResponse.currentPrice.toLocaleString('en-US', {
       style: 'currency',
       currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 20
     });
 }
-
-/**
- * Displays error or success messages on the UI
- * @function
- * @param {Array} messages - Array of messages to display
- * @param {boolean} error - Flag to indicate if messages are errors
- * @example
- * displayMessages(["Offer failed"], true);
- */
-function displayMessages(messages, error) {
-  messagesContainer.innerHTML = ''; // Clear any existing messages
-
-  if (error) {
-    //Add error alert
-    messages.forEach(error => {
-      const errorAlert = document.createElement('div');
-      errorAlert.className = 'alert alert-danger alert-dismissible fade show mb-2';
-      errorAlert.setAttribute('role', 'alert');
-
-      // Add error message content
-      errorAlert.innerHTML = `
-        <div class="d-flex align-items-center">
-          <i class="bi bi-exclamation-circle-fill me-2"></i>
-          <strong>${error}</strong>
-        </div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="dismissMessage(this)"></button>
-      `;
-
-      // Append the error alert to the container
-      messagesContainer.appendChild(errorAlert);
-    });
-  } else {
-    // Add success alert
-    messages.forEach(success => {
-      const successAlert = document.createElement('div');
-      successAlert.className = 'alert alert-success alert-dismissible fade show';
-      successAlert.setAttribute('role', 'alert');
-
-      // Add success message content
-      successAlert.innerHTML = `
-      <div class="d-flex align-items-center">
-        <i class="bi bi-check-circle-fill me-2"></i>
-        <strong>${success}</strong>
-      </div>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="dismissMessage(this)"></button>
-    `;
-
-      // Append the success alert to the container
-      messagesContainer.appendChild(successAlert);
-    });
-  }
-
-  // Show the error container
-  messagesContainer.classList.remove('d-none');
-}
-
-/**
- * Dismisses a message from the UI
- * @function
- * @param {Element} button - Button element that triggered the dismiss action
- * @example
- * dismissMessage(this); // Called when user clicks the close button on an alert
- */
-function dismissMessage(button) {
-  // Remove the alert
-  const messageAlert = button.closest('.alert');
-  messageAlert.remove(); 
-
-  // Hide the message container if there are no more messages
-  if (messagesContainer.children.length === 0) {
-    messagesContainer.classList.add('d-none');
-  }
-}
-

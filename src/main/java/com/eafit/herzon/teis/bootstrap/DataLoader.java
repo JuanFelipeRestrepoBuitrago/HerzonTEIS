@@ -7,6 +7,8 @@ import com.eafit.herzon.teis.repositories.AuctionRepository;
 import com.eafit.herzon.teis.repositories.OrderRepository;
 import com.github.javafaker.Faker;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import org.springframework.boot.CommandLineRunner;
@@ -77,14 +79,22 @@ public class DataLoader implements CommandLineRunner {
     if (orderRepository.count() == 0) {
       Faker faker = new Faker(Locale.of("es"));
       Random random = new Random();
+      List<Order.OrderStatus> statuses = Arrays.asList(
+          Order.OrderStatus.PENDING,
+          Order.OrderStatus.PAID,
+          Order.OrderStatus.CANCELED);
 
       // Generate 10 fake orders
       for (int i = 0; i < 10; i++) {
         Order order = new Order();
         order.setTotal(Double.parseDouble(
-                faker.commerce().price(100, 2000)
-              )); // Total between $100-$2000
-        order.setStatus(random.nextBoolean()); // Random status (true/false)
+            faker.commerce().price(100, 2000))); // Total between $100-$2000
+        // Get random status (weighted towards PENDING)
+        Order.OrderStatus status = statuses.get(
+            // First 7 orders get PENDING/PAID/CANCELED, last 3 get PAID/CANCELED
+            random.nextInt(i < 7 ? 3 : 2) 
+        );
+        order.setStatus(status);
         orderRepository.save(order);
       }
 

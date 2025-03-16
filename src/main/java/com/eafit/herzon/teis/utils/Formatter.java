@@ -16,6 +16,7 @@ public class Formatter {
   public static String formatCurrency(double number, int minimumFractionDigits) {
     NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
     formatter.setMinimumFractionDigits(minimumFractionDigits);
+    formatter.setMaximumFractionDigits(Integer.MAX_VALUE);
     return formatter.format(number);
   }
 }

@@ -24,7 +24,7 @@ public class AuctionController {
 
    * @return the auctions view.
    */
-  @GetMapping
+  @GetMapping({"", "/"})
   public String getAuctions(Model model) {
     model.addAttribute("title", "Subastas - Herzon");
     model.addAttribute("auctions", auctionService.getAllActiveAuctions());
@@ -40,7 +40,7 @@ public class AuctionController {
    * @param model The model object to pass data to the
    * @return The name of the view to render
    */
-  @GetMapping("/{id}")
+  @GetMapping({"/{id}", "/{id}/"})
   public String show(@PathVariable String id, Model model) {
 
     long auctionId = Long.parseLong(id);
