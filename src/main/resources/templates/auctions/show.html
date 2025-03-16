@@ -30,14 +30,14 @@
             <p><strong>Finalización:</strong> <span
                 th:text="${#temporals.format(auction.endDate, 'yyyy-MM-dd HH:mm')}"></span></p>
 
-            <p><strong>¡Haz una Oferta!</strong></p>
-            <div class="mb-3">
+            <p th:if="${auction.status}"><strong>¡Haz una Oferta!</strong></p>
+            <div class="mb-3" th:if="${auction.status}">
               <label for="offerAmount" class="form-label">Oferta:</label>
               <input type="number" id="offerAmount" name="offerAmount" class="form-control"
                 placeholder="Ingresa el monto de tu oferta">
             </div>
 
-            <div class="d-grid">
+            <div class="d-grid" th:if="${auction.status}">
               <button type="button" onclick="placeOffer()" id="offerButton" class="btn btn-primary">Pujar</button>
             </div>
           </div>

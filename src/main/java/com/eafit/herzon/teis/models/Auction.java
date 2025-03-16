@@ -89,6 +89,12 @@ public class Auction {
   private List<Offer> offers;
 
   /**
+   * The state of the Auction. True if the auction is active, false otherwise.
+   */
+  @Column(name = "status", nullable = false, columnDefinition = "boolean default true")
+  private boolean status;
+
+  /**
    * Constructor for the Auction class.
    */
   public Auction() {
@@ -113,6 +119,7 @@ public class Auction {
     this.currentPrice = currentPrice;
     // this.jewel = jewel;
     this.offers = new ArrayList<>();
+    this.status = true;
   }
 
   /**
@@ -194,6 +201,24 @@ public class Auction {
    */
   public List<Offer> getOffers() {
     return offers;
+  }
+
+  /**
+   * Returns the status of the Auction. True if the auction is active, false otherwise.
+
+   * @return The status of the Auction. True if the auction is active, false otherwise.
+   */
+  public boolean getStatus() {
+    return status;
+  }
+
+  /**
+   * Sets the status of the Auction. True if the auction is active, false otherwise.
+
+   * @param status The status of the Auction. True if the auction is active, false otherwise.
+   */
+  public void setStatus(boolean status) {
+    this.status = status;
   }
 
   /**

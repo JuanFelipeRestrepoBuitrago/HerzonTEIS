@@ -58,6 +58,7 @@ public class DataLoader implements CommandLineRunner {
         auction.setCurrentPrice(startPrice);
         auction.setStartDate(startDate);
         auction.setEndDate(endDate);
+        auction.setStatus(true);
 
         // Generate 2-5 offers per auction
         int numOffers = random.nextInt(4) + 2;

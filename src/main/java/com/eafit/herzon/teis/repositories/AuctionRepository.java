@@ -23,6 +23,17 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
    * @param currentDateTime The current date and time.
    * @return List of active auctions.
    */
-  @Query("SELECT a FROM Auction AS a WHERE a.endDate > :currentDateTime")
+  @Query("SELECT a FROM Auction AS a WHERE a.endDate > :currentDateTime AND a.status = true")
   List<Auction> findAllActiveAuctions(@Param("currentDateTime") LocalDateTime currentDateTime);
+
+  /**
+   * Finds all auctions whose status is the given status and whose end date is
+   * before the given end date.
+   *
+   * @param status  The status of the auctions to find.
+   * @param endDate The end date to compare.
+   * @return List of auctions with the given status and end date before the given
+   *         end date.
+   */
+  List<Auction> findAllByStatusAndEndDateBefore(boolean status, LocalDateTime endDate);
 }

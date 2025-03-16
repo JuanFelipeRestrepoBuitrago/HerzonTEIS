@@ -5,7 +5,8 @@ CREATE TABLE auctions (
     start_date TIMESTAMP NOT NULL,
     end_date TIMESTAMP NOT NULL,
     start_price DOUBLE NOT NULL,
-    current_price DOUBLE NOT NULL
+    current_price DOUBLE NOT NULL,
+    status BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE offers (

@@ -33,6 +33,19 @@ public class AuctionController {
   }
 
   /**
+   * Method to get the history auctions view.
+
+   * @return the auctions view.
+   */
+  @GetMapping({"/history", "/history/"})
+  public String getHistoryAuctions(Model model) {
+    model.addAttribute("title", "Historial de Subastas - Herzon");
+    model.addAttribute("auctions", auctionService.getAllInactiveAuctions());
+
+    return "auctions/index";
+  }
+
+  /**
    * This method handles the requests for the auction show page. 
    * It shows the details of a specific auction.
 
