@@ -50,6 +50,23 @@ public class OrderService {
   }
 
   /**
+   * Method to cancel an order.
+
+   * @param id The id of the order to cancel.
+   */
+  @Transactional
+  public void cancel(long id) {
+    Order order = orderRepository.findById(id).orElse(null);
+
+    if (order != null) {
+      order.setStatus(OrderStatus.CANCELED);
+      orderRepository.save(order);
+    } else {
+      throw new InvalidOrderException("La orden con el id " + id + " no existe.");
+    }
+  }
+
+  /**
    * Method to pay an order.
 
    * @param id The id of the order to pay.

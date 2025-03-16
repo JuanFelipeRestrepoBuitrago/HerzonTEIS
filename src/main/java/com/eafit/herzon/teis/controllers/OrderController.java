@@ -68,11 +68,11 @@ public class OrderController {
   /**
    * This method handles the requests for the order payment page.
 
-    * @param orderForm The form data for the order payment
-    * @param result The result of the form validation
-    * @param model The model object to pass data to the
-    * @return The name of the view to render
-    */
+   * @param orderForm The form data for the order payment
+   * @param result The result of the form validation
+   * @param model The model object to pass data to the
+   * @return The name of the view to render
+   */
   @PostMapping({"/order/pay", "/order/pay/"})
   public String pay(
       @Valid @ModelAttribute("orderForm") OrderForm orderForm, 
@@ -82,6 +82,33 @@ public class OrderController {
       orderService.submit(orderForm.getId());
       redirectAttributes.addFlashAttribute("messages",
           Collections.singletonList("Pago realizado exitosamente"));
+      redirectAttributes.addFlashAttribute("error", false);
+    } catch (InvalidOrderException e) {
+      redirectAttributes.addFlashAttribute("messages", 
+          Collections.singletonList(e.getMessage()));
+      redirectAttributes.addFlashAttribute("error", true);
+    }
+
+    return "redirect:/orders/" + orderForm.getId();
+  }
+
+  /**
+   * This method handles the requests for the order cancel page.
+
+   * @param orderForm The form data for the order cancel
+   * @param result The result of the form validation
+   * @param model The model object to pass data to the
+   * @return The name of the view to render
+   */
+  @PostMapping({"/order/cancel", "/order/cancel/"})
+  public String cancel(
+      @Valid @ModelAttribute("orderForm") OrderForm orderForm, 
+      BindingResult result, Model model, RedirectAttributes redirectAttributes
+  ) {
+    try {
+      orderService.cancel(orderForm.getId());
+      redirectAttributes.addFlashAttribute("messages",
+          Collections.singletonList("Se ha cancelado la orden exitosamente"));
       redirectAttributes.addFlashAttribute("error", false);
     } catch (InvalidOrderException e) {
       redirectAttributes.addFlashAttribute("messages", 

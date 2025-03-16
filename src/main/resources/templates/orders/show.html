@@ -28,7 +28,7 @@
             <p><strong>Fecha:</strong> <span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
             </p>
 
-            <div class="mt-4 d-grid gap-2">
+            <div class="mt-4 d-grid gap-2" th:if="${order.status.name() == 'PENDING'}">
               <form th:action="@{/orders/order/pay}" method="post" th:object="${orderForm}">
                 <input type="hidden" name="id" th:value="${order.id}" />
                 <button type="submit" class="btn btn-success w-100">
