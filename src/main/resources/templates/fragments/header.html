@@ -1,27 +1,59 @@
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-  <div th:fragment="header">
-    <header class="bg-dark-green py-3 shadow-lg sticky-top">
-      <div class="container d-flex justify-content-between align-items-center">
-        <h1 class="m-0">
-          <i class="fas fa-gem text-gold"></i>
-          <span class="logo-text">HERZON</span>
-        </h1>
-        <nav class="d-flex gap-4">
-          <a th:href="@{/}" class="nav-link">
-            <i class="fas fa-home"></i> Home
-          </a>
-          <a th:href="@{/jewels}" class="nav-link">
-            <i class="fas fa-ring"></i> Joyas
-          </a>
-          <a th:href="@{/login}" class="nav-link">
-            <i class="fas fa-sign-in-alt"></i> Ingresar
-          </a>
-          <a th:href="@{/register}" class="nav-link">
-            <i class="fas fa-user-plus"></i> Registrarse
-          </a>
-        </nav>
-      </div>
-    </header>
-  </div>
-</html>
+<div th:fragment="header">
+  <header class="bg-dark-green py-3 shadow-lg sticky-top">
+    <div class="container d-flex justify-content-between align-items-center">
+      <h1 class="m-0">
+        <a th:href="@{/}" class="text-decoration-none text-gold">
+          <i class="fas fa-gem"></i> HERZON
+        </a>
+      </h1>
+      <nav class="d-flex gap-4">
+        <a
+          th:href="@{/}"
+          class="nav-link"
+          th:classappend="${currentPage == 'home' ? 'text-gold fw-bold' : 'text-white'}"
+        >
+          <i class="fas fa-home"></i> Home
+        </a>
+
+        <a
+          th:href="@{/jewels}"
+          class="nav-link"
+          th:classappend="${currentPage == 'jewels' ? 'text-gold fw-bold' : 'text-white'}"
+        >
+          <i class="fas fa-ring"></i> Joyas
+        </a>
+
+        <!-- NO autenticado -->
+        <a
+          sec:authorize="!isAuthenticated()"
+          th:href="@{/login}"
+          class="nav-link"
+          th:classappend="${currentPage == 'login' ? 'text-gold fw-bold' : 'text-white'}"
+        >
+          <i class="fas fa-sign-in-alt"></i> Ingresar
+        </a>
+        <a
+          sec:authorize="!isAuthenticated()"
+          th:href="@{/register}"
+          class="nav-link"
+          th:classappend="${currentPage == 'register' ? 'text-gold fw-bold' : 'text-white'}"
+        >
+          <i class="fas fa-user-plus"></i> Registrarse
+        </a>
+
+        <!-- Autenticado -->
+        <span sec:authorize="isAuthenticated()" class="nav-link text-white">
+          <i class="fas fa-user"></i>
+          <span sec:authentication="name"></span>
+        </span>
+        <a
+          sec:authorize="isAuthenticated()"
+          th:href="@{/logout}"
+          class="nav-link text-white"
+        >
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </a>
+      </nav>
+    </div>
+  </header>
+</div>

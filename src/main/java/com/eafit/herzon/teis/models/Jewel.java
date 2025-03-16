@@ -35,6 +35,9 @@ public class Jewel {
   @Column(nullable = false)
   private double price;
 
+  @Column(nullable = false)
+  private String imageUrl; // New field for the image URL
+
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "created_at", nullable = false, updatable = false)
   private Date createdAt;
@@ -56,12 +59,14 @@ public class Jewel {
    * @param category The category of the jewel.
    * @param details  Additional details about the jewel.
    * @param price    The price of the jewel.
+   * @param imageUrl The URL of the jewel's image.
    */
-  public Jewel(String name, String category, String details, double price) {
+  public Jewel(String name, String category, String details, double price, String imageUrl) {
     this.name = name;
     this.category = category;
     this.details = details;
     this.price = price;
+    this.imageUrl = imageUrl;
   }
 
   /**
@@ -169,6 +174,24 @@ public class Jewel {
    */
   public void setPrice(double price) {
     this.price = price;
+  }
+
+  /**
+   * Gets the image URL of the jewel.
+   *
+   * @return The jewel's image URL.
+   */
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  /**
+   * Sets the image URL of the jewel.
+   *
+   * @param imageUrl The jewel's image URL.
+   */
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
   }
 
   /**

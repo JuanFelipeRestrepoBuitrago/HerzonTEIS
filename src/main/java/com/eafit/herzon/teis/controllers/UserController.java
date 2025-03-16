@@ -59,7 +59,7 @@ public class UserController {
    */
   @GetMapping("/home")
   public String getHomePage() {
-    return "home"; // Coincide con templates/home.html
+    return "home/index"; // Coincide con templates/home.html
   }
 
   /**

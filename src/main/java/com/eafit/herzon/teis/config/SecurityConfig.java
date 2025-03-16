@@ -1,6 +1,5 @@
 package com.eafit.herzon.teis.config;
 
-import com.eafit.herzon.teis.security.CustomUserDetailsService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,7 +13,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -65,11 +63,8 @@ public class SecurityConfig {
             .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
             .requestMatchers("/jewels", "/jewels/**").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
-            .requestMatchers("/users/dashboard").hasRole("ADMIN")
-            .requestMatchers("/", "/home", "/register",
-                "/api/users/register", "/api/users/login",
-                "/login", "/error")
-            .permitAll()
+            .requestMatchers("/", "/home", "/register", "/api/users/register",
+                "/api/users/login", "/login", "/error").permitAll()
             .anyRequest().authenticated())
         .formLogin(form -> form
             .loginPage("/login")
@@ -93,14 +88,14 @@ public class SecurityConfig {
    * @throws Exception if an error occurs during configuration
    */
   @Bean
-  public AuthenticationManager authenticationManager(
-      AuthenticationConfiguration authConfig) throws Exception {
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig)
+      throws Exception {
     return authConfig.getAuthenticationManager();
   }
 
   /**
-   * Provides a custom AuthenticationSuccessHandler to redirect users based on their roles
-   * after successful login.
+   * Provides a custom AuthenticationSuccessHandler to redirect users to /home after
+   * successful login.
    *
    * @return an instance of CustomAuthenticationSuccessHandler
    */
@@ -110,8 +105,8 @@ public class SecurityConfig {
   }
 
   /**
-   * Provides a custom AuthenticationFailureHandler to handle login failures
-   * with specific error messages.
+   * Provides a custom AuthenticationFailureHandler to handle login failures with specific
+   * error messages.
    *
    * @return an instance of CustomAuthenticationFailureHandler
    */
@@ -121,39 +116,26 @@ public class SecurityConfig {
   }
 
   /**
-   * Custom AuthenticationSuccessHandler to redirect users based on their roles after
-   * successful authentication.
+   * Custom AuthenticationSuccessHandler to redirect users to /home after successful
+   * authentication.
    */
   static class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     @Override
-    public void onAuthenticationSuccess(
-        HttpServletRequest request,
-        HttpServletResponse response,
-        Authentication authentication
-    ) throws IOException, ServletException {
-      boolean isAdmin = authentication.getAuthorities().stream()
-          .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
-      
-      if (isAdmin) {
-        response.sendRedirect("/users/dashboard");
-      } else {
-        response.sendRedirect("/home");
-      }
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+        Authentication authentication) throws IOException, ServletException {
+      response.sendRedirect("/home");
     }
   }
 
   /**
-   * Custom AuthenticationFailureHandler to handle login failures by setting specific
-   * error messages and redirecting to the login page.
+   * Custom AuthenticationFailureHandler to handle login failures by setting specific error
+   * messages and redirecting to the login page.
    */
-  static class CustomAuthenticationFailureHandler
-      extends SimpleUrlAuthenticationFailureHandler {
+  static class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     @Override
-    public void onAuthenticationFailure(
-        HttpServletRequest request,
-        HttpServletResponse response,
-        org.springframework.security.core.AuthenticationException exception
-    ) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+        org.springframework.security.core.AuthenticationException exception)
+        throws IOException, ServletException {
       String errorMessage;
       if (exception.getMessage().contains("UserDetailsService returned null")
           || exception.getCause() instanceof UsernameNotFoundException) {

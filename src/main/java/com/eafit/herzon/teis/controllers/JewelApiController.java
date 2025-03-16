@@ -4,6 +4,7 @@ import com.eafit.herzon.teis.models.Jewel;
 import com.eafit.herzon.teis.services.JewelService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,14 +70,19 @@ public class JewelApiController {
   }
 
   /**
-   * Searches for jewels by name.
+   * Searches for jewels by name with pagination.
    *
    * @param name the name to search for
-   * @return a ResponseEntity containing the list of matching jewels
+   * @param page the page number (default 0)
+   * @param size the number of items per page (default 9)
+   * @return a ResponseEntity containing the page of matching jewels
    */
   @GetMapping("/search")
-  public ResponseEntity<List<Jewel>> searchJewelsByName(@RequestParam String name) {
-    List<Jewel> jewels = jewelService.findJewelsByName(name);
-    return ResponseEntity.ok(jewels);
+  public ResponseEntity<Page<Jewel>> searchJewelsByName(
+      @RequestParam String name,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "9") int size) {
+    Page<Jewel> jewelPage = jewelService.findJewelsByName(name, page, size);
+    return ResponseEntity.ok(jewelPage);
   }
 }

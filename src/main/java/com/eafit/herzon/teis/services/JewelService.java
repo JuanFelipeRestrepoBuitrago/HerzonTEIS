@@ -3,8 +3,10 @@ package com.eafit.herzon.teis.services;
 import com.eafit.herzon.teis.exceptions.JewelNotFoundException;
 import com.eafit.herzon.teis.models.Jewel;
 import com.eafit.herzon.teis.repositories.JewelRepository;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,13 +44,16 @@ public class JewelService {
   }
 
   /**
-   * Retrieves all jewels from the database.
+   * Retrieves all jewels from the database with pagination.
    *
-   * @return a list of all jewels
+   * @param page the page number (0-based)
+   * @param size the number of items per page
+   * @return a page of all jewels
    */
   @Transactional(readOnly = true)
-  public List<Jewel> getAllJewels() {
-    return jewelRepository.findAll();
+  public Page<Jewel> getAllJewels(int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    return jewelRepository.findAll(pageable);
   }
 
   /**
@@ -83,42 +88,51 @@ public class JewelService {
   }
 
   /**
-   * Searches for jewels by name.
+   * Searches for jewels by name with pagination.
    *
    * @param name the name to search for
-   * @return a list of matching jewels
+   * @param page the page number (0-based)
+   * @param size the number of items per page
+   * @return a page of matching jewels
    * @throws IllegalArgumentException if the name is null or empty
    */
   @Transactional(readOnly = true)
-  public List<Jewel> findJewelsByName(String name) {
+  public Page<Jewel> findJewelsByName(String name, int page, int size) {
     validateString(name, "Name");
-    return jewelRepository.searchJewelByName(name);
+    Pageable pageable = PageRequest.of(page, size);
+    return jewelRepository.searchJewelByName(name, pageable);
   }
 
   /**
-   * Searches for jewels by category.
+   * Searches for jewels by category with pagination.
    *
    * @param category the category to search for
-   * @return a list of matching jewels
+   * @param page the page number (0-based)
+   * @param size the number of items per page
+   * @return a page of matching jewels
    * @throws IllegalArgumentException if the category is null or empty
    */
   @Transactional(readOnly = true)
-  public List<Jewel> findJewelsByCategory(String category) {
+  public Page<Jewel> findJewelsByCategory(String category, int page, int size) {
     validateString(category, "Category");
-    return jewelRepository.searchJewelByCategory(category);
+    Pageable pageable = PageRequest.of(page, size);
+    return jewelRepository.searchJewelByCategory(category, pageable);
   }
 
   /**
-   * Searches for jewels containing a keyword in their details.
+   * Searches for jewels containing a keyword in their details with pagination.
    *
    * @param keyword the keyword to search for
-   * @return a list of matching jewels
+   * @param page the page number (0-based)
+   * @param size the number of items per page
+   * @return a page of matching jewels
    * @throws IllegalArgumentException if the keyword is null or empty
    */
   @Transactional(readOnly = true)
-  public List<Jewel> findJewelsByKeyword(String keyword) {
+  public Page<Jewel> findJewelsByKeyword(String keyword, int page, int size) {
     validateString(keyword, "Keyword");
-    return jewelRepository.searchJewelByKeyword(keyword);
+    Pageable pageable = PageRequest.of(page, size);
+    return jewelRepository.searchJewelByKeyword(keyword, pageable);
   }
 
   /**

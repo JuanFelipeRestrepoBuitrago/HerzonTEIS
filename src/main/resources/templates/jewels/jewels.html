@@ -1,21 +1,62 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
+  <div th:replace="~{fragments/head :: head}"></div>
   <title>Lista de Joyas</title>
-  <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 <body>
-  <!-- Incluir el header -->
-  <div th:replace="~{fragments/header :: header}"></div>
+  <header th:replace="~{fragments/header :: header}"></header>
 
-  <div class="container mt-5">
-    <h1>Lista de Joyas</h1>
-    <div th:if="${jewels}">
-      <ul>
-        <li th:each="jewel : ${jewels}" th:text="${jewel.name}"></li>
-      </ul>
+  <main class="container my-5 py-4">
+    <h1 class="text-gold text-center mb-4" style="font-size: 2.5rem; font-weight: 700;">Lista de Joyas</h1>
+    
+    <div th:if="${jewels}" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div class="col" th:each="jewel : ${jewels}">
+        <div class="card h-100 shadow-sm border-0">
+          <img th:src="${jewel.imageUrl}" alt="Jewel Image" class="card-img-top img-fluid" />
+          <div class="card-body text-center">
+            <h5 class="card-title text-gold" th:text="${jewel.name}"></h5>
+            <p class="card-text text-muted" th:text="${jewel.category}"></p>
+            <p class="card-text fw-bold" th:text="'$' + ${#numbers.formatDecimal(jewel.price, 0, 2)}"></p>
+            <a th:href="@{'/jewels/' + ${jewel.id}}" class="btn btn-gold mt-3">Ver Detalles</a>
+          </div>
+        </div>
+      </div>
     </div>
-    <div th:unless="${jewels}" th:text="'No hay joyas disponibles.'"></div>
-  </div>
+
+    <div th:unless="${jewels}" class="text-center py-5">
+      <div class="empty-state">
+        <i class="fas fa-gem fa-3x text-gold mb-3"></i>
+        <h3 class="text-white">No hay joyas disponibles</h3>
+        <p class="text-muted">Por favor, revisa más tarde o contacta al administrador.</p>
+        <a href="/" class="btn btn-gold mt-3">Volver al Inicio</a>
+      </div>
+    </div>
+
+    <nav aria-label="Page navigation" th:if="${totalPages > 1}">
+      <ul class="pagination justify-content-center mt-4">
+        <!-- Anterior -->
+        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+          <a class="page-link" th:href="@{/jewels(page=${currentPage - 1})}">Anterior</a>
+        </li>
+    
+        <!-- Numeración de páginas -->
+        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${pageNumber == currentPage} ? 'active'">
+          <a class="page-link" th:href="@{/jewels(page=${pageNumber})}" th:text="${pageNumber + 1}"
+             th:style="${pageNumber == currentPage} ? 'background-color: #D4AF37; color: #FFFFFF;' : ''"></a>
+        </li>
+    
+        <!-- Siguiente -->
+        <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+          <a class="page-link" th:href="@{/jewels(page=${currentPage + 1})}">Siguiente</a>
+        </li>
+      </ul>
+    </nav>
+  </main>
+
+  <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+  <div th:replace="~{fragments/scripts :: scripts}"></div>
 </body>
 </html>
