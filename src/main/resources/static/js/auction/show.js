@@ -4,7 +4,7 @@
  */
 
 // Importing Stomp and SockJS libraries for WebSocket communication
-const socket = new SockJS('/auction/websocket');
+const socket = new SockJS('/ws/auction/websocket');
 const stompClient = Stomp.over(socket);
 
 // Necessary DOM elements5
@@ -25,7 +25,7 @@ stompClient.connect({}, function (frame) {
    * @function
    * @param {Message} response - STOMP message containing auction data
    */
-  stompClient.subscribe(`/topic/auction/updates/${auctionId}`, (response) => {
+  stompClient.subscribe(`/ws/topic/auction/updates/${auctionId}`, (response) => {
     const auctionUpdatedResponse = JSON.parse(response.body);
     updateAuctionUI(auctionUpdatedResponse);
   });

@@ -92,6 +92,6 @@ public class OfferService {
     auctionRepository.save(auction);
 
     // Send the new offer price to the clients subscribed to the auction topic
-    simpMessagingTemplate.convertAndSend("/topic/auction/updates/" + auctionId, auction);
+    simpMessagingTemplate.convertAndSend("/ws/topic/auction/updates/" + auctionId, auction);
   }
 }
