@@ -1,19 +1,7 @@
 package com.eafit.herzon.teis.models;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +45,11 @@ public class User {
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "modified_at")
   private Date modifiedAt;
+
+
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name = "cart_id", nullable = false)
+  private Cart cart;
 
   /**
    * Default constructor.
@@ -249,6 +242,15 @@ public class User {
     this.modifiedAt = modifiedAt;
   }
 
+
+  public Cart getCart() {
+    return cart;
+  }
+
+  public void setCart(Cart cart) {
+    this.cart = cart;
+  }
+
   /**
    * Sets the creation and initial modification dates before persisting the entity.
    */
@@ -257,6 +259,7 @@ public class User {
     this.createdAt = new Date();
     this.modifiedAt = new Date();
   }
+
 
   /**
    * Updates the modification date before updating the entity.
