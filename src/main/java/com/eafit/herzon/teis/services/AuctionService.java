@@ -48,7 +48,7 @@ public class AuctionService {
     return auctionRepository.findAllActiveAuctions(LocalDateTime.now());
   }
 
-    /**
+  /**
    * Method to get all inactive the auctions in the database.
 
    * @return List of all inactive the auctions in the database
