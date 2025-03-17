@@ -11,14 +11,14 @@ public class OfferForm {
   /**
    * The id of the auction to place the offer.
    */
-  @NotNull(message = "Auction Id is required")
+  @NotNull(message = "El Id de la subasta es requerido")
   private Long auctionId;
 
   /**
    * The price of the offer.
    */
-  @Positive(message = "Offer price must be a positive number")
-  @NotNull(message = "Offer price is required")
+  @Positive(message = "El precio de la oferta debe ser positivo")
+  @NotNull(message = "El precio de la oferta es requerido")
   private Double offerPrice;
 
   /**

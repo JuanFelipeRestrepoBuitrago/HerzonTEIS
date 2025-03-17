@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -35,6 +36,7 @@ public class Auction {
   /**
    * The date and time when the auction was created.
    */
+  @CreationTimestamp
   @Column(name = "created_at", nullable = false, updatable = false)
   private LocalDateTime createdAt;
 
@@ -43,8 +45,8 @@ public class Auction {
    * updated by Hibernate when the entity is modified.
    */
   @UpdateTimestamp
-  @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
+  @Column(name = "modified_at", nullable = false)
+  private LocalDateTime modifiedAt;
 
   /**
    * The date and time when the auction starts.
@@ -87,9 +89,16 @@ public class Auction {
   private List<Offer> offers;
 
   /**
+   * The state of the Auction. True if the auction is active, false otherwise.
+   */
+  @Column(name = "status", nullable = false, columnDefinition = "boolean default true")
+  private boolean status;
+
+  /**
    * Constructor for the Auction class.
    */
   public Auction() {
+    this.offers = new ArrayList<>();
   }
 
   /**
@@ -110,6 +119,7 @@ public class Auction {
     this.currentPrice = currentPrice;
     // this.jewel = jewel;
     this.offers = new ArrayList<>();
+    this.status = true;
   }
 
   /**
@@ -135,8 +145,8 @@ public class Auction {
 
    * @return The date and time when the auction was last updated.
    */
-  public LocalDateTime getUpdatedAt() {
-    return updatedAt;
+  public LocalDateTime getModifiedAt() {
+    return modifiedAt;
   }
 
   /**
@@ -191,6 +201,24 @@ public class Auction {
    */
   public List<Offer> getOffers() {
     return offers;
+  }
+
+  /**
+   * Returns the status of the Auction. True if the auction is active, false otherwise.
+
+   * @return The status of the Auction. True if the auction is active, false otherwise.
+   */
+  public boolean getStatus() {
+    return status;
+  }
+
+  /**
+   * Sets the status of the Auction. True if the auction is active, false otherwise.
+
+   * @param status The status of the Auction. True if the auction is active, false otherwise.
+   */
+  public void setStatus(boolean status) {
+    this.status = status;
   }
 
   /**

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{fragments/head :: head}"></div>
+
+<body>
+  <div th:replace="~{fragments/header :: header}"></div>
+
+  <div class="container-fluid full-height bg-primary d-flex justify-content-center align-items-center">
+    <div class="row justify-content-center w-100">
+      <div class="col-md-6 col-lg-4">
+        <!-- Container for error messages -->
+        <div id="messagesAlert" class="d-none" 
+        th:data-messages="${#strings.listJoin(messages, '||')}" 
+        th:data-error="${error != null ? error : 'false'}">
+          <!-- Individual error alerts will be dynamically inserted here -->
+        </div>
+
+        <div class="card shadow-lg">
+          <div class="card-header bg-secondary text-primary text-center">
+            <h4 class="mb-0">Detalles de la Orden</h4>
+          </div>
+          <div class="card-body bg-third p-4">
+            <p><strong>Id:</strong> <span th:text="${order.id}" id="order"></span></p>
+            <p><strong>Estado:</strong> 
+                <span th:text="#{'order.status.' + ${order.status}}"></span>
+            </p>
+            <p><strong>Fecha:</strong> <span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+            </p>
+
+            <div class="mt-4 d-grid gap-2" th:if="${order.status.name() == 'PENDING'}">
+              <form th:action="@{/orders/order/pay}" method="post" th:object="${orderForm}">
+                <input type="hidden" name="id" th:value="${order.id}" />
+                <button type="submit" class="btn btn-success w-100">
+                  <i class="bi bi-credit-card me-2"></i> Pagar
+                </button>
+              </form>
+
+              <form th:action="@{/orders/order/cancel}" method="post" th:object="${orderForm}">
+                <input type="hidden" name="id" th:value="${order.id}" />
+                <button type="submit" class="btn btn-danger w-100">
+                  <i class="bi bi-x-circle me-2"></i> Cancelar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div th:replace="~{fragments/footer :: footer}"></div>
+
+  <script th:src="@{/js/messages.js}"></script>
+  <script th:src="@{/js/order/show.js}"></script>
+  
+</body>
+
+</html>

@@ -23,7 +23,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
     config.enableSimpleBroker("/topic"); // Prefix for messages sent to clients
-    config.setApplicationDestinationPrefixes("/message"); // Prefix for messages sent from clients
+    config.setApplicationDestinationPrefixes(
+        "/message"); // Prefix for messages sent from clients
   }
 
   /**
@@ -33,6 +34,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
    */
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
-    registry.addEndpoint("/auction/websocket").withSockJS(); // WebSocket endpoint
+    registry.addEndpoint("/ws/auction/websocket")
+        .setAllowedOriginPatterns("*")
+        .withSockJS();
   }
 }

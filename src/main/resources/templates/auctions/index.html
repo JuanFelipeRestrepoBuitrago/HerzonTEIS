@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{fragments/head :: head}"></div>
+
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="container-fluid full-height bg-primary d-flex justify-content-center align-items-center">
+        <div class="row justify-content-center w-100">
+            <div class="col-md-8 col-lg-6">
+                <!-- Auctions List as Cards -->
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <div class="col" th:each="auction : ${auctions}">
+                        <div class="card h-100 shadow-lg" th:onclick="|window.location.href='/auctions/' + ${auction.id}|" style="cursor: pointer;">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <strong>Id</strong><br> <span th:text="${auction.id}"></span><br>
+                                    <!-- <strong>Jewel:</strong> <a th:href="@{/jewels/{id}(id=${auction.jewel.id})}" th:text="${auction.jewel.name}"></a><br> -->
+                                    <strong>Finalización</strong><br><span th:text="${#temporals.format(auction.endDate, 'yyyy-MM-dd HH:mm')}"></span><br>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>

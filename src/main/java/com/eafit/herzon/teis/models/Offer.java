@@ -39,8 +39,8 @@ public class Offer {
    * updated by Hibernate when the entity is modified.
    */
   @UpdateTimestamp
-  @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
+  @Column(name = "modified_at", nullable = false)
+  private LocalDateTime modifiedAt;
 
   /**
    * The auction for which the offer was made.
@@ -123,8 +123,8 @@ public class Offer {
 
    * @return the date and time when the offer was last updated.
    */
-  public LocalDateTime getUpdatedAt() {
-    return updatedAt;
+  public LocalDateTime getModifiedAt() {
+    return modifiedAt;
   }
 
   /**

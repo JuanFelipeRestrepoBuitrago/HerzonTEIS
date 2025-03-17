@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{fragments/head :: head}"></div>
+
+<body>
+  <div th:replace="~{fragments/header :: header}"></div>
+
+  <div class="container-fluid full-height bg-primary d-flex justify-content-center align-items-center">
+    <div class="row justify-content-center w-100">
+      <div class="col-md-6 col-lg-4">
+        <!-- Container for error messages -->
+        <div id="messagesAlert" class="d-none">
+          <!-- Individual error alerts will be dynamically inserted here -->
+        </div>
+
+        <div class="card shadow-lg">
+          <div class="card-header bg-secondary text-primary text-center">
+            <h4 class="mb-0">Detalles de la Subasta</h4>
+          </div>
+          <div class="card-body bg-third p-4">
+            <p><strong>Id:</strong> <span th:text="${auction.id}" id="auctionId"></span></p>
+            <p><strong>Precio Actual:</strong> <span
+                th:text="${'$' + #numbers.formatDecimal(auction.currentPrice, 1, 'COMMA', 2, 'POINT')}"
+                id="current-price"></span></p>
+            <p><strong>Precio Inicial:</strong> <span
+                th:text="${'$' + #numbers.formatDecimal(auction.startPrice, 1, 'COMMA', 2, 'POINT')}"></span></p>
+            <p><strong>Comienzo:</strong> <span
+                th:text="${#temporals.format(auction.startDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+            <p><strong>Finalización:</strong> <span
+                th:text="${#temporals.format(auction.endDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+
+            <p th:if="${auction.status}"><strong>¡Haz una Oferta!</strong></p>
+            <div class="mb-3" th:if="${auction.status}">
+              <label for="offerAmount" class="form-label">Oferta:</label>
+              <input type="number" id="offerAmount" name="offerAmount" class="form-control"
+                placeholder="Ingresa el monto de tu oferta">
+            </div>
+
+            <div class="d-grid" th:if="${auction.status}">
+              <button type="button" onclick="placeOffer()" id="offerButton" class="btn btn-primary">Pujar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div th:replace="~{fragments/footer :: footer}"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+  <script th:src="@{/js/messages.js}"></script>
+  <script th:src="@{/js/auction/show.js}"></script>
+</body>
+
+</html>

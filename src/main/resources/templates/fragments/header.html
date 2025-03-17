@@ -22,6 +22,22 @@
         >
           <i class="fas fa-ring"></i> Joyas
         </a>
+        
+        <a
+          th:href="@{/auctions}"
+          class="nav-link"
+          th:classappend="${currentPage == 'auctions' ? 'text-gold fw-bold' : 'text-white'}"
+        >
+          <i class="fas fa-ring"></i> Subastas
+        </a>
+
+        <a
+          th:href="@{/auctions/history}"
+          class="nav-link"
+          th:classappend="${currentPage == 'auctions_history' ? 'text-gold fw-bold' : 'text-white'}"
+        >
+          <i class="fas fa-ring"></i> Historial Subastas
+        </a>
 
         <!-- NO autenticado -->
         <a
@@ -42,6 +58,14 @@
         </a>
 
         <!-- Autenticado -->
+        <a
+          sec:authorize="isAuthenticated()"
+          th:href="@{/orders}"
+          class="nav-link text-white"
+          th:classappend="${currentPage == 'orders' ? 'text-gold fw-bold' : 'text-white'}"
+        >
+          <i class="fas fa-sign-out-alt"></i> Ordenes
+        </a>
         <span sec:authorize="isAuthenticated()" class="nav-link text-white">
           <i class="fas fa-user"></i>
           <span sec:authentication="name"></span>

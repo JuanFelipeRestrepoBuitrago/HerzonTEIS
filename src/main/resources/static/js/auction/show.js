@@ -3,32 +3,23 @@
  * @module auctionLive
  */
 
-/** 
- * WebSocket client connection using SockJS and STOMP protocol
- * @type {SockJS}
- */
-const socket = new SockJS('/auction/websocket');
-
-/**
- * STOMP client over WebSocket connection
- * @type {Stomp.Client}
- */
+// Importing Stomp and SockJS libraries for WebSocket communication
+const socket = new SockJS('/ws/auction/websocket');
 const stompClient = Stomp.over(socket);
 
-/**
- * ID of the current auction extracted from DOM
- * @type {string}
- */
-const auctionId = document.getElementById('auctionId').value;
+// Necessary DOM elements5
+const auctionId = document.getElementById('auctionId').textContent;
+const offerInput = document.getElementById('offerAmount');
+const offerButton = document.getElementById('offerButton');
 
 /**
  * Initializes WebSocket connection and subscribes to auction updates
  * @function
  * @listens Stomp#connect
  */
-stompClient.connect({}, function(frame) {
+stompClient.connect({}, function (frame) {
   console.log('Connected: ' + frame);
-  
+
   /**
    * Subscribes to auction updates channel
    * @function
@@ -59,11 +50,10 @@ window.addEventListener('beforeunload', () => {
  * placeOffer(); // Called when user clicks bid button
  */
 async function placeOffer() {
-  const offerInput = document.getElementById('offerAmount');
   const offerAmount = parseFloat(offerInput.value);
-  const button = document.getElementById('offerButton');
-  button.disabled = true;
+  offerButton.disabled = true;
 
+  // Make a POST request to place the offer for the auction
   try {
     const response = await fetch(`/auction/offer/place`, {
       method: 'POST',
@@ -71,18 +61,29 @@ async function placeOffer() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        auctionId: auctionId,
-        offerAmount: offerAmount
+        auctionId: parseInt(auctionId),
+        offerPrice: offerAmount
       })
     });
 
-    if (!response.ok) throw new Error('Offer failed');
-    offerInput.value = '';
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      // Display error messages if any
+      if (responseData.error) {
+        displayMessages(responseData.messages, responseData.error);
+      } else {
+        throw new Error('Oferta fallida');
+      }
+    } else {
+      offerInput.value = '';
+      displayMessages(responseData.messages, responseData.error);
+    }
   } catch (error) {
     console.error('Error:', error);
-    alert("Failed to place offer");
+    displayMessages(["La puja de tu oferta falló"], true);
   } finally {
-    button.disabled = false;
+    offerButton.disabled = false;
   }
 }
 
@@ -96,9 +97,11 @@ async function placeOffer() {
  */
 function updateAuctionUI(offerAuctionResponse) {
   console.log(offerAuctionResponse);
-  document.getElementById('current-price').innerText = 
+  document.getElementById('current-price').innerText =
     offerAuctionResponse.currentPrice.toLocaleString('en-US', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 20
     });
 }

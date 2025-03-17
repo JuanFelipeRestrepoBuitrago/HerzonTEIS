@@ -62,6 +62,9 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
             .requestMatchers("/jewels", "/jewels/**").permitAll()
+            .requestMatchers("/auction", "/auction/**").permitAll()
+            .requestMatchers("/auctions", "/auctions/**", "/orders", "/orders/**").permitAll()
+            .requestMatchers("/ws/**", "/ws/auction/websocket/**").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .requestMatchers("/", "/home", "/register", "/api/users/register",
                 "/api/users/login", "/login", "/error").permitAll()

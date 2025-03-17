@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{fragments/head :: head}"></div>
+
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="container-fluid full-height bg-primary d-flex justify-content-center align-items-center">
+        <div class="row justify-content-center w-100">
+            <div class="col-md-8 col-lg-6">
+                <!-- Orders List as Cards -->
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <div class="col" th:each="order : ${orders}">
+                        <div class="card h-100 shadow-lg" th:onclick="|window.location.href='/orders/' + ${order.id}|" style="cursor: pointer;">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <strong>Id</strong><br> <span th:text="${order.id}"></span><br>
+                                    <strong>Fecha</strong><br><span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></span><br>
+                                    <strong>Total</strong><br><span th:text="${'$' + #numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT')}"></span><br>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>

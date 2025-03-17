@@ -39,7 +39,31 @@ or if you don't have Maven installed:
 ```bash
 ./mvnw clean install
 ```
-5. Run the project with Maven:
+5. Set the following environment variables in your system:
+Linux or MacOS:
+```bash
+export DATABASE_URL=jdbc:mysql://localhost:YOUR_DB_PORT/name_of_your_database
+export DATABASE_USER=YOUR_USERNAME
+export DATABASE_PASSWORD=YOUR_PASSWORD
+```
+Windows:
+```bash
+set DATABASE_URL=jdbc:mysql://localhost:YOUR_DB_PORT/name_of_your_database
+set DATABASE_USER=YOUR_USERNAME
+set DATABASE_PASSWORD=YOUR_PASSWORD
+```
+Replace `YOUR_DB_PORT`, `YOUR_USERNAME`, and `YOUR_PASSWORD` with your MySQL port, username, and password respectively.
+
+6. Execute Migrations with Flyway:
+```bash
+mvn clean flyway:migrate
+```
+or if you don't have Maven installed:
+```bash
+./mvnw clean flyway:migrate
+```
+
+7. Run the project with Maven:
 ```bash
 mvn spring-boot:run
 ```
@@ -47,11 +71,11 @@ or if you don't have Maven installed:
 ```bash
 ./mvnw spring-boot:run
 ```
-6. Access the application at:
+8. Access the application at:
 ```bash
 http://localhost:8080
 ```
-7. When you're done, exit the spring-boot application with `Ctrl+C` and stop the MySQL server with:
+9. When you're done, exit the spring-boot application with `Ctrl+C` and stop the MySQL server with:
 ```bash
 docker-compose down
 ```
