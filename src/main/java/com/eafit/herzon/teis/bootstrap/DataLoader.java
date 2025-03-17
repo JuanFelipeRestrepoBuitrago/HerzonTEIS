@@ -30,14 +30,13 @@ public class DataLoader implements CommandLineRunner {
    * Constructor for the DataLoader class.
    *
    * @param auctionRepository The repository for auctions.
-   * @param orderRepository The repository for orders.
-   * @param jewelRepository The repository for jewels.
+   * @param orderRepository   The repository for orders.
+   * @param jewelRepository   The repository for jewels.
    */
   public DataLoader(
-      AuctionRepository auctionRepository, 
-      OrderRepository orderRepository, 
-      JewelRepository jewelRepository
-  ) {
+      AuctionRepository auctionRepository,
+      OrderRepository orderRepository,
+      JewelRepository jewelRepository) {
     this.auctionRepository = auctionRepository;
     this.orderRepository = orderRepository;
     this.jewelRepository = jewelRepository;
@@ -64,8 +63,8 @@ public class DataLoader implements CommandLineRunner {
         jewel.setPrice(Double.parseDouble(faker.commerce().price(50, 1000)));
         jewel.setImageUrl(
             "https://cdn-media.glamira.com/media/product/newgeneration/view/1/sku/15549gisu/"
-            + "diamond/emerald_AA/stone2/diamond-Brillant_AAA/stone3/diamond-Brillant_AAA/"
-            + "alloycolour/yellow.jpg");
+                + "diamond/emerald_AA/stone2/diamond-Brillant_AAA/stone3/diamond-Brillant_AAA/"
+                + "alloycolour/yellow.jpg");
         jewelRepository.save(jewel);
       }
 
@@ -103,6 +102,16 @@ public class DataLoader implements CommandLineRunner {
           Offer offer = new Offer();
           offer.setOfferPrice(offerPrice);
           offer.setAuction(auction);
+
+          if (offerPrice > auction.getCurrentPrice()) {
+            auction.setCurrentPrice(offerPrice);
+            offer.setState(true);
+            // Set Auction active offers to false
+            for (Offer activeOffer : auction.getOffers()) {
+              activeOffer.setState(false);
+            }
+          }
+
           auction.getOffers().add(offer);
         }
 
@@ -136,6 +145,59 @@ public class DataLoader implements CommandLineRunner {
           Offer offer = new Offer();
           offer.setOfferPrice(offerPrice);
           offer.setAuction(auction);
+
+          if (offerPrice > auction.getCurrentPrice()) {
+            auction.setCurrentPrice(offerPrice);
+            offer.setState(true);
+            // Set Auction active offers to false
+            for (Offer activeOffer : auction.getOffers()) {
+              activeOffer.setState(false);
+            }
+          }
+
+          auction.getOffers().add(offer);
+        }
+
+        // Save auction (and cascade-save offers if configured)
+        auctionRepository.save(auction);
+      }
+
+      // Generate 3 auctions which will end in 5 minutes, 10 minutes, and 15 minutes
+      for (int i = 0; i < 3; i++) {
+        // Create auction
+        double startPrice = Double.parseDouble(faker.commerce().price(50, 1000));
+        LocalDateTime startDate = LocalDateTime.now();
+        LocalDateTime endDate = startDate.plusMinutes(5 * i + 5);
+
+        Auction auction = new Auction();
+        auction.setStartPrice(startPrice);
+        auction.setCurrentPrice(startPrice);
+        auction.setStartDate(startDate);
+        auction.setEndDate(endDate);
+        auction.setStatus(true);
+
+        // Set a random jewel for the auction
+        List<Jewel> jewels = jewelRepository.findAll();
+        Jewel jewel = jewels.get(random.nextInt(jewels.size()));
+        auction.setJewel(jewel);
+
+        // Generate 2-5 offers per auction
+        int numOffers = random.nextInt(4) + 2;
+        for (int j = 0; j < numOffers; j++) {
+          double offerPrice = startPrice + random.nextDouble() * 500;
+          Offer offer = new Offer();
+          offer.setOfferPrice(offerPrice);
+          offer.setAuction(auction);
+
+          if (offerPrice > auction.getCurrentPrice()) {
+            auction.setCurrentPrice(offerPrice);
+            offer.setState(true);
+            // Set Auction active offers to false
+            for (Offer activeOffer : auction.getOffers()) {
+              activeOffer.setState(false);
+            }
+          }
+
           auction.getOffers().add(offer);
         }
 
@@ -161,9 +223,8 @@ public class DataLoader implements CommandLineRunner {
             faker.commerce().price(100, 2000))); // Total between $100-$2000
         // Get random status (weighted towards PENDING)
         Order.OrderStatus status = statuses.get(
-            // First 7 orders get PENDING/PAID/CANCELED, last 3 get PAID/CANCELED
-            random.nextInt(i < 7 ? 3 : 2) 
-        );
+            // First 5 orders get PENDING, last 5 get PAID/CANCELED
+            random.nextInt(i < 5 ? 1 : 3) % statuses.size());
         order.setStatus(status);
         orderRepository.save(order);
       }

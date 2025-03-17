@@ -1,3 +1,12 @@
+-- Function to update the modified_at column when a row is updated
+CREATE OR REPLACE FUNCTION update_modified_at()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.modified_at = NOW();
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 -- Create the jewels table
 CREATE TABLE jewels (
     id BIGSERIAL PRIMARY KEY,
@@ -9,6 +18,11 @@ CREATE TABLE jewels (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TRIGGER update_jewels_modified_at
+BEFORE UPDATE ON jewels
+FOR EACH ROW
+EXECUTE FUNCTION update_modified_at();
 
 -- Create the auctions table
 CREATE TABLE auctions (
@@ -24,6 +38,11 @@ CREATE TABLE auctions (
     FOREIGN KEY (jewel_id) REFERENCES jewels(id) ON DELETE CASCADE
 );
 
+CREATE TRIGGER update_auctions_modified_at
+BEFORE UPDATE ON auctions
+FOR EACH ROW
+EXECUTE FUNCTION update_modified_at();
+
 -- Create the offers table
 CREATE TABLE offers (
     id BIGSERIAL PRIMARY KEY,
@@ -35,6 +54,11 @@ CREATE TABLE offers (
     FOREIGN KEY (auction_id) REFERENCES auctions(id) ON DELETE CASCADE
 );
 
+CREATE TRIGGER update_offers_modified_at
+BEFORE UPDATE ON offers
+FOR EACH ROW
+EXECUTE FUNCTION update_modified_at();
+
 -- Create the orders table
 CREATE TABLE orders (
     id BIGSERIAL PRIMARY KEY,
@@ -43,3 +67,8 @@ CREATE TABLE orders (
     total DOUBLE PRECISION NOT NULL,
     status VARCHAR(50) NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'PAID', 'CANCELED'))
 );
+
+CREATE TRIGGER update_orders_modified_at
+BEFORE UPDATE ON orders
+FOR EACH ROW
+EXECUTE FUNCTION update_modified_at();
