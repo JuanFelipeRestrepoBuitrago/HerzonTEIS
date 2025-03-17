@@ -1,6 +1,6 @@
 # HERZON Jewelry E-Commerce
 
-[![HERZON Logo](logo.png)](https://example.com)
+![HERZON LOGO](https://github.com/user-attachments/assets/2e69377c-da31-4c8a-9831-69587d75f130)
 
 HERZON is a high-end jewelry e-commerce platform bridging Colombian craftsmanship with Swiss elegance. Built with Spring Boot 3.4.2.
 
