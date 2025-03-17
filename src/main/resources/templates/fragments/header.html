@@ -10,7 +10,7 @@
         <a
           th:href="@{/}"
           class="nav-link"
-          th:classappend="${currentPage == 'home' ? 'text-gold fw-bold' : 'text-white'}"
+          th:classappend="${currentPageActive == 'home' ? 'text-gold fw-bold' : 'text-white'}"
         >
           <i class="fas fa-home"></i> Home
         </a>
@@ -18,7 +18,7 @@
         <a
           th:href="@{/jewels}"
           class="nav-link"
-          th:classappend="${currentPage == 'jewels' ? 'text-gold fw-bold' : 'text-white'}"
+          th:classappend="${currentPageActive == 'jewels' ? 'text-gold fw-bold' : 'text-white'}"
         >
           <i class="fas fa-ring"></i> Joyas
         </a>
@@ -26,7 +26,7 @@
         <a
           th:href="@{/auctions}"
           class="nav-link"
-          th:classappend="${currentPage == 'auctions' ? 'text-gold fw-bold' : 'text-white'}"
+          th:classappend="${currentPageActive == 'auctions' ? 'text-gold fw-bold' : 'text-white'}"
         >
           <i class="fas fa-ring"></i> Subastas
         </a>
@@ -34,7 +34,7 @@
         <a
           th:href="@{/auctions/history}"
           class="nav-link"
-          th:classappend="${currentPage == 'auctions_history' ? 'text-gold fw-bold' : 'text-white'}"
+          th:classappend="${currentPageActive == 'auctions_history' ? 'text-gold fw-bold' : 'text-white'}"
         >
           <i class="fas fa-ring"></i> Historial Subastas
         </a>
@@ -44,7 +44,7 @@
           sec:authorize="!isAuthenticated()"
           th:href="@{/login}"
           class="nav-link"
-          th:classappend="${currentPage == 'login' ? 'text-gold fw-bold' : 'text-white'}"
+          th:classappend="${currentPageActive == 'login' ? 'text-gold fw-bold' : 'text-white'}"
         >
           <i class="fas fa-sign-in-alt"></i> Ingresar
         </a>
@@ -52,7 +52,7 @@
           sec:authorize="!isAuthenticated()"
           th:href="@{/register}"
           class="nav-link"
-          th:classappend="${currentPage == 'register' ? 'text-gold fw-bold' : 'text-white'}"
+          th:classappend="${currentPageActive == 'register' ? 'text-gold fw-bold' : 'text-white'}"
         >
           <i class="fas fa-user-plus"></i> Registrarse
         </a>
@@ -62,7 +62,7 @@
           sec:authorize="isAuthenticated()"
           th:href="@{/orders}"
           class="nav-link text-white"
-          th:classappend="${currentPage == 'orders' ? 'text-gold fw-bold' : 'text-white'}"
+          th:classappend="${currentPageActive == 'orders' ? 'text-gold fw-bold' : 'text-white'}"
         >
           <i class="fas fa-sign-out-alt"></i> Ordenes
         </a>
