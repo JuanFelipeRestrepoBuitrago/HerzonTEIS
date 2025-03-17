@@ -74,6 +74,34 @@ public class DataLoader implements CommandLineRunner {
         auctionRepository.save(auction);
       }
 
+      // Generate 3 inactive auctions
+      for (int i = 0; i < 3; i++) {
+        // Create auction
+        double startPrice = Double.parseDouble(faker.commerce().price(50, 1000));
+        LocalDateTime startDate = LocalDateTime.now().minusDays(7);
+        LocalDateTime endDate = startDate.minusDays(1);
+
+        Auction auction = new Auction();
+        auction.setStartPrice(startPrice);
+        auction.setCurrentPrice(startPrice);
+        auction.setStartDate(startDate);
+        auction.setEndDate(endDate);
+        auction.setStatus(false);
+
+        // Generate 2-5 offers per auction
+        int numOffers = random.nextInt(4) + 2;
+        for (int j = 0; j < numOffers; j++) {
+          double offerPrice = startPrice + random.nextDouble() * 500;
+          Offer offer = new Offer();
+          offer.setOfferPrice(offerPrice);
+          offer.setAuction(auction);
+          auction.getOffers().add(offer);
+        }
+
+        // Save auction (and cascade-save offers if configured)
+        auctionRepository.save(auction);
+      }
+
       System.out.println("Initial auctions and offers generated.");
     }
     // Generate orders if none exist

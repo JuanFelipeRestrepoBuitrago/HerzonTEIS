@@ -25,7 +25,7 @@ stompClient.connect({}, function (frame) {
    * @function
    * @param {Message} response - STOMP message containing auction data
    */
-  stompClient.subscribe(`/ws/topic/auction/updates/${auctionId}`, (response) => {
+  stompClient.subscribe(`/topic/auction/updates/${auctionId}`, (response) => {
     const auctionUpdatedResponse = JSON.parse(response.body);
     updateAuctionUI(auctionUpdatedResponse);
   });
