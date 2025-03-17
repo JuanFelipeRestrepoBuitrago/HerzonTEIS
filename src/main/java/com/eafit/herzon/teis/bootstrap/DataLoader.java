@@ -1,9 +1,11 @@
 package com.eafit.herzon.teis.bootstrap;
 
 import com.eafit.herzon.teis.models.Auction;
+import com.eafit.herzon.teis.models.Jewel;
 import com.eafit.herzon.teis.models.Offer;
 import com.eafit.herzon.teis.models.Order;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
+import com.eafit.herzon.teis.repositories.JewelRepository;
 import com.eafit.herzon.teis.repositories.OrderRepository;
 import com.github.javafaker.Faker;
 import java.time.LocalDateTime;
@@ -22,15 +24,23 @@ public class DataLoader implements CommandLineRunner {
 
   private final AuctionRepository auctionRepository;
   private final OrderRepository orderRepository;
+  private final JewelRepository jewelRepository;
 
   /**
    * Constructor for the DataLoader class.
    *
    * @param auctionRepository The repository for auctions.
+   * @param orderRepository The repository for orders.
+   * @param jewelRepository The repository for jewels.
    */
-  public DataLoader(AuctionRepository auctionRepository, OrderRepository orderRepository) {
+  public DataLoader(
+      AuctionRepository auctionRepository, 
+      OrderRepository orderRepository, 
+      JewelRepository jewelRepository
+  ) {
     this.auctionRepository = auctionRepository;
     this.orderRepository = orderRepository;
+    this.jewelRepository = jewelRepository;
   }
 
   /**
@@ -41,7 +51,28 @@ public class DataLoader implements CommandLineRunner {
    */
   @Override
   public void run(String... args) throws Exception {
-    // Check if data already exists
+    // Generate jewels if none exist
+    if (jewelRepository.count() == 0) {
+      Faker faker = new Faker(Locale.of("es"));
+
+      // Generate 10 jewels
+      for (int i = 0; i < 10; i++) {
+        Jewel jewel = new Jewel();
+        jewel.setName(faker.commerce().productName());
+        jewel.setCategory(faker.commerce().department());
+        jewel.setDetails(faker.lorem().sentence());
+        jewel.setPrice(Double.parseDouble(faker.commerce().price(50, 1000)));
+        jewel.setImageUrl(
+            "https://cdn-media.glamira.com/media/product/newgeneration/view/1/sku/15549gisu/"
+            + "diamond/emerald_AA/stone2/diamond-Brillant_AAA/stone3/diamond-Brillant_AAA/"
+            + "alloycolour/yellow.jpg");
+        jewelRepository.save(jewel);
+      }
+
+      System.out.println("Initial jewels generated.");
+    }
+
+    // Generate auctions if none exist
     if (auctionRepository.count() == 0) {
       Faker faker = new Faker(Locale.of("es"));
       Random random = new Random();
