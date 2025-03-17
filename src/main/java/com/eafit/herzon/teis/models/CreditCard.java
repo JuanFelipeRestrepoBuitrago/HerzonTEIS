@@ -7,15 +7,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import java.util.Date;
+import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * Represents a credit card entity in the system.
+ * This class maps to the 'credit_cards' table in the database and is associated with a User entity.
  */
 @Entity
 @Table(name = "credit_cards")
@@ -34,61 +33,60 @@ public class CreditCard {
   @Column(name = "expiration_date", nullable = false)
   private String expirationDate;
 
-  @ManyToOne
+  @ManyToOne(optional = false)
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
-  @Temporal(TemporalType.TIMESTAMP)
+  @CreationTimestamp
   @Column(name = "created_at", nullable = false, updatable = false)
-  private Date createdAt;
+  private LocalDateTime createdAt;
 
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "modified_at")
-  private Date modifiedAt;
+  @UpdateTimestamp
+  @Column(name = "modified_at", nullable = false)
+  private LocalDateTime modifiedAt;
 
   /**
-   * Default constructor.
+   * Default constructor for the CreditCard entity.
+   * Required by JPA for entity management.
    */
   public CreditCard() {
   }
 
   /**
-   * Constructor with required parameters.
+   * Constructor with required parameters to create a new CreditCard instance.
    *
-   * @param cardNumber the credit card number
-   * @param name the cardholder's name
-   * @param expirationDate the expiration date of the card
-   * @param user the user who owns this credit card
+   * @param cardNumber the credit card number (must be unique and non-null)
+   * @param name the cardholder's name (must be non-null)
+   * @param expirationDate the expiration date of the card (must be non-null)
+   * @param user the user who owns this credit card (must be non-null)
    */
   public CreditCard(String cardNumber, String name, String expirationDate, User user) {
     this.cardNumber = cardNumber;
     this.name = name;
     this.expirationDate = expirationDate;
     this.user = user;
-    this.createdAt = new Date();
-    this.modifiedAt = new Date();
   }
 
   /**
-   * Gets the ID of the credit card.
+   * Returns the unique identifier of the credit card.
    *
-   * @return the ID
+   * @return the ID of the credit card
    */
   public Long getId() {
     return id;
   }
 
   /**
-   * Sets the ID of the credit card.
+   * Sets the unique identifier of the credit card.
    *
-   * @param id the ID to set
+   * @param id the ID to set for the credit card
    */
   public void setId(Long id) {
     this.id = id;
   }
 
   /**
-   * Gets the credit card number.
+   * Returns the credit card number.
    *
    * @return the card number
    */
@@ -99,16 +97,16 @@ public class CreditCard {
   /**
    * Sets the credit card number.
    *
-   * @param cardNumber the card number to set
+   * @param cardNumber the card number to set (must be unique and non-null)
    */
   public void setCardNumber(String cardNumber) {
     this.cardNumber = cardNumber;
   }
 
   /**
-   * Gets the cardholder's name.
+   * Returns the cardholder's name.
    *
-   * @return the name
+   * @return the name of the cardholder
    */
   public String getName() {
     return name;
@@ -117,14 +115,14 @@ public class CreditCard {
   /**
    * Sets the cardholder's name.
    *
-   * @param name the name to set
+   * @param name the name to set for the cardholder (must be non-null)
    */
   public void setName(String name) {
     this.name = name;
   }
 
   /**
-   * Gets the expiration date of the credit card.
+   * Returns the expiration date of the credit card.
    *
    * @return the expiration date
    */
@@ -135,71 +133,45 @@ public class CreditCard {
   /**
    * Sets the expiration date of the credit card.
    *
-   * @param expirationDate the expiration date to set
+   * @param expirationDate the expiration date to set (must be non-null)
    */
   public void setExpirationDate(String expirationDate) {
     this.expirationDate = expirationDate;
   }
 
   /**
-   * Gets the user who owns this credit card.
+   * Returns the user associated with this credit card.
    *
-   * @return the user
+   * @return the user who owns the credit card
    */
   public User getUser() {
     return user;
   }
 
   /**
-   * Sets the user who owns this credit card.
+   * Sets the user associated with this credit card.
    *
-   * @param user the user to set
+   * @param user the user to set as the owner (must be non-null)
    */
   public void setUser(User user) {
     this.user = user;
   }
 
   /**
-   * Gets the creation date of the credit card.
+   * Returns the creation timestamp of the credit card.
    *
-   * @return the creation date
+   * @return the date and time when the credit card was created
    */
-  public Date getCreatedAt() {
+  public LocalDateTime getCreatedAt() {
     return createdAt;
   }
 
   /**
-   * Gets the last modification date of the credit card.
+   * Returns the last modification timestamp of the credit card.
    *
-   * @return the modification date
+   * @return the date and time when the credit card was last modified
    */
-  public Date getModifiedAt() {
+  public LocalDateTime getModifiedAt() {
     return modifiedAt;
-  }
-
-  /**
-   * Sets the last modification date of the credit card.
-   *
-   * @param modifiedAt the modification date to set
-   */
-  public void setModifiedAt(Date modifiedAt) {
-    this.modifiedAt = modifiedAt;
-  }
-
-  /**
-   * Sets the creation and initial modification dates before persisting the entity.
-   */
-  @PrePersist
-  protected void onCreate() {
-    this.createdAt = new Date();
-    this.modifiedAt = new Date();
-  }
-
-  /**
-   * Updates the modification date before updating the entity.
-   */
-  @PreUpdate
-  protected void onUpdate() {
-    this.modifiedAt = new Date();
   }
 }
