@@ -1,0 +1,45 @@
+package com.eafit.herzon.teis.repositories;
+
+import com.eafit.herzon.teis.models.User;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+/**
+ * Repository interface for User entity.
+ */
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+
+  /**
+   * Finds a user by their email.
+   *
+   * @param email the user's email
+   * @return an Optional containing the user if found, empty otherwise
+   */
+  Optional<User> findByEmail(String email);
+
+  /**
+   * Finds a user by their username.
+   *
+   * @param username the user's username
+   * @return an Optional containing the user if found, empty otherwise
+   */
+  Optional<User> findByUsername(String username);
+
+  /**
+   * Checks if a user exists with the given email.
+   *
+   * @param email the email to check
+   * @return true if a user exists with the email, false otherwise
+   */
+  boolean existsByEmail(String email);
+
+  /**
+   * Checks if a user exists with the given username.
+   *
+   * @param username the username to check
+   * @return true if a user exists with the username, false otherwise
+   */
+  boolean existsByUsername(String username);
+}

@@ -1,32 +1,59 @@
-<!-- header -->
+<div th:fragment="header">
+  <header class="bg-dark-green py-3 shadow-lg sticky-top">
+    <div class="container d-flex justify-content-between align-items-center">
+      <h1 class="m-0">
+        <a th:href="@{/}" class="text-decoration-none text-gold">
+          <i class="fas fa-gem"></i> HERZON
+        </a>
+      </h1>
+      <nav class="d-flex gap-4">
+        <a
+          th:href="@{/}"
+          class="nav-link"
+          th:classappend="${currentPage == 'home' ? 'text-gold fw-bold' : 'text-white'}"
+        >
+          <i class="fas fa-home"></i> Home
+        </a>
 
-<th:block th:fragment="header">
+        <a
+          th:href="@{/jewels}"
+          class="nav-link"
+          th:classappend="${currentPage == 'jewels' ? 'text-gold fw-bold' : 'text-white'}"
+        >
+          <i class="fas fa-ring"></i> Joyas
+        </a>
 
-    <nav th:fragment="header" class="navbar navbar-expand-lg bg-secondary py-4">
+        <!-- NO autenticado -->
+        <a
+          sec:authorize="!isAuthenticated()"
+          th:href="@{/login}"
+          class="nav-link"
+          th:classappend="${currentPage == 'login' ? 'text-gold fw-bold' : 'text-white'}"
+        >
+          <i class="fas fa-sign-in-alt"></i> Ingresar
+        </a>
+        <a
+          sec:authorize="!isAuthenticated()"
+          th:href="@{/register}"
+          class="nav-link"
+          th:classappend="${currentPage == 'register' ? 'text-gold fw-bold' : 'text-white'}"
+        >
+          <i class="fas fa-user-plus"></i> Registrarse
+        </a>
 
-        <div class="container text-primary">
-
-            <a class="navbar-brand" th:href="@{/}">Herzon</a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-
-                <span class="navbar-toggler-icon"></span>
-
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-
-                <div class="navbar-nav ms-auto">
-
-                    <a class="nav-link active" th:href="@{/}">Home</a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </nav>
-
-</th:block>
+        <!-- Autenticado -->
+        <span sec:authorize="isAuthenticated()" class="nav-link text-white">
+          <i class="fas fa-user"></i>
+          <span sec:authentication="name"></span>
+        </span>
+        <a
+          sec:authorize="isAuthenticated()"
+          th:href="@{/logout}"
+          class="nav-link text-white"
+        >
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </a>
+      </nav>
+    </div>
+  </header>
+</div>
