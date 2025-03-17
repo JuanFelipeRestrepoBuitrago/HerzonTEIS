@@ -91,6 +91,11 @@ public class DataLoader implements CommandLineRunner {
         auction.setEndDate(endDate);
         auction.setStatus(true);
 
+        // Set a random jewel for the auction
+        List<Jewel> jewels = jewelRepository.findAll();
+        Jewel jewel = jewels.get(random.nextInt(jewels.size()));
+        auction.setJewel(jewel);
+
         // Generate 2-5 offers per auction
         int numOffers = random.nextInt(4) + 2;
         for (int j = 0; j < numOffers; j++) {
@@ -118,6 +123,11 @@ public class DataLoader implements CommandLineRunner {
         auction.setStartDate(startDate);
         auction.setEndDate(endDate);
         auction.setStatus(false);
+
+        // Set a random jewel for the auction
+        List<Jewel> jewels = jewelRepository.findAll();
+        Jewel jewel = jewels.get(random.nextInt(jewels.size()));
+        auction.setJewel(jewel);
 
         // Generate 2-5 offers per auction
         int numOffers = random.nextInt(4) + 2;

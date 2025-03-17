@@ -2,6 +2,7 @@ package com.eafit.herzon.teis.services;
 
 import com.eafit.herzon.teis.exceptions.InvalidOfferException;
 import com.eafit.herzon.teis.models.Auction;
+import com.eafit.herzon.teis.models.Jewel;
 import com.eafit.herzon.teis.models.Offer;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
 import com.eafit.herzon.teis.repositories.OfferRepository;
@@ -63,10 +64,16 @@ public class OfferServiceTest {
    */
   private Offer activeOffer;
 
+  /**
+   * Jewel object used in the tests.
+   */
+  private Jewel jewel;
+
   @BeforeEach
   public void setUp() {
     // Initialize test data
-    auction = new Auction(LocalDateTime.now(), LocalDateTime.now().plusDays(1), 100.0, 100.0);
+    jewel = new Jewel("Test Jewel", "Test Category", "Test Details", 100.0, "Test Image URL");
+    auction = new Auction(LocalDateTime.now(), LocalDateTime.now().plusDays(1), 100.0, 100.0, jewel);
     activeOffer = new Offer(1500, auction);
   }
 
