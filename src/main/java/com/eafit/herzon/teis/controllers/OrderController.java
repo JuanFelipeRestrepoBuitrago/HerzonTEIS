@@ -62,7 +62,7 @@ public class OrderController {
    * This method handles the requests for the order show page. 
    * It shows the details of a specific order.
    *
-   * @paramid The id of the order to show
+   * @param id The id of the order to show
    * @param model The model object to pass data to the view
    * @return The name of the view to render
    */
@@ -85,7 +85,7 @@ public class OrderController {
   /**
    * This method handles the requests for the order payment page.
    *
-   * @paramorderForm The form data for the order payment
+   * @param orderForm The form data for the order payment
    * @param result The result of the form validation
    * @param model The model object to pass data to the
    * @return The name of the view to render
@@ -112,7 +112,7 @@ public class OrderController {
   /**
    * This method handles the requests for the order cancel page.
    *
-   * @paramorderForm The form data for the order cancel
+   * @param orderForm The form data for the order cancel
    * @param result The result of the form validation
    * @param model The model object to pass data to the
    * @return The name of the view to render

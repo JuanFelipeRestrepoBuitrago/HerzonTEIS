@@ -1,5 +1,6 @@
 package com.eafit.herzon.teis.controllers;
 
+import com.eafit.herzon.teis.exceptions.InvalidAuctionException;
 import com.eafit.herzon.teis.models.Auction;
 import com.eafit.herzon.teis.services.AuctionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,18 +90,16 @@ public class AuctionController {
    */
   @GetMapping({"/{id}", "/{id}/"})
   public String show(@PathVariable String id, Model model) {
-
     long auctionId = Long.parseLong(id);
-    Auction auction = auctionService.getAuctionById(auctionId);
-
-    // If the offer does not exist redirect to the offers index
-    if (auction == null) {
+    
+    try {
+      Auction auction = auctionService.getAuctionById(auctionId);
+      model.addAttribute("title", "Subasta " + auction.getId() + " - Herzone");
+      model.addAttribute("auction", auction);
+  
+      return "auctions/show";
+    } catch (InvalidAuctionException e) {
       return "redirect:/auctions";
     }
-
-    model.addAttribute("title", "Subasta " + auction.getId() + " - Herzone");
-    model.addAttribute("auction", auction);
-
-    return "auctions/show";
   }
 }

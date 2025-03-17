@@ -24,7 +24,7 @@ public class OrderService {
   /**
    * Constructor of the OrderService class.
    *
-   * @paramorderRepository the OrderRepository object.
+   * @param orderRepository the OrderRepository object.
    */
   public OrderService(OrderRepository orderRepository) {
     this.orderRepository = orderRepository;
@@ -46,7 +46,7 @@ public class OrderService {
   /**
    * Method to get an order by its id.
    *
-   * @paramid The id of the order to get.
+   * @param id The id of the order to get.
    * @return The order with the given id.
    */
   @Transactional(readOnly = true)
@@ -63,7 +63,7 @@ public class OrderService {
   /**
    * Method to cancel an order.
    *
-   * @paramid The id of the order to cancel.
+   * @param id The id of the order to cancel.
    */
   @Transactional
   public void cancel(long id) {
@@ -80,7 +80,7 @@ public class OrderService {
   /**
    * Method to pay an order.
    *
-   * @paramid The id of the order to pay.
+   * @param id The id of the order to pay.
    */
   @Transactional
   public void submit(long id) {

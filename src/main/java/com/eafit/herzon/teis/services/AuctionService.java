@@ -1,5 +1,6 @@
 package com.eafit.herzon.teis.services;
 
+import com.eafit.herzon.teis.exceptions.InvalidAuctionException;
 import com.eafit.herzon.teis.models.Auction;
 import com.eafit.herzon.teis.models.Offer;
 import com.eafit.herzon.teis.models.Order;
@@ -77,7 +78,11 @@ public class AuctionService {
    */
   @Transactional(readOnly = true)
   public Auction getAuctionById(Long auctionId) {
-    return auctionRepository.findById(auctionId).orElse(null);
+    Auction auction = auctionRepository.findById(auctionId).orElse(null);
+    if (auction == null) {
+      throw new InvalidAuctionException("Auction with ID " + auctionId + " not found.");
+    }
+    return auction;
   }
 
   /**

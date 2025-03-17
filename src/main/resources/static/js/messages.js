@@ -10,8 +10,6 @@ const messagesContainer = document.getElementById('messagesAlert');
  * @function
  * @param {Array} messages - Array of messages to display
  * @param {boolean} error - Flag to indicate if messages are errors
- * @example
- * displayMessages(["Offer failed"], true);
  */
 function displayMessages(messages, error) {
   messagesContainer.innerHTML = ''; // Clear any existing messages
@@ -21,9 +19,9 @@ function displayMessages(messages, error) {
     const iconClass = error ? 'bi-exclamation-circle-fill' : 'bi-check-circle-fill';
 
     const alert = document.createElement('div');
-    alert.className = `alert ${alertClass} alert-dismissible fade show mb-2`;
+    alert.className = `alert ${alertClass} alert-dismissible fade show mb-2 shadow-lg text-center p-3 w-100`;
     alert.innerHTML = `
-      <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center justify-content-center">
         <i class="bi ${iconClass} me-2"></i>
         <strong>${message}</strong>
       </div>
@@ -36,16 +34,15 @@ function displayMessages(messages, error) {
     messagesContainer.appendChild(alert);
   });
 
-  // Show the error container
+  // Make sure the message container is visible
   messagesContainer.classList.remove('d-none');
+  messagesContainer.classList.add('d-flex', 'flex-column', 'align-items-center');
 }
 
 /**
  * Dismisses a message from the UI
  * @function
  * @param {Element} button - Button element that triggered the dismiss action
- * @example
- * dismissMessage(this); // Called when user clicks the close button on an alert
  */
 function dismissMessage(button) {
   // Remove the alert
@@ -55,5 +52,6 @@ function dismissMessage(button) {
   // Hide the message container if there are no more messages
   if (messagesContainer.children.length === 0) {
     messagesContainer.classList.add('d-none');
+    messagesContainer.classList.remove('d-flex');
   }
 }
