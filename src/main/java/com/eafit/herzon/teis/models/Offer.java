@@ -55,7 +55,7 @@ public class Offer {
    */
   @ManyToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "user_id", nullable = false)
-  private User user;
+  private CustomUser user;
 
   /**
    * The price offered by the user.
@@ -72,18 +72,19 @@ public class Offer {
   /**
    * Default constructor required by JPA.
    */
-  public Offer() {}
+  public Offer() {
+  }
 
   /**
    * Creates a new offer with the specified offer price, state, and
    * auction.
    *
    * @param offerPrice the price offered by the user.
-   * @param state the state of the offer.
-   * @param auction the auction for which the offer was made.
-   * @param user the user who made the offer.
+   * @param state      the state of the offer.
+   * @param auction    the auction for which the offer was made.
+   * @param user       the user who made the offer.
    */
-  public Offer(double offerPrice, boolean state, Auction auction, User user) {
+  public Offer(double offerPrice, boolean state, Auction auction, CustomUser user) {
     this.auction = auction;
     this.offerPrice = offerPrice;
     this.state = state;
@@ -95,10 +96,10 @@ public class Offer {
    * auction. The state of the offer is set to true by default.
    *
    * @param offerPrice the price offered by the user.
-   * @param auction the auction for which the offer was made.
-   * @param user the user who made the offer.
+   * @param auction    the auction for which the offer was made.
+   * @param user       the user who made the offer.
    */
-  public Offer(double offerPrice, Auction auction, User user) {
+  public Offer(double offerPrice, Auction auction, CustomUser user) {
     this.auction = auction;
     this.offerPrice = offerPrice;
     this.state = true;
@@ -146,7 +147,7 @@ public class Offer {
    *
    * @return the user who made the offer.
    */
-  public User getUser() {
+  public CustomUser getUser() {
     return user;
   }
 
@@ -191,7 +192,7 @@ public class Offer {
    *
    * @param user the user who made the offer.
    */
-  public void setUser(User user) {
+  public void setUser(CustomUser user) {
     this.user = user;
   }
 

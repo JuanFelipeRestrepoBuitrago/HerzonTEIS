@@ -1,10 +1,10 @@
 package com.eafit.herzon.teis.bootstrap;
 
 import com.eafit.herzon.teis.models.Auction;
+import com.eafit.herzon.teis.models.CustomUser;
 import com.eafit.herzon.teis.models.Jewel;
 import com.eafit.herzon.teis.models.Offer;
 import com.eafit.herzon.teis.models.Order;
-import com.eafit.herzon.teis.models.User;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
 import com.eafit.herzon.teis.repositories.JewelRepository;
 import com.eafit.herzon.teis.repositories.OrderRepository;
@@ -72,24 +72,24 @@ public class DataLoader implements CommandLineRunner {
     // Generate users if none exist
     if (userRepository.count() == 0) {
       // Create Admin User
-      User admin = new User();
+      CustomUser admin = new CustomUser();
       admin.setUsername("admin");
       admin.setName("Administrator");
       admin.setEmail("admin@herzon.com");
       admin.setAddress("Calle 123, Ciudad");
       admin.setPassword(passwordEncoder.encode("123"));
-      admin.setRole(User.Role.ADMIN);
+      admin.setRole(CustomUser.Role.ADMIN);
       userRepository.save(admin);
 
       // Create 9 Normal Users
       for (int i = 0; i < 9; i++) {
-        User user = new User();
+        CustomUser user = new CustomUser();
         user.setUsername(faker.name().username());
         user.setName(faker.name().fullName());
         user.setEmail(faker.internet().emailAddress());
         user.setAddress(faker.address().fullAddress());
         user.setPassword(passwordEncoder.encode(faker.internet().password(8, 12)));
-        user.setRole(User.Role.USER);
+        user.setRole(CustomUser.Role.USER);
         userRepository.save(user);
       }
 
@@ -152,8 +152,8 @@ public class DataLoader implements CommandLineRunner {
           }
 
           // Set no admin user as the offer creator
-          List<User> users = userRepository.findAllByRole(User.Role.USER);
-          User user = users.get(random.nextInt(users.size()));
+          List<CustomUser> users = userRepository.findAllByRole(CustomUser.Role.USER);
+          CustomUser user = users.get(random.nextInt(users.size()));
           offer.setUser(user);
 
           auction.getOffers().add(offer);
@@ -198,8 +198,8 @@ public class DataLoader implements CommandLineRunner {
           }
 
           // Set no admin user as the offer creator
-          List<User> users = userRepository.findAllByRole(User.Role.USER);
-          User user = users.get(random.nextInt(users.size()));
+          List<CustomUser> users = userRepository.findAllByRole(CustomUser.Role.USER);
+          CustomUser user = users.get(random.nextInt(users.size()));
           offer.setUser(user);
 
           auction.getOffers().add(offer);
@@ -246,8 +246,8 @@ public class DataLoader implements CommandLineRunner {
           }
 
           // Set no admin user as the offer creator
-          List<User> users = userRepository.findAllByRole(User.Role.USER);
-          User user = users.get(random.nextInt(users.size()));
+          List<CustomUser> users = userRepository.findAllByRole(CustomUser.Role.USER);
+          CustomUser user = users.get(random.nextInt(users.size()));
           offer.setUser(user);
 
           auction.getOffers().add(offer);

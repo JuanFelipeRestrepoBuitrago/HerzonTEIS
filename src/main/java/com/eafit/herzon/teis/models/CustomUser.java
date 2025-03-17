@@ -27,7 +27,7 @@ import org.hibernate.annotations.FetchMode;
  */
 @Entity
 @Table(name = "users")
-public class User {
+public class CustomUser {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,7 +75,7 @@ public class User {
   /**
    * Default constructor.
    */
-  public User() {
+  public CustomUser() {
     this.creditCards = new ArrayList<>();
     this.offers = new ArrayList<>();
   }
@@ -87,7 +87,7 @@ public class User {
    * @param email the user's email
    * @param password the user's password
    */
-  public User(String username, String email, String password) {
+  public CustomUser(String username, String email, String password) {
     this.username = username;
     this.email = email;
     this.password = password;

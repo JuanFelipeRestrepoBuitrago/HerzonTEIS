@@ -1,8 +1,8 @@
 package com.eafit.herzon.teis.repositories;
 
 import com.eafit.herzon.teis.models.Auction;
+import com.eafit.herzon.teis.models.CustomUser;
 import com.eafit.herzon.teis.models.Offer;
-import com.eafit.herzon.teis.models.User;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -18,10 +18,10 @@ import org.springframework.stereotype.Repository;
 public interface OfferRepository extends JpaRepository<Offer, Long> {
   /**
    * Finds all offers with the specified state and auction.
-
-   * @param state the state of the offers to find.
+   *
+   * @param state   the state of the offers to find.
    * @param auction the auction to which the offers belong.
    * @return a list of offers with the specified state.
    */
-  List<Offer> findByAuctionAndStateAndUser(Auction auction, boolean state, User user);
+  List<Offer> findByAuctionAndStateAndUser(Auction auction, boolean state, CustomUser user);
 }

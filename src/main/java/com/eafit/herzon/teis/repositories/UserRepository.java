@@ -1,6 +1,6 @@
 package com.eafit.herzon.teis.repositories;
 
-import com.eafit.herzon.teis.models.User;
+import com.eafit.herzon.teis.models.CustomUser;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
  * Repository interface for User entity.
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<CustomUser, Long> {
 
   /**
    * Finds a user by their email.
@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
    * @param email the user's email
    * @return an Optional containing the user if found, empty otherwise
    */
-  Optional<User> findByEmail(String email);
+  Optional<CustomUser> findByEmail(String email);
 
   /**
    * Finds a user by their username.
@@ -26,7 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
    * @param username the user's username
    * @return an Optional containing the user if found, empty otherwise
    */
-  Optional<User> findByUsername(String username);
+  Optional<CustomUser> findByUsername(String username);
 
   /**
    * Checks if a user exists with the given email.
@@ -44,12 +44,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
    */
   boolean existsByUsername(String username);
 
-
   /**
    * Finds a user by their role.
    *
    * @param role the user's role
    * @return the user with the specified role
    */
-  List<User> findAllByRole(User.Role role);
+  List<CustomUser> findAllByRole(CustomUser.Role role);
 }

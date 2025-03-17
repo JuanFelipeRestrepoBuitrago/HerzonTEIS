@@ -1,78 +1,85 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - Herzon</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <div th:replace="~{fragments/head :: head}"></div>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - Herzon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <div th:replace="~{fragments/head :: head}"></div>
 </head>
+
 <body class="bg-primary-color text-white">
-    <!-- Navbar -->
-    <header th:replace="~{fragments/header :: header}"></header>
+  <!-- Navbar -->
+  <header th:replace="~{fragments/header :: header}"></header>
 
-    <main class="flex-grow-1 d-flex align-items-center justify-content-center">
-        <div class="auth-container p-4 rounded-3 shadow-sm">
-            <div class="text-center mb-4">
-                <h2 class="text-gold">Crear Cuenta</h2>
-                <p>Únete a nuestra comunidad exclusiva</p>
-            </div>
+  <main class="flex-grow-1 d-flex align-items-center justify-content-center">
+    <div class="auth-container p-4 rounded-3 shadow-sm">
+      <div class="text-center mb-4">
+        <h2 class="text-gold">Crear Cuenta</h2>
+        <p>Únete a nuestra comunidad exclusiva</p>
+      </div>
 
-            <form th:action="@{/api/users/register}" method="post" th:object="${user}">
-                <div class="row g-3 mb-3">
-                    <div class="col-md-6">
-                        <label for="username" class="text-gold">Usuario</label>
-                        <input type="text" id="username" name="username" th:field="*{username}" class="form-control" placeholder="Ingresa tu usuario" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="email" class="text-gold">Correo Electrónico</label>
-                        <input type="email" id="email" name="email" th:field="*{email}" class="form-control" placeholder="Ingresa tu correo" required>
-                    </div>
-                </div>
-
-                <div class="row g-3 mb-3">
-                    <div class="col-md-6">
-                        <label for="password" class="text-gold">Contraseña</label>
-                        <input type="password" id="password" name="password" th:field="*{password}" class="form-control" placeholder="Ingresa tu contraseña" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="name" class="text-gold">Nombre Completo</label>
-                        <input type="text" id="name" name="name" th:field="*{name}" class="form-control" placeholder="Tu nombre completo" required>
-                    </div>
-                </div>
-
-                <div class="row g-3 mb-3">
-                    <div class="col-md-6">
-                        <label for="address" class="text-gold">Dirección</label>
-                        <input type="text" id="address" name="address" th:field="*{address}" class="form-control" placeholder="Tu dirección" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="role" class="text-gold">Rol</label>
-                        <select id="role" name="role" th:field="*{role}" class="form-select" required>
-                            <option value="USER">Usuario</option>
-                            <option value="ADMIN">Administrador</option>
-                        </select>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-gold">Registrarse</button>
-
-                <!-- Display error message if it exists -->
-                <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
-                <!-- Display success message if it exists -->
-                <div th:if="${success}" class="alert alert-success mt-3" th:text="${success}"></div>
-            </form>
-
-            <div class="text-center mt-3">
-                ¿Ya tienes una cuenta? <a th:href="@{/login}">Inicia sesión aquí</a>
-            </div>
+      <form th:action="@{/api/users/register}" method="post" th:object="${userForm}">
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label for="username" class="text-gold">Usuario</label>
+            <input type="text" id="username" name="username" th:field="*{username}" class="form-control"
+              placeholder="Ingresa tu usuario" required>
+          </div>
+          <div class="col-md-6">
+            <label for="email" class="text-gold">Correo Electrónico</label>
+            <input type="email" id="email" name="email" th:field="*{email}" class="form-control"
+              placeholder="Ingresa tu correo" required>
+          </div>
         </div>
-    </main>
 
-    <!-- Footer -->
-    <footer th:replace="~{fragments/footer :: footer}"></footer>
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label for="password" class="text-gold">Contraseña</label>
+            <input type="password" id="password" name="password" th:field="*{password}" class="form-control"
+              placeholder="Ingresa tu contraseña" required>
+          </div>
+          <div class="col-md-6">
+            <label for="passwordConfirmation" class="text-gold">Confirmar Contraseña</label>
+            <input type="password" id="passwordConfirmation" name="passwordConfirmation" th:field="*{passwordConfirmation}" class="form-control"
+              placeholder="Confirma tu contraseña" required>
+          </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label for="name" class="text-gold">Nombre Completo</label>
+            <input type="text" id="name" name="name" th:field="*{name}" class="form-control"
+              placeholder="Tu nombre completo" required>
+          </div>
+          <div class="col-md-6">
+            <label for="address" class="text-gold">Dirección</label>
+            <input type="text" id="address" name="address" th:field="*{address}" class="form-control"
+              placeholder="Tu dirección" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-gold">Registrarse</button>
+
+        <!-- Display error message if it exists -->
+        <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
+        <!-- Display success message if it exists -->
+        <div th:if="${success}" class="alert alert-success mt-3" th:text="${success}"></div>
+      </form>
+
+      <div class="text-center mt-3">
+        ¿Ya tienes una cuenta? <a th:href="@{/login}">Inicia sesión aquí</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

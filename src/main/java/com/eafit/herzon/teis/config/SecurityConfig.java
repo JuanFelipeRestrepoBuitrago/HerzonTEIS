@@ -4,15 +4,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,12 +24,16 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 /**
- * Configures security settings and beans for the application, including authentication
+ * Configures security settings and beans for the application, including
+ * authentication
  * and authorization mechanisms.
  */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+  @Autowired
+  private UserDetailsService userDetailsService;
 
   /**
    * Provides a BCryptPasswordEncoder for secure password hashing.
@@ -36,6 +43,18 @@ public class SecurityConfig {
   @Bean
   public BCryptPasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  /**
+   * Configures the global authentication manager to use the custom
+   * UserDetailsService and
+   * password encoder.
+   *
+   * @param auth the AuthenticationManagerBuilder to configure
+   * @throws Exception if an error occurs during configuration
+   */
+  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
   }
 
   /**
@@ -49,7 +68,8 @@ public class SecurityConfig {
   }
 
   /**
-   * Configures HTTP security settings, including CSRF protection, authorization rules,
+   * Configures HTTP security settings, including CSRF protection, authorization
+   * rules,
    * and login/logout behavior with custom success and failure handling.
    *
    * @param http the HttpSecurity object to configure
@@ -67,7 +87,8 @@ public class SecurityConfig {
             .requestMatchers("/ws/**", "/ws/auction/websocket/**").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .requestMatchers("/", "/home", "/register", "/api/users/register",
-                "/api/users/login", "/login", "/error").permitAll()
+                "/api/users/login", "/login", "/error")
+            .permitAll()
             .anyRequest().authenticated())
         .formLogin(form -> form
             .loginPage("/login")
@@ -97,7 +118,8 @@ public class SecurityConfig {
   }
 
   /**
-   * Provides a custom AuthenticationSuccessHandler to redirect users to /home after
+   * Provides a custom AuthenticationSuccessHandler to redirect users to /home
+   * after
    * successful login.
    *
    * @return an instance of CustomAuthenticationSuccessHandler
@@ -108,7 +130,8 @@ public class SecurityConfig {
   }
 
   /**
-   * Provides a custom AuthenticationFailureHandler to handle login failures with specific
+   * Provides a custom AuthenticationFailureHandler to handle login failures with
+   * specific
    * error messages.
    *
    * @return an instance of CustomAuthenticationFailureHandler
@@ -119,7 +142,8 @@ public class SecurityConfig {
   }
 
   /**
-   * Custom AuthenticationSuccessHandler to redirect users to /home after successful
+   * Custom AuthenticationSuccessHandler to redirect users to /home after
+   * successful
    * authentication.
    */
   static class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -131,7 +155,8 @@ public class SecurityConfig {
   }
 
   /**
-   * Custom AuthenticationFailureHandler to handle login failures by setting specific error
+   * Custom AuthenticationFailureHandler to handle login failures by setting
+   * specific error
    * messages and redirecting to the login page.
    */
   static class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {

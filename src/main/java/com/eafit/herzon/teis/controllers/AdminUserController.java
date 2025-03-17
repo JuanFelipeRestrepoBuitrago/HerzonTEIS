@@ -1,6 +1,6 @@
 package com.eafit.herzon.teis.controllers;
 
-import com.eafit.herzon.teis.models.User;
+import com.eafit.herzon.teis.models.CustomUser;
 import com.eafit.herzon.teis.services.UserService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Controller for managing user-related views accessible only to administrators.
- * Handles requests under the '/admin/users' endpoint and enforces ADMIN role access.
- * Complies with the requirement to limit business logic and return Thymeleaf views.
+ * Handles requests under the '/admin/users' endpoint and enforces ADMIN role
+ * access.
+ * Complies with the requirement to limit business logic and return Thymeleaf
+ * views.
  */
 @Controller
 @RequestMapping("/admin/users")
@@ -32,7 +34,7 @@ public class AdminUserController {
    */
   @GetMapping
   public String listUsers(Model model) {
-    List<User> users = userService.getAllUsers();
+    List<CustomUser> users = userService.getAllUsers();
     model.addAttribute("users", users);
     return "admin/users";
   }

@@ -4,7 +4,7 @@ import com.eafit.herzon.teis.exceptions.InvalidOfferException;
 import com.eafit.herzon.teis.models.Auction;
 import com.eafit.herzon.teis.models.Jewel;
 import com.eafit.herzon.teis.models.Offer;
-import com.eafit.herzon.teis.models.User;
+import com.eafit.herzon.teis.models.CustomUser;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
 import com.eafit.herzon.teis.repositories.OfferRepository;
 import java.util.Optional;
@@ -73,12 +73,12 @@ public class OfferServiceTest {
   /**
    * User object used in the tests.
    */
-  private User user;
+  private CustomUser user;
 
   @BeforeEach
   public void setUp() {
     // Initialize test data
-    user = new User("Test User", "test@example.com", "testpassword");
+    user = new CustomUser("Test User", "test@example.com", "testpassword");
     jewel = new Jewel("Test Jewel", "Test Category", "Test Details", 100.0, "Test Image URL");
     auction = new Auction(LocalDateTime.now(), LocalDateTime.now().plusDays(1), 100.0, 100.0, jewel);
     activeOffer = new Offer(1500, auction, user);
@@ -115,7 +115,7 @@ public class OfferServiceTest {
     // placeOffer should throw an exception when the offer price is lower than the
     // current offer price
     InvalidOfferException exception = assertThrows(
-      InvalidOfferException.class,
+        InvalidOfferException.class,
         () -> offerService.placeOffer(150, 1L, user));
 
     assertTrue(exception.getMessage()
