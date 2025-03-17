@@ -1,45 +1,50 @@
 package com.eafit.herzon.teis.repositories;
 
 import com.eafit.herzon.teis.models.Jewel;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
- * Repository interface for managing Jewel entities with pagination support.
+ * Repository interface for managing jewel entities.
  */
 @Repository
 public interface JewelRepository extends JpaRepository<Jewel, Long> {
 
   /**
-   * Finds jewels by name with case-insensitive partial match and pagination.
+   * Retrieves distinct categories of jewels.
    *
-   * @param name the name to search for
-   * @param pageable pagination details
-   * @return a page of matching jewels
+   * @return a list of distinct category names
    */
-  @Query("SELECT j FROM Jewel j WHERE LOWER(j.name) LIKE LOWER(CONCAT('%', :name, '%'))")
-  Page<Jewel> searchJewelByName(String name, Pageable pageable);
+  @Query("SELECT DISTINCT j.category FROM Jewel j")
+  List<String> findDistinctCategories();
 
   /**
-   * Finds jewels by category with case-insensitive partial match and pagination.
+   * Retrieves jewels filtered by search criteria with pagination.
    *
-   * @param category the category to search for
+   * @param search the search term for jewel names (can be null)
+   * @param category the category to filter by (can be null)
+   * @param price the price sorting criteria ("high" or "low", can be null)
+   * @param sort the sorting criteria ("name" or "price", can be null)
    * @param pageable pagination details
-   * @return a page of matching jewels
+   * @return a page of jewels matching the filter criteria
    */
-  @Query("SELECT j FROM Jewel j WHERE LOWER(j.category) LIKE LOWER(CONCAT('%', :category, '%'))")
-  Page<Jewel> searchJewelByCategory(String category, Pageable pageable);
-
-  /**
-   * Finds jewels by keyword in details with case-insensitive match and pagination.
-   *
-   * @param keyword the keyword to search for
-   * @param pageable pagination details
-   * @return a page of matching jewels
-   */
-  @Query("SELECT j FROM Jewel j WHERE LOWER(j.details) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-  Page<Jewel> searchJewelByKeyword(String keyword, Pageable pageable);
+  @Query("SELECT j FROM Jewel j WHERE "
+      + "(:search IS NULL OR j.name LIKE :search) "
+      + "AND (:category IS NULL OR j.category = :category) "
+      + "ORDER BY "
+      + "CASE WHEN :price = 'high' THEN j.price END DESC, "
+      + "CASE WHEN :price = 'low' THEN j.price END ASC, "
+      + "CASE WHEN :sort = 'name' THEN j.name END ASC, "
+      + "CASE WHEN :sort = 'price' THEN j.price END ASC")
+  Page<Jewel> findFilteredJewels(
+      @Param("search") String search,
+      @Param("category") String category,
+      @Param("price") String price,
+      @Param("sort") String sort,
+      Pageable pageable);
 }
