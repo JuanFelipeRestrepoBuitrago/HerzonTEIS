@@ -9,45 +9,64 @@
   <header th:replace="~{fragments/header :: header}"></header>
 
   <main class="container my-5 py-4">
+    <!-- Alert Messages -->
     <div class="row w-100 g-0">
-      <div id="messagesAlert" class="d-none py-2">
+      <div id="messagesAlert" class="d-none py-2 w-100">
         <!-- Individual error alerts will be dynamically inserted here -->
       </div>
     </div>
-    <div class="jewel-details-card">
-      <div class="row g-0">
-        <h1 class="text-gold fw-bold mb-3"><span th:text="${order.id}" id="auctionId"></span></h1>
-        <p class="text-muted mb-2">Estado: <span th:text="#{'order.status.' + ${order.status}}"></span></p>
-        <p class="text-muted mb-2">Fecha: <span
-            th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></span></p>
-        <p class="lead text-white mb-3">Precio Total: <span
-            th:text="${'$' + #numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT')}" class="text-white"></span>
-        </p>
 
+    <div class="jewel-details-card p-4">
+      <div class="row">
+        <!-- Order Details -->
+        <div class="col-12">
+          <h1 class="text-gold fw-bold mb-3 text-center">
+            <span th:text="${order.id}" id="auctionId"></span>
+          </h1>
+          <p class="text-muted mb-2 text-center">
+            Estado: <span th:text="#{'order.status.' + ${order.status}}"></span>
+          </p>
+          <p class="text-muted mb-2 text-center">
+            Fecha: <span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+          </p>
+          <p class="lead text-white mb-3 text-center">
+            Precio Total: <span th:text="${'$' + #numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT')}"
+              class="text-white"></span>
+          </p>
+        </div>
+      </div>
 
-        <div class="mt-auto">
-          <a th:href="@{/orders}" class="btn-regresar me-3">
-            <i class="fas fa-arrow-left me-2"></i>Volver a la Lista
+      <!-- Buttons Section -->
+      <div class="row mt-4">
+        <div class="col-12 d-flex justify-content-between gap-3">
+          <!-- Back Button -->
+          <a th:href="@{/orders}" class="btn-regresar">
+            <i class="fas fa-arrow-left me-2"></i> Volver a la Lista
           </a>
-          <div class="d-flex justify-content-between align-items-center" th:if="${order.status.name() == 'PENDING'}">
-            <form th:action="@{/orders/order/pay}" method="post" th:object="${orderForm}">
-              <input type="hidden" name="id" th:value="${order.id}" />
-              <button type="submit" class="btn btn-gold btn-lg px-5">
-                <i class="fas fa-credit-card-alt me-2"></i> Pagar
-              </button>
-            </form>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-12 d-flex justify-content-between gap-3">
+          <!-- Pay Button -->
+          <form th:action="@{/orders/order/pay}" method="post" th:object="${orderForm}" th:if="${order.status.name() == 'PENDING'}">
+            <input type="hidden" name="id" th:value="${order.id}" />
+            <button type="submit" class="btn btn-gold btn-lg px-5">
+              <i class="fas fa-credit-card-alt me-2"></i> Pagar
+            </button>
+          </form>
 
-            <form th:action="@{/orders/order/cancel}" method="post" th:object="${orderForm}">
-              <input type="hidden" name="id" th:value="${order.id}" />
-              <button type="submit" class="btn-regresar btn-lg px-5">
-                <i class="fas fa-ban me-2"></i> Cancelar
-              </button>
-            </form>
-          </div>
+          <!-- Cancel Button -->
+          <form th:action="@{/orders/order/cancel}" method="post" th:object="${orderForm}" th:if="${order.status.name() == 'PENDING'}">
+            <input type="hidden" name="id" th:value="${order.id}" />
+            <button type="submit" class="btn btn-danger btn-lg px-5">
+              <i class="fas fa-ban me-2"></i> Cancelar
+            </button>
+          </form>
         </div>
       </div>
     </div>
   </main>
+
 
   <footer th:replace="~{fragments/footer :: footer}"></footer>
 

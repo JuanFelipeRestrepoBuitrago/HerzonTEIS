@@ -16,16 +16,22 @@ function displayMessages(messages, error) {
 
   messages.forEach(message => {
     const alertClass = error ? 'alert-danger' : 'alert-success';
-    const iconClass = error ? 'bi-exclamation-circle-fill' : 'bi-check-circle-fill';
+    const iconClass = error ? 'fa-exclamation-circle' : 'fa-check-circle';
+    const btnCloseClass = error ? 'btn-close-white' : ''; // Custom class for white close button
 
     const alert = document.createElement('div');
     alert.className = `alert ${alertClass} alert-dismissible fade show mb-2 shadow-lg text-center p-3 w-100`;
+    
+    if (error) {
+      alert.style.backgroundColor = 'red';
+    }
+
     alert.innerHTML = `
       <div class="d-flex align-items-center justify-content-center">
-        <i class="bi ${iconClass} me-2"></i>
+        <i class="fas ${iconClass} me-2"></i>
         <strong>${message}</strong>
       </div>
-      <button type="button" class="btn-close" 
+      <button type="button" class="btn-close ${btnCloseClass}" 
         data-bs-dismiss="alert" aria-label="Close"
         onclick="dismissMessage(this)">
       </button>

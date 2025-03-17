@@ -591,6 +591,11 @@ main .btn-gold { padding: 12px 30px; width: auto; }
     width: auto;
 }
 
+.btn-close-white {
+  filter: invert(1); /* Makes the close button white */
+  opacity: 1;
+}
+
 /* Responsive Adjustments for Jewel Details Page */
 @media (max-width: 768px) {
     main h1 { font-size: 36px; }
