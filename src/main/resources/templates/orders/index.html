@@ -1,33 +1,60 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
-<div th:replace="~{fragments/head :: head}"></div>
-
+<head>
+  <div th:replace="~{fragments/head :: head}"></div>
+</head>
 <body>
-    <div th:replace="~{fragments/header :: header}"></div>
+  <header th:replace="~{fragments/header :: header}"></header>
 
-    <div class="container-fluid full-height bg-primary d-flex justify-content-center align-items-center">
-        <div class="row justify-content-center w-100">
-            <div class="col-md-8 col-lg-6">
-                <!-- Orders List as Cards -->
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                    <div class="col" th:each="order : ${orders}">
-                        <div class="card h-100 shadow-lg" th:onclick="|window.location.href='/orders/' + ${order.id}|" style="cursor: pointer;">
-                            <div class="card-body">
-                                <p class="card-text">
-                                    <strong>Id</strong><br> <span th:text="${order.id}"></span><br>
-                                    <strong>Fecha</strong><br><span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></span><br>
-                                    <strong>Total</strong><br><span th:text="${'$' + #numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT')}"></span><br>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <main class="container my-5 py-4">
+    <h1 class="text-gold text-center mb-4" style="font-size: 2.5rem; font-weight: 700;">Lista de Ordenes</h1>
+    
+    <div th:if="${orders}" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div class="col" th:each="order : ${orders}">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body text-center">
+            <h5 class="card-title text-gold" th:text="${'Orden: ' + order.id}"></h5>
+            <p class="card-text fw-bold" th:text="${'$' + #numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT')}"></p>
+            <p class="card-text"><strong>Fecha: </strong><span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></span></p>
+            <a th:href="@{/orders/{id}(id=${order.id})}" class="btn btn-gold mt-3">Ver Detalles</a>
+          </div>
         </div>
+      </div>
     </div>
 
-    <div th:replace="~{fragments/footer :: footer}"></div>
-</body>
+    <div th:unless="${orders}" class="text-center py-5">
+      <div class="empty-state">
+        <i class="fas fa-gem fa-3x text-gold mb-3"></i>
+        <h3 class="text-white">No tienes ordenes disponibles</h3>
+        <p class="text-muted">Por favor, revisa más tarde o contacta al administrador.</p>
+        <a href="/" class="btn btn-gold mt-3">Volver al Inicio</a>
+      </div>
+    </div>
 
+    <nav aria-label="Page navigation" th:if="${totalPages > 1}">
+      <ul class="pagination justify-content-center mt-4">
+        <!-- Anterior -->
+        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+          <a class="page-link" th:href="@{/orders(page=${currentPage - 1})}">Anterior</a>
+        </li>
+    
+        <!-- Numeración de páginas -->
+        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${pageNumber == currentPage} ? 'active'">
+          <a class="page-link" th:href="@{/orders(page=${pageNumber})}" th:text="${pageNumber + 1}"
+             th:style="${pageNumber == currentPage} ? 'background-color: #D4AF37; color: #FFFFFF;' : ''"></a>
+        </li>
+    
+        <!-- Siguiente -->
+        <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+          <a class="page-link" th:href="@{/orders(page=${currentPage + 1})}">Siguiente</a>
+        </li>
+      </ul>
+    </nav>
+  </main>
+
+  <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+  <div th:replace="~{fragments/scripts :: scripts}"></div>
+</body>
 </html>
