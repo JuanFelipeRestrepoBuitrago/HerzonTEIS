@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+    <title th:text="${jewel.name} + ' - Detalles'"></title>
+</head>
+<body>
+    <header th:replace="~{fragments/header :: header}"></header>
+
+    <main class="container my-5 py-4">
+        <div class="jewel-details-card">
+            <div class="row g-0">
+                <div class="col-md-6">
+                    <div class="jewel-image-container">
+                        <img th:src="${jewel.imageUrl}" alt="Imagen de la joya: ${jewel.name}" class="img-fluid rounded shadow-lg jewel-image" aria-label="Vista ampliada de la joya">
+                        <div class="image-overlay" aria-hidden="true"></div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 d-flex flex-column justify-content-center p-4">
+                    <h1 class="text-gold fw-bold mb-3" th:text="${jewel.name}"></h1>
+                    <p class="text-muted mb-2">Categoría: <span th:text="${jewel.category}" class="text-white"></span></p>
+                    <p class="lead text-white mb-3">Detalles: <span th:text="${jewel.details}"></span></p>
+                    <h3 class="text-gold fw-bold mb-4" th:text="'$' + ${#numbers.formatDecimal(jewel.price, 0, 2)}"></h3>
+                    
+                    <div class="mt-auto">
+                        <a th:href="@{/jewels}" class="btn-regresar me-3">
+                            <i class="fas fa-arrow-left me-2"></i>Volver a la Lista
+                        </a>
+                        <a href="#" class="btn-gold">
+                            <i class="fas fa-shopping-cart me-2"></i>Comprar Ahora
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

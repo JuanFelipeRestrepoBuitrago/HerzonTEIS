@@ -19,7 +19,7 @@ public class HomeController {
    */
   @GetMapping("/")
   public String index(Model model) {
-    model.addAttribute("title", "Home - Herzon");
+    model.addAttribute("currentPage", "home");
 
     return "home/index";
   }
