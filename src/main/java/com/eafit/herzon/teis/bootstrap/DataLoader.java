@@ -37,18 +37,17 @@ public class DataLoader implements CommandLineRunner {
    * Constructs a new DataLoader with the required dependencies.
    *
    * @param auctionRepository the repository for managing auctions
-   * @param orderRepository the repository for managing orders
-   * @param jewelRepository the repository for managing jewels
-   * @param userRepository the repository for managing users
-   * @param passwordEncoder the encoder for hashing passwords
+   * @param orderRepository   the repository for managing orders
+   * @param jewelRepository   the repository for managing jewels
+   * @param userRepository    the repository for managing users
+   * @param passwordEncoder   the encoder for hashing passwords
    */
   public DataLoader(
       AuctionRepository auctionRepository,
       OrderRepository orderRepository,
       JewelRepository jewelRepository,
       UserRepository userRepository,
-      PasswordEncoder passwordEncoder
-  ) {
+      PasswordEncoder passwordEncoder) {
     this.auctionRepository = auctionRepository;
     this.orderRepository = orderRepository;
     this.jewelRepository = jewelRepository;
@@ -58,7 +57,8 @@ public class DataLoader implements CommandLineRunner {
 
   /**
    * Loads initial data into the database if it does not already exist.
-   * Generates users (1 admin and 9 regular users), jewels, auctions (active and ended),
+   * Generates users (1 admin and 9 regular users), jewels, auctions (active and
+   * ended),
    * and orders with various statuses.
    *
    * @param args the command-line arguments passed to the application
@@ -151,6 +151,11 @@ public class DataLoader implements CommandLineRunner {
             }
           }
 
+          // Set no admin user as the offer creator
+          List<User> users = userRepository.findAllByRole(User.Role.USER);
+          User user = users.get(random.nextInt(users.size()));
+          offer.setUser(user);
+
           auction.getOffers().add(offer);
         }
 
@@ -191,6 +196,11 @@ public class DataLoader implements CommandLineRunner {
               activeOffer.setState(false);
             }
           }
+
+          // Set no admin user as the offer creator
+          List<User> users = userRepository.findAllByRole(User.Role.USER);
+          User user = users.get(random.nextInt(users.size()));
+          offer.setUser(user);
 
           auction.getOffers().add(offer);
         }
@@ -234,6 +244,11 @@ public class DataLoader implements CommandLineRunner {
               activeOffer.setState(false);
             }
           }
+
+          // Set no admin user as the offer creator
+          List<User> users = userRepository.findAllByRole(User.Role.USER);
+          User user = users.get(random.nextInt(users.size()));
+          offer.setUser(user);
 
           auction.getOffers().add(offer);
         }

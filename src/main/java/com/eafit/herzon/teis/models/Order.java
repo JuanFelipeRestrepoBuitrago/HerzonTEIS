@@ -43,7 +43,7 @@ public class Order {
   // /**
   // * The list of cart items in the order.
   // */
-  // @OneToMany(fetch = FetchType.EAGER, mappedBy = "cart_items",
+  // @OneToMany(fetch = FetchType.EAGER, mappedBy = "cart_item",
   // cascade = CascadeType.ALL, orphanRemoval = true)
   // @JsonIgnore
   // @Fetch(FetchMode.SUBSELECT)

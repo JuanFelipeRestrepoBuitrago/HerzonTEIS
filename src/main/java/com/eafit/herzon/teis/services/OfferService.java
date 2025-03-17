@@ -3,6 +3,7 @@ package com.eafit.herzon.teis.services;
 import com.eafit.herzon.teis.exceptions.InvalidOfferException;
 import com.eafit.herzon.teis.models.Auction;
 import com.eafit.herzon.teis.models.Offer;
+import com.eafit.herzon.teis.models.User;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
 import com.eafit.herzon.teis.repositories.OfferRepository;
 import com.eafit.herzon.teis.utils.Formatter;
@@ -57,12 +58,12 @@ public class OfferService {
       highest offer price or if the auction is not found.
    */
   @Transactional
-  public void placeOffer(double offerPrice, Long auctionId) throws InvalidOfferException {
+  public void placeOffer(double offerPrice, Long auctionId, User user) {
     // Find the auction with the specified ID
     Auction auction = auctionRepository.findById(auctionId)
         .orElseThrow(() -> new InvalidOfferException("Auction not found"));
     // Get all the offers with active state for the auction
-    List<Offer> activeOffers = offerRepository.findByAuctionAndState(auction, true);
+    List<Offer> activeOffers = offerRepository.findByAuctionAndStateAndUser(auction, true, user);
 
     if (offerPrice < auction.getCurrentPrice()) {
       throw new InvalidOfferException(
@@ -84,7 +85,7 @@ public class OfferService {
       }
     }
 
-    Offer newOffer = new Offer(offerPrice, auction);
+    Offer newOffer = new Offer(offerPrice, auction, user);
     offerRepository.save(newOffer);
 
     // Update the current price of the auction

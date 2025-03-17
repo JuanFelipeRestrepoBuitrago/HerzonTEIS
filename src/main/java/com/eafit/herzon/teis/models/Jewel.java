@@ -55,7 +55,7 @@ public class Jewel {
   private Date modifiedAt;
 
   /**
-   * The list of offers which have been made to the auction.
+   * The list of auctions which have been made to the jewel.
    */
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "jewel", 
       cascade = CascadeType.ALL, orphanRemoval = true)

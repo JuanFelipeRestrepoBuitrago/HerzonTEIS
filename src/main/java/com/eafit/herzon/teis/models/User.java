@@ -1,10 +1,12 @@
 package com.eafit.herzon.teis.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,8 +16,11 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * Represents a user entity in the system.
@@ -59,9 +64,20 @@ public class User {
   private Date modifiedAt;
 
   /**
+   * The list of offers which have been made by the user.
+   */
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", 
+      cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
+  @Fetch(FetchMode.SUBSELECT)
+  private List<Offer> offers;
+
+  /**
    * Default constructor.
    */
   public User() {
+    this.creditCards = new ArrayList<>();
+    this.offers = new ArrayList<>();
   }
 
   /**
@@ -76,6 +92,8 @@ public class User {
     this.email = email;
     this.password = password;
     this.role = Role.USER; // Default role
+    this.creditCards = new ArrayList<>();
+    this.offers = new ArrayList<>();
   }
 
   /**
@@ -271,5 +289,23 @@ public class User {
    */
   public enum Role {
     ADMIN, USER
+  }
+
+  /**
+   * Gets the list of offers made by the user.
+   *
+   * @return the list of offers
+   */
+  public List<Offer> getOffers() {
+    return offers;
+  }
+
+  /**
+   * Sets the list of offers made by the user.
+   *
+   * @param offers the list of offers to set
+   */
+  public void setOffers(List<Offer> offers) {
+    this.offers = offers;
   }
 }

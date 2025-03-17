@@ -66,6 +66,11 @@ async function placeOffer() {
       })
     });
 
+    if (response.status === 401) {
+      window.location.href = '/login';
+      return;
+    }
+
     const responseData = await response.json();
 
     if (!response.ok) {
