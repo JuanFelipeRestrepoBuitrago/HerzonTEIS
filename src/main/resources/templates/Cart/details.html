@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+    <title th:text="${cartItem.jewel.name} + ' - Detalles del Item'">Detalles del Item</title>
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container my-5 py-4">
+    <div class="cart-item-details-card">
+        <div class="row g-0">
+            <div class="col-md-6">
+                <div class="cart-item-image-container">
+                    <img th:src="${cartItem.jewel.imageUrl}" alt="Imagen de la joya: ${cartItem.jewel.name}"
+                         class="img-fluid rounded shadow-lg cart-item-image" aria-label="Vista ampliada de la joya">
+                    <div class="image-overlay" aria-hidden="true"></div>
+                </div>
+            </div>
+
+            <div class="col-md-6 d-flex flex-column justify-content-center p-4">
+                <h1 class="text-gold fw-bold mb-3" th:text="${cartItem.jewel.name}"></h1>
+                <p class="text-muted mb-2">Categoría: <span th:text="${cartItem.jewel.category}" class="text-white"></span></p>
+                <p class="lead text-white mb-3">Detalles: <span th:text="${cartItem.jewel.details}"></span></p>
+                <h3 class="text-gold fw-bold mb-2" th:text="'$' + ${#numbers.formatDecimal(cartItem.jewel.price, 0, 2)}"></h3>
+                <p class="text-white">Cantidad en el carrito: <span th:text="${cartItem.quantity}"></span></p>
+
+                <div class="mt-auto">
+                    <a th:href="@{/cart}" class="btn-regresar me-3">
+                        <i class="fas fa-arrow-left me-2"></i>Volver al Carrito
+                    </a>
+                    <a th:href="@{/cart/remove/{id}(id=${cartItem.id})}" class="btn-danger">
+                        <i class="fas fa-trash-alt me-2"></i>Eliminar del Carrito
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>
