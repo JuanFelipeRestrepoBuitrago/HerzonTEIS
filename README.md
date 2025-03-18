@@ -40,7 +40,7 @@ or if you don't have Maven installed:
 ./mvnw clean install
 ```
 5. Set the following environment variables in your system:
-Linux or MacOS:
+   Linux or MacOS:
 ```bash
 export DATABASE_URL=jdbc:mysql://localhost:YOUR_DB_PORT/name_of_your_database
 export DATABASE_USER=YOUR_USERNAME
