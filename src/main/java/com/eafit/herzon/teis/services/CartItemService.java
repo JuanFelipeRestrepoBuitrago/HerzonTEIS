@@ -3,7 +3,6 @@ package com.eafit.herzon.teis.services;
 import com.eafit.herzon.teis.models.CartItem;
 import com.eafit.herzon.teis.repositories.CartItemRepository;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
