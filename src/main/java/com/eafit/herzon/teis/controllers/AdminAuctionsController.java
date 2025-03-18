@@ -1,5 +1,8 @@
 package com.eafit.herzon.teis.controllers;
 
+import com.eafit.herzon.teis.models.Auction;
+import com.eafit.herzon.teis.services.AuctionService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +15,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/admin/auctions")
 public class AdminAuctionsController {
+
+  private final AuctionService auctionService;
+
+  /**
+   * Constructs a new AdminAuctionsController with the specified AuctionService.
+   *
+   * @param auctionService the service to manage auction operations
+   */
+  public AdminAuctionsController(AuctionService auctionService) {
+    this.auctionService = auctionService;
+  }
 
   /**
    * Displays the jewel management page with pagination.
@@ -26,10 +40,12 @@ public class AdminAuctionsController {
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "9") int size,
       Model model) {
-    // model.addAttribute("jewels", jewelPage.getContent());
+    Page<Auction> auctionPage = auctionService.getAllAuctions(page, size);
+    model.addAttribute("auctions", auctionPage.getContent());
     model.addAttribute("currentPage", page);
-    // model.addAttribute("totalPages", jewelPage.getTotalPages());
-    return "admin/jewels";
+    model.addAttribute("totalPages", auctionPage.getTotalPages());
+    model.addAttribute("title", "Subastas - Admin Herzon");
+    return "admin/auctions/list";
   }
 
 }

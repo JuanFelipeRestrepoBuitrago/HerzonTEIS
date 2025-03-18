@@ -112,4 +112,16 @@ public class AuctionService {
       auctionRepository.save(auction);
     });
   }
+
+  /**
+   * Method to get all the auctions in the database.
+   *
+   * @param page the page number (0-based).
+   * @param size the number of items per page.
+   * @return List of all the auctions in the database (with pagination). 
+   */
+  @Transactional(readOnly = true)
+  public Page<Auction> getAllAuctions(int page, int size) {
+    return auctionRepository.findAll(PageRequest.of(page, size));
+  }
 }
