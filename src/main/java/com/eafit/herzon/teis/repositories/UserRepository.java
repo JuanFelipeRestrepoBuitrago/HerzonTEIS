@@ -1,6 +1,7 @@
 package com.eafit.herzon.teis.repositories;
 
 import com.eafit.herzon.teis.models.CustomUser;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -42,4 +43,12 @@ public interface UserRepository extends JpaRepository<CustomUser, Long> {
    * @return true if a user exists with the username, false otherwise
    */
   boolean existsByUsername(String username);
+
+  /**
+   * Finds a user by their role.
+   *
+   * @param role the user's role
+   * @return the user with the specified role
+   */
+  List<CustomUser> findAllByRole(CustomUser.Role role);
 }

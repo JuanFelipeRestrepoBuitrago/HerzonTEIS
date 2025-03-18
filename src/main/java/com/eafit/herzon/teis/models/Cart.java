@@ -58,7 +58,7 @@ public class Cart {
 
   @OneToOne(optional = false)
   @JoinColumn(name = "user_id", nullable = false)
-  private CustomUser customUser;
+  private CustomUser user;
 
   /**
   * Comment.
@@ -120,13 +120,13 @@ public class Cart {
   * Comment.
   */
   public CustomUser getUser() {
-    return customUser;
+    return user;
   }
 
   /**
   * Comment.
   */
   public void setUser(CustomUser customUser) {
-    this.customUser = customUser;
+    this.user = customUser;
   }
 }

@@ -19,7 +19,7 @@ public class HomeController {
    */
   @GetMapping("/")
   public String index(Model model) {
-    model.addAttribute("currentPage", "home");
+    model.addAttribute("currentPageActive", "home");
 
     return "home/index";
   }

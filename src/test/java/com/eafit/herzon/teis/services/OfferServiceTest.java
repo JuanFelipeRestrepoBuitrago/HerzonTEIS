@@ -2,7 +2,9 @@ package com.eafit.herzon.teis.services;
 
 import com.eafit.herzon.teis.exceptions.InvalidOfferException;
 import com.eafit.herzon.teis.models.Auction;
+import com.eafit.herzon.teis.models.Jewel;
 import com.eafit.herzon.teis.models.Offer;
+import com.eafit.herzon.teis.models.CustomUser;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
 import com.eafit.herzon.teis.repositories.OfferRepository;
 import java.util.Optional;
@@ -63,11 +65,23 @@ public class OfferServiceTest {
    */
   private Offer activeOffer;
 
+  /**
+   * Jewel object used in the tests.
+   */
+  private Jewel jewel;
+
+  /**
+   * User object used in the tests.
+   */
+  private CustomUser user;
+
   @BeforeEach
   public void setUp() {
     // Initialize test data
-    auction = new Auction(LocalDateTime.now(), LocalDateTime.now().plusDays(1), 100.0, 100.0);
-    activeOffer = new Offer(1500, auction);
+    user = new CustomUser("Test User", "test@example.com", "testpassword");
+    jewel = new Jewel("Test Jewel", "Test Category", "Test Details", 100.0, "Test Image URL");
+    auction = new Auction(LocalDateTime.now(), LocalDateTime.now().plusDays(1), 100.0, 100.0, jewel);
+    activeOffer = new Offer(1500, auction, user);
   }
 
   /**
@@ -81,7 +95,7 @@ public class OfferServiceTest {
     when(auctionRepository.findById(anyLong()))
         .thenReturn(Optional.empty());
 
-    assertThrows(InvalidOfferException.class, () -> offerService.placeOffer(150.0, 1L));
+    assertThrows(InvalidOfferException.class, () -> offerService.placeOffer(150.0, 1L, user));
   }
 
   /**
@@ -90,22 +104,19 @@ public class OfferServiceTest {
    */
   @Test
   void placeOffer_ShouldRejectLowerPrice() {
-    // Arrange the mock repository behavior and the necessary data to test
-    Auction auction = new Auction();
-
     when(auctionRepository.findById(anyLong()))
         .thenReturn(Optional.of(auction));
-    when(offerRepository.findByAuctionAndState(auction, true))
+    when(offerRepository.findByAuctionAndStateAndUser(auction, true, user))
         .thenReturn(List.of(this.activeOffer));
 
     // placeOffer should throw an exception when the offer price is lower than the
     // current offer price
     InvalidOfferException exception = assertThrows(
-      InvalidOfferException.class,
-        () -> offerService.placeOffer(150, 1L));
+        InvalidOfferException.class,
+        () -> offerService.placeOffer(150, 1L, user));
 
     assertTrue(exception.getMessage()
-        .contains("must be higher than the current offer price"));
+        .contains("oferta debe ser mayor al precio actual"));
   }
 
   /**
@@ -116,13 +127,13 @@ public class OfferServiceTest {
   void placeOffer_ShouldCompleteSuccessfully() {
     when(auctionRepository.findById(anyLong()))
         .thenReturn(Optional.of(this.auction));
-    when(offerRepository.findByAuctionAndState(auction, true))
+    when(offerRepository.findByAuctionAndStateAndUser(auction, true, user))
         .thenReturn(List.of(this.activeOffer));
     when(offerRepository.save(any(Offer.class)))
         .thenAnswer(invocation -> invocation.getArgument(0));
 
     // Call the method to test
-    offerService.placeOffer(1700.0, 1L);
+    offerService.placeOffer(1700.0, 1L, user);
 
     // Assert
     verify(offerRepository, times(2)).save(any(Offer.class));

@@ -1,4 +1,7 @@
-/* Variables */
+/* ==========================================================================
+   Variables
+   ========================================================================== */
+/* Define global custom properties (CSS variables) for consistent theming */
 :root {
     --verde-oscuro: #00381F;
     --verde-muy-oscuro: #002A18;
@@ -10,7 +13,10 @@
     --font-family: 'Poppins', sans-serif;
 }
 
-/* General */
+/* ==========================================================================
+   Global Styles
+   ========================================================================== */
+/* Set up basic page layout and styling */
 html, body {
     height: 100%;
     margin: 0;
@@ -23,12 +29,16 @@ html, body {
     overflow-x: hidden;
 }
 
-/* Navbar */
+/* ==========================================================================
+   Header (Navbar) Styles
+   ========================================================================== */
+/* Style the header section */
 header {
     background: linear-gradient(180deg, var(--verde-muy-oscuro) 0%, var(--verde-super-oscuro) 100%);
     padding: 20px 0;
 }
 
+/* Style the main heading in the header */
 header h1 {
     font-size: 36px;
     color: var(--dorado);
@@ -36,6 +46,7 @@ header h1 {
     text-shadow: 0 2px 5px rgba(212, 175, 55, 0.2);
 }
 
+/* Style navigation links in the header */
 header nav a {
     color: var(--blanco);
     text-transform: uppercase;
@@ -46,13 +57,24 @@ header nav a {
     transition: all 0.3s ease-in-out;
 }
 
+header nav a:hover {
+    color: var(--dorado);
+    background: rgba(212, 175, 55, 0.1);
+}
+
+/* ==========================================================================
+   Footer Styles
+   ========================================================================== */
+/* Style the footer section */
 footer {
     background: linear-gradient(180deg, var(--verde-muy-oscuro) 0%, var(--verde-super-oscuro) 100%);
     padding: 30px 0;
+    margin-bottom: 0.25rem;
     text-align: center;
     box-shadow: 0 -6px 12px rgba(0, 0, 0, 0.4);
 }
 
+/* Style the footer brand section */
 .footer-brand {
     display: flex;
     justify-content: center;
@@ -66,6 +88,7 @@ footer {
     color: var(--dorado);
 }
 
+/* Style the footer text content */
 .footer-text p {
     font-size: 14px;
     font-weight: 400;
@@ -73,8 +96,11 @@ footer {
     margin: 5px 0;
 }
 
-.footer-text .text-danger { color: var(--rojo) !important; }
+.footer-text .text-danger {
+    color: var(--rojo) !important;
+}
 
+/* Style the footer social links */
 .footer-social {
     display: flex;
     justify-content: center;
@@ -93,19 +119,23 @@ footer {
     transform: scale(1.2);
 }
 
-/* Forms Login & Registro */
+/* ==========================================================================
+   Authentication Forms Styles
+   ========================================================================== */
+/* Style the authentication container (login/register) */
 .auth-container {
     background: linear-gradient(145deg, var(--verde-muy-oscuro), var(--verde-super-oscuro));
     padding: 40px;
     border-radius: 15px;
     max-width: 600px;
     width: 100%;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 3px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 3px rgba(255, 255, Neilson255, 255, 0.1);
     border: 1px solid rgba(212, 175, 55, 0.5);
     position: relative;
     overflow: hidden;
 }
 
+/* Add gradient border effect to the auth container */
 .auth-container::before {
     content: '';
     position: absolute;
@@ -117,6 +147,7 @@ footer {
     opacity: 0.35;
 }
 
+/* Style headings in the auth container */
 .auth-container h2 {
     color: var(--dorado);
     font-size: 26px;
@@ -126,6 +157,7 @@ footer {
     text-shadow: 0 2px 5px rgba(212, 175, 55, 0.2);
 }
 
+/* Style paragraphs in the auth container */
 .auth-container p {
     color: rgba(255, 255, 255, 0.9);
     font-size: 14px;
@@ -133,6 +165,7 @@ footer {
     margin-bottom: 20px;
 }
 
+/* Style labels in the auth container */
 .auth-container label {
     color: var(--dorado);
     font-size: 14px;
@@ -142,6 +175,7 @@ footer {
     display: block;
 }
 
+/* Style inputs and selects in the auth container */
 .auth-container input,
 .auth-container select {
     background: rgba(255, 255, 255, 0.15);
@@ -174,6 +208,7 @@ footer {
     background: rgba(255, 255, 255, 0.15) url('data:image/svg+xml;utf8,<svg fill="%23D4AF37" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat 98% 50%;
 }
 
+/* Style links in the auth container */
 .auth-container a {
     color: var(--dorado);
     font-weight: 500;
@@ -187,18 +222,22 @@ footer {
     text-decoration: underline;
 }
 
+/* ==========================================================================
+   Button Styles
+   ========================================================================== */
+/* Style the primary gold button */
 .btn-gold {
     background: linear-gradient(145deg, var(--dorado), var(--dorado-oscuro));
     color: var(--verde-muy-oscuro);
     border: none;
-    padding: 12px;
+    padding: 12px 20px;
     font-weight: 600;
     font-size: 16px;
     border-radius: 10px;
     text-transform: uppercase;
     box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.2);
     letter-spacing: 1px;
-    width: 100%;
+    width: auto;
     text-decoration: none;
     display: inline-block;
     transition: all 0.3s ease-in-out;
@@ -211,6 +250,59 @@ footer {
     box-shadow: 0 8px 20px rgba(212, 175, 55, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.3);
 }
 
+/* Style the adjusted gold button (smaller size) */
+.btn-gold2 {
+    background: linear-gradient(145deg, var(--dorado), var(--dorado-oscuro));
+    color: var(--verde-muy-oscuro);
+    border: none;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+    letter-spacing: 1px;
+    width: auto;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-gold2:hover {
+    background: linear-gradient(145deg, var(--dorado-oscuro), var(--dorado));
+    color: var(--blanco);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Style the warning button */
+.btn-warning {
+    background-color: var(--dorado);
+    color: var(--verde-muy-oscuro);
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+    background-color: var(--dorado-oscuro);
+    color: var(--blanco);
+}
+
+/* Style the danger button */
+.btn-danger {
+    background-color: var(--rojo);
+    color: var(--blanco);
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #e63946;
+}
+
+/* Style the alert danger message */
 .alert-danger {
     background: rgba(255, 0, 0, 0.15);
     border: 1px solid rgba(255, 0, 0, 0.4);
@@ -222,7 +314,10 @@ footer {
     text-align: center;
 }
 
-/* Homepage */
+/* ==========================================================================
+   Homepage Styles
+   ========================================================================== */
+/* Style the main content area */
 main {
     flex: 1;
     display: flex;
@@ -233,6 +328,7 @@ main {
     padding: 40px 20px;
 }
 
+/* Style the main heading */
 main h1 {
     font-size: 48px;
     font-weight: 700;
@@ -241,6 +337,7 @@ main h1 {
     text-shadow: 0 2px 5px rgba(212, 175, 55, 0.2);
 }
 
+/* Style the lead paragraph */
 main .lead {
     font-size: 20px;
     font-weight: 400;
@@ -249,24 +346,199 @@ main .lead {
     margin: 0 auto 20px;
 }
 
-main .btn-gold { padding: 12px 30px; width: auto; }
+/* Style the button in the homepage */
+main .btn-gold {
+    padding: 12px 30px;
+    width: auto;
+}
 
-/* Jewel-Specific Styles */
-.jewel-card {
+/* ==========================================================================
+   Filter Panel Styles
+   ========================================================================== */
+/* Style the filter panel container */
+.filter-panel {
+    background: transparent;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+/* Estilo para un botón secundario (opcional) */
+.btn-secondary {
+    background: linear-gradient(145deg, #6c757d, #5a6268);
+    color: var(--blanco);
+    border: none;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+    letter-spacing: 1px;
+    width: auto;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(145deg, #5a6268, #6c757d);
+    color: var(--blanco);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(108, 117, 125, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+/* ==========================================================================
+   Input and Select Styles
+   ========================================================================== */
+/* Style inputs and selects */
+.jewel-input,
+.custom-select {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    color: var(--blanco) !important;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 15px;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+    appearance: none;
+}
+
+.jewel-input:focus,
+.jewel-input:not(:placeholder-shown),
+.custom-select:focus,
+.custom-select:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--dorado);
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+    outline: none;
+}
+
+.jewel-input::placeholder,
+.custom-select option[value=""] {
+    color: rgb(255, 255, 255) !important;
+    font-weight: 300;
+}
+
+.custom-select {
+    cursor: pointer;
+}
+
+.custom-select option {
+    background: var(--verde-muy-oscuro);
+    color: var(--blanco);
+    padding: 10px;
+}
+
+.custom-select:disabled {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(212, 175, 55, 0.3);
+    color: rgba(255, 255, 255, 0.4);
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Jewel-Specific Styles
+   ========================================================================== */
+/* Style individual jewel cards */
+.card {
     transition: transform 0.2s, box-shadow 0.2s;
     border-radius: 10px;
     overflow: hidden;
     background-color: var(--blanco);
-    max-width: 300px;
-    margin: 0 auto;
     border: 1px solid rgba(212, 175, 55, 0.2);
+    height: 100%; /* Asegura que las tarjetas sean consistentes en altura */
+    width: 100%; /* Asegura que la tarjeta ocupe el ancho disponible dentro de su celda */
+    max-width: 350px; /* Limita el ancho máximo de la tarjeta para que coincida con el diseño */
 }
 
-.jewel-card:hover {
+/* Centrar la tarjeta cuando es el único resultado */
+#jewels-container.single-result .col {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#jewels-container.single-result .card {
+    margin: 0 auto;
+}
+
+/* Ajustar el grid para 2 resultados */
+#jewels-container.two-results .col {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Style the jewel images */
+.card-img-top {
+    width: 100%;
+    height: 200px; /* Altura fija para coincidir con la captura */
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+
+/* Style the card body */
+.card-body {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+/* Eliminar .jewel-card si no se usa en otro lugar */
+.jewel-card {
+    display: none; /* O elimina esta clase si no la necesitas */
+}
+
+/* Style the jewels container as a CSS Grid */
+#jewels-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Grid de 3 columnas por defecto */
+    gap: 1.5rem; /* Espaciado consistente con g-4 de Bootstrap */
+    justify-items: center; /* Centra las tarjetas horizontalmente */
+    padding: 0 15px; /* Añade un pequeño padding lateral */
+    max-width: 1200px; /* Limita el ancho máximo del grid */
+    margin: 0 auto; /* Centra el contenedor */
+    width: 100%; /* Asegura que ocupe el ancho completo del contenedor */
+}
+
+/* Clase para un solo resultado */
+#jewels-container.single-result {
+    grid-template-columns: 1fr; /* Una sola columna */
+    justify-items: center; /* Centra la tarjeta */
+}
+
+/* Clase para dos resultados */
+#jewels-container.two-results {
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+    justify-items: center; /* Centra las tarjetas */
+}
+
+/* Ajustes responsivos para pantallas pequeñas */
+@media (max-width: 767px) {
+    #jewels-container {
+        grid-template-columns: 1fr; /* 1 columna en pantallas pequeñas */
+    }
+    #jewels-container.single-result,
+    #jewels-container.two-results {
+        grid-template-columns: 1fr; /* Una sola columna en pantallas pequeñas */
+    }
+}
+
+/* Estilo para pantallas medianas y grandes */
+@media (min-width: 768px) {
+    #jewels-container {
+        grid-template-columns: repeat(3, 1fr); /* 3 columnas por defecto */
+    }
+}
+
+/* Hover effect for cards */
+.card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
+/* Style view toggle buttons (si se usan en otro contexto) */
 .view-toggle .btn {
     border-radius: 20px;
     font-size: 14px;
@@ -288,32 +560,10 @@ main .btn-gold { padding: 12px 30px; width: auto; }
     color: var(--blanco);
 }
 
-.grid-view .col { flex: 0 0 33.3333%; max-width: 33.3333%; }
-.list-view .col { flex: 0 0 100%; max-width: 100%; }
-
-.list-view .jewel-card {
-    display: flex;
-    flex-direction: row;
-    max-width: 100%;
-    height: auto;
-}
-
-.list-view .jewel-image {
-    width: 150px;
-    height: 150px; 
-    flex-shrink: 0; 
-    background-color: #f8f9fa;
-}
-
-.list-view .card-body {
-    flex-grow: 1;
-    text-align: left;
-    padding: 15px;
-}
-
-.list-view .card-title { font-size: 1.25rem; margin-bottom: 0.5rem; }
-.list-view .card-text { font-size: 0.9rem; margin-bottom: 0.25rem; }
-
+/* ==========================================================================
+   Pagination Styles
+   ========================================================================== */
+/* Style the pagination container */
 .pagination {
     display: flex;
     justify-content: center;
@@ -378,6 +628,10 @@ main .btn-gold { padding: 12px 30px; width: auto; }
     transform: translateY(-2px);
 }
 
+/* ==========================================================================
+   Table Styles
+   ========================================================================== */
+/* Style the jewel table container */
 .jewel-table-container {
     background: var(--blanco);
     border-radius: 15px;
@@ -385,47 +639,44 @@ main .btn-gold { padding: 12px 30px; width: auto; }
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
+.jewels-table-small .jewel-row {
+    height: 80px;
+}
+
+.jewels-table-small .jewel-image {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+}
+
+.jewels-table-small .table th,
+.jewels-table-small .table td {
+    padding: 5px;
+    font-size: 14px;
+}
+
+.jewels-table-small .btn-sm {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
 .table-hover tbody tr:hover {
     background-color: rgba(212, 175, 55, 0.1);
     transition: background-color 0.3s ease;
 }
 
-.jewel-row { transition: transform 0.3s ease; }
-.jewel-row:hover { transform: translateY(-2px); }
-
-.jewel-image {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 10px;
+.jewel-row {
     transition: transform 0.3s ease;
 }
 
-.jewel-image:hover { transform: scale(1.1); }
-
-.btn-warning {
-    background-color: var(--dorado);
-    color: var(--verde-muy-oscuro);
-    border: none;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+.jewel-row:hover {
+    transform: translateY(-2px);
 }
 
-.btn-warning:hover {
-    background-color: var(--dorado-oscuro);
-    color: var(--blanco);
-}
-
-.btn-danger {
-    background-color: var(--rojo);
-    color: var(--blanco);
-    border: none;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-.btn-danger:hover { background-color: #e63946; }
-
+/* ==========================================================================
+   Jewel Form Styles
+   ========================================================================== */
+/* Style the jewel form container */
 .jewel-form-container {
     max-width: 700px;
     margin: 0 auto;
@@ -436,32 +687,10 @@ main .btn-gold { padding: 12px 30px; width: auto; }
     padding: 30px;
 }
 
-.jewel-input {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(212, 175, 55, 0.5);
-    color: var(--blanco);
-    padding: 14px 40px 14px 12px;
-    border-radius: 10px;
-    font-size: 16px;
-    transition: all 0.3s ease-in-out;
-}
-
-.jewel-input:focus {
-    background: rgba(255, 255, 255, 0.25);
-    border-color: var(--dorado);
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
-    outline: none;
-}
-
-.jewel-input::placeholder { color: rgba(255, 255, 255, 0.7); }
-
-.text-gold { color: var(--dorado) !important; }
-.bg-dark-green { background-color: var(--verde-oscuro) !important; }
-.text-success { color: #28a745 !important; }
-.text-dark { color: #343a40 !important; }
-.text-muted { color: rgba(255, 255, 255, 0.7) !important; }
-
-/* ============================= */
+/* ==========================================================================
+   Back Button Styles
+   ========================================================================== */
+/* Style the back button */
 .btn-regresar {
     background: transparent !important;
     border: none !important;
@@ -512,7 +741,10 @@ main .btn-gold { padding: 12px 30px; width: auto; }
     height: 200px;
 }
 
-/* Jewel Details Page */
+/* ==========================================================================
+   Jewel Details Page Styles
+   ========================================================================== */
+/* Style the jewel details card */
 .jewel-details-card {
     background: linear-gradient(145deg, var(--verde-muy-oscuro), var(--verde-super-oscuro));
     border-radius: 15px;
@@ -526,6 +758,7 @@ main .btn-gold { padding: 12px 30px; width: auto; }
     transform: translateY(-5px);
 }
 
+/* Style the image container in jewel details */
 .jewel-image-container {
     position: relative;
     overflow: hidden;
@@ -543,7 +776,6 @@ main .btn-gold { padding: 12px 30px; width: auto; }
     transform: scale(1.1);
 }
 
-
 .jewel-image-container:hover .image-overlay {
     opacity: 1;
 }
@@ -555,6 +787,7 @@ main .btn-gold { padding: 12px 30px; width: auto; }
     cursor: pointer;
 }
 
+/* Style the content columns in jewel details */
 .jewel-details-card .col-md-6 {
     padding: 30px;
 }
@@ -580,24 +813,209 @@ main .btn-gold { padding: 12px 30px; width: auto; }
     width: auto;
 }
 
-/* Responsive Adjustments for Jewel Details Page */
-
-@media (max-width: 768px) {
-    main h1 { font-size: 36px; }
-    main .lead { font-size: 18px; max-width: 90%; }
-    main .btn-gold { padding: 10px 25px; font-size: 15px; }
-    .auth-container { max-width: 90%; padding: 25px; }
-    .auth-container h2 { font-size: 22px; }
-    .auth-container .btn-gold { padding: 10px 0; font-size: 15px; }
-    .auth-container input, .auth-container select { font-size: 14px; }
-    .jewel-image { width: 80px; height: 80px; }
-    .btn-warning, .btn-danger { padding: 6px 12px; font-size: 14px; }
-    .table th, .table td { font-size: 14px; padding: 8px; }
-    .jewel-form-container { padding: 20px; }
-    .btn-gold, .btn-regresar { width: 100%; margin-bottom: 10px; }
-    .d-flex { flex-direction: column; }
+.btn-close-white {
+  filter: invert(1); /* Makes the close button white */
+  opacity: 1;
 }
 
+/* ==========================================================================
+   User Table Styles
+   ========================================================================== */
+/* Style the user table container */
+.user-table-container {
+    background: var(--blanco);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--dorado);
+    overflow: hidden;
+    padding: 10px;
+}
+
+.user-table-container .table thead th {
+    background-color: var(--verde-oscuro);
+    color: var(--dorado);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.user-table-container .table tbody td {
+    color: var(--verde-muy-oscuro);
+    vertical-align: middle;
+    text-align: center;
+}
+
+.user-table-container .table tbody tr:hover {
+    background-color: rgba(212, 175, 55, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+/* ==========================================================================
+   Dashboard Card Styles
+   ========================================================================== */
+/* Style the dashboard cards */
+.dashboard-card {
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.dashboard-card i {
+    border: 2px solid var(--dorado);
+    border-radius: 50%;
+    padding: 12px;
+    margin-bottom: 15px;
+}
+
+.dashboard-card h5 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.dashboard-card p {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.dashboard-card .btn-gold {
+    padding: 8px 15px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 150px;
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+/* Utility classes for text colors */
+.text-gold {
+    color: var(--dorado) !important;
+}
+
+.bg-dark-green {
+    background-color: var(--verde-oscuro) !important;
+}
+
+.text-success {
+    color: #28a745 !important;
+}
+
+.text-dark {
+    color: #343a40 !important;
+}
+
+.text-muted {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+/* Media query for medium screens and up */
+@media (min-width: 768px) {
+    .filter-btn {
+        width: auto;
+    }
+}
+
+/* Media query for screens up to 768px */
+@media (max-width: 768px) {
+    main h1 {
+        font-size: 36px;
+    }
+    main .lead {
+        font-size: 18px;
+        max-width: 90%;
+    }
+    main .btn-gold {
+        padding: 10px 25px;
+        font-size: 15px;
+    }
+    .auth-container {
+        max-width: 90%;
+        padding: 25px;
+    }
+    .auth-container h2 {
+        font-size: 22px;
+    }
+    .auth-container .btn-gold {
+        padding: 10px 0;
+        font-size: 15px;
+    }
+    .auth-container input,
+    .auth-container select {
+        font-size: 14px;
+    }
+    .jewel-image {
+        width: 80px;
+        height: 80px;
+    }
+    .btn-warning,
+    .btn-danger {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+    .table th,
+    .table td {
+        font-size: 14px;
+        padding: 8px;
+    }
+    .jewel-form-container {
+        padding: 20px;
+    }
+    .btn-gold,
+    .btn-regresar {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .d-flex {
+        flex-direction: column;
+    }
+    .filter-panel .row > div {
+        margin-bottom: 15px;
+    }
+    .filter-btn {
+        width: 100%;
+    }
+    .jewel-details-card .col-md-6 {
+        padding: 20px;
+    }
+    .jewel-details-card h1 {
+        font-size: 2rem;
+    }
+    .jewel-details-card .lead {
+        font-size: 1rem;
+    }
+    .jewel-details-card h3 {
+        font-size: 1.5rem;
+    }
+    .jewel-details-card .btn-regresar,
+    .jewel-details-card .btn-gold {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .jewel-image-container {
+        border-radius: 15px 15px 0 0;
+    }
+    .user-table-container .table th,
+    .user-table-container .table td {
+        font-size: 14px;
+        padding: 8px;
+    }
+    .user-table-container {
+        overflow-x: auto;
+    }
+    .card-img-top {
+        height: 150px; /* Ajuste para pantallas más pequeñas */
+    }
+}
+
+/* Media query for screens up to 576px */
 @media (max-width: 576px) {
     .btn-regresar {
         width: 100%;
@@ -613,35 +1031,18 @@ main .btn-gold { padding: 12px 30px; width: auto; }
         font-size: 16px;
         padding: 8px 20px;
     }
-}
-
-@media (max-width: 768px) {
-    .jewel-details-card .col-md-6 {
-        padding: 20px;
-    }
-    .jewel-details-card h1 {
-        font-size: 2rem;
-    }
-    .jewel-details-card .lead {
-        font-size: 1rem;
-    }
-    .jewel-details-card h3 {
-        font-size: 1.5rem;
-    }
-    .jewel-details-card .btn-regresar, .jewel-details-card .btn-gold {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-    .jewel-image-container {
-        border-radius: 15px 15px 0 0;
-    }
-}
-
-@media (max-width: 576px) {
     .jewel-details-card .row {
         flex-direction: column;
     }
     .jewel-image-container {
         height: 300px;
+    }
+    .user-table-container .table th,
+    .user-table-container .table td {
+        font-size: 12px;
+        padding: 6px;
+    }
+    .card-img-top {
+        height: 120px; /* Ajuste adicional para pantallas muy pequeñas */
     }
 }

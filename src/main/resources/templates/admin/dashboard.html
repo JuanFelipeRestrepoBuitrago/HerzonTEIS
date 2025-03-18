@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <div th:replace="~{fragments/head :: head}"></div>
+  <title>Panel de Administración</title>
+</head>
+<body>
+  <!-- Incluir el header -->
+  <header th:replace="~{fragments/header :: header}"></header>
+
+  <main class="container my-5 py-5 text-center">
+    <!-- Title Section -->
+    <h1 class="text-gold fw-bold display-4 animate__animated animate__fadeIn">
+      <i class="fas fa-cogs me-2"></i> Panel de Administración
+    </h1>
+    <p class="lead text-muted mb-5">Lista tus usuarios y las joyas de la tienda.</p>
+
+    <!-- Cards Section -->
+    <div class="row justify-content-center g-4">
+      <!-- Gestión de Usuarios -->
+      <div class="col-md-6 col-lg-5 mb-4">
+        <div class="jewel-details-card">
+          <div class="card-body dashboard-card">
+            <i class="fas fa-users fa-4x" style="color: var(--dorado);"></i>
+            <h5 class="card-title text-gold">Gestión de Usuarios</h5>
+            <p class="card-text text-white">Visualiza los usuarios registrados en el sistema.</p>
+            <a th:href="@{/admin/users}" class="btn-gold">Ir a Usuarios</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gestión de Joyas -->
+      <div class="col-md-6 col-lg-5 mb-4">
+        <div class="jewel-details-card">
+          <div class="card-body dashboard-card">
+            <i class="fas fa-gem fa-4x" style="color: var(--dorado);"></i>
+            <h5 class="card-title text-gold">Gestión de Joyas</h5>
+            <p class="card-text text-white">Administra las joyas de la tienda, añade y edita productos.</p>
+            <a th:href="@{/admin/jewels}" class="btn-gold">Ir a Joyas</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Incluir el footer -->
+  <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+  <!-- Incluir scripts -->
+  <div th:replace="~{fragments/scripts :: scripts}"></div>
+</body>
+</html>

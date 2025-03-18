@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
@@ -40,6 +41,13 @@ public class CartItem {
   @OneToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "jewel_id", nullable = false)
   private Jewel jewel;
+
+  /**
+   * The date and time when the cart item was created.
+   */
+  @ManyToOne
+  @JoinColumn(name = "cart_id", nullable = false)
+  private Cart cart;
 
   /**
    * The date and time when the cart item was created.
@@ -136,10 +144,29 @@ public class CartItem {
   }
 
   /**
+   * Gets the last updated date and time of the cart item.
+   *
+   * @return the last updated date and time
+   */
+  public Cart getCart() {
+    return cart;
+  }
+
+  /**
+   * Gets the last updated date and time of the cart item.
+   *
+   * @param  cart buy cart
+   */
+  public void setCart(Cart cart) {
+    this.cart = cart;
+  }
+
+  /**
    * Sets the last updated date and time of the cart item.
    *
    * @param updatedAt the last updated date and time to set
    */
+
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }

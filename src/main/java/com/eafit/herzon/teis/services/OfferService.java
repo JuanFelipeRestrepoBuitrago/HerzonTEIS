@@ -2,6 +2,7 @@ package com.eafit.herzon.teis.services;
 
 import com.eafit.herzon.teis.exceptions.InvalidOfferException;
 import com.eafit.herzon.teis.models.Auction;
+import com.eafit.herzon.teis.models.CustomUser;
 import com.eafit.herzon.teis.models.Offer;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
 import com.eafit.herzon.teis.repositories.OfferRepository;
@@ -34,14 +35,13 @@ public class OfferService {
    * Constructor of the OfferService class.
    *
    * @param simpMessagingTemplate the SimpMessagingTemplate object.
-   * @param offerRepository the OfferRepository object.
-   * @param auctionRepository the AuctionRepository object.
+   * @param offerRepository       the OfferRepository object.
+   * @param auctionRepository     the AuctionRepository object.
    */
   public OfferService(
       SimpMessagingTemplate simpMessagingTemplate,
       OfferRepository offerRepository,
-      AuctionRepository auctionRepository
-  ) {
+      AuctionRepository auctionRepository) {
     this.simpMessagingTemplate = simpMessagingTemplate;
     this.offerRepository = offerRepository;
     this.auctionRepository = auctionRepository;
@@ -52,23 +52,24 @@ public class OfferService {
    * with the current offer price.
    *
    * @param offerPrice the new offer price.
-   * @param auctionId the ID of the auction.
-   * @throws InvalidOfferException if the new offer price is lower than the current 
-      highest offer price or if the auction is not found.
+   * @param auctionId  the ID of the auction.
+   * @throws InvalidOfferException if the new offer price is lower than the
+   *                               current
+   *                               highest offer price or if the auction is not
+   *                               found.
    */
   @Transactional
-  public void placeOffer(double offerPrice, Long auctionId) throws InvalidOfferException {
+  public void placeOffer(double offerPrice, Long auctionId, CustomUser user) {
     // Find the auction with the specified ID
     Auction auction = auctionRepository.findById(auctionId)
         .orElseThrow(() -> new InvalidOfferException("Auction not found"));
     // Get all the offers with active state for the auction
-    List<Offer> activeOffers = offerRepository.findByAuctionAndState(auction, true);
+    List<Offer> activeOffers = offerRepository.findByAuctionAndStateAndUser(auction, true, user);
 
     if (offerPrice < auction.getCurrentPrice()) {
       throw new InvalidOfferException(
-          "El precio de la oferta debe ser mayor al precio actual: " 
-          + Formatter.formatCurrency(auction.getCurrentPrice(), 2)
-        );
+          "El precio de la oferta debe ser mayor al precio actual: "
+              + Formatter.formatCurrency(auction.getCurrentPrice(), 2));
     }
 
     for (Offer offer : activeOffers) {
@@ -78,13 +79,12 @@ public class OfferService {
         offerRepository.save(offer);
       } else {
         throw new InvalidOfferException(
-            "El precio de la oferta debe ser mayor al precio actual: " 
-            + Formatter.formatCurrency(offer.getOfferPrice(), 2)
-          );
+            "El precio de la oferta debe ser mayor al precio actual: "
+                + Formatter.formatCurrency(offer.getOfferPrice(), 2));
       }
     }
 
-    Offer newOffer = new Offer(offerPrice, auction);
+    Offer newOffer = new Offer(offerPrice, auction, user);
     offerRepository.save(newOffer);
 
     // Update the current price of the auction

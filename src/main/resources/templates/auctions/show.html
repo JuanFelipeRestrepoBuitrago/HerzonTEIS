@@ -1,57 +1,72 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
-<div th:replace="~{fragments/head :: head}"></div>
+<head>
+  <div th:replace="~{fragments/head :: head}"></div>
+  <meta th:name="_csrf" th:content="${_csrf.token}"/>
+  <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
 
 <body>
-  <div th:replace="~{fragments/header :: header}"></div>
+  <header th:replace="~{fragments/header :: header}"></header>
 
-  <div class="container-fluid full-height bg-primary d-flex justify-content-center align-items-center">
-    <div class="row justify-content-center w-100">
-      <div class="col-md-6 col-lg-4">
-        <!-- Container for error messages -->
-        <div id="messagesAlert" class="d-none">
-          <!-- Individual error alerts will be dynamically inserted here -->
+  <main class="container my-5 py-4">
+    <div class="row w-100 g-0">
+      <div id="messagesAlert" class="d-none py-2">
+        <!-- Individual error alerts will be dynamically inserted here -->
+      </div>
+    </div>
+    <div class="jewel-details-card">
+      <div class="row g-0">
+        <div class="col-md-6">
+          <div class="jewel-image-container">
+            <img th:src="${auction.jewel.imageUrl}" alt="Imagen de la joya: ${auction.jewel.name}"
+              class="img-fluid rounded shadow-lg jewel-image" aria-label="Vista ampliada de la joya">
+            <div class="image-overlay" aria-hidden="true"></div>
+          </div>
         </div>
 
-        <div class="card shadow-lg">
-          <div class="card-header bg-secondary text-primary text-center">
-            <h4 class="mb-0">Detalles de la Subasta</h4>
-          </div>
-          <div class="card-body bg-third p-4">
-            <p><strong>Id:</strong> <span th:text="${auction.id}" id="auctionId"></span></p>
-            <p><strong>Precio Actual:</strong> <span
-                th:text="${'$' + #numbers.formatDecimal(auction.currentPrice, 1, 'COMMA', 2, 'POINT')}"
-                id="current-price"></span></p>
-            <p><strong>Precio Inicial:</strong> <span
-                th:text="${'$' + #numbers.formatDecimal(auction.startPrice, 1, 'COMMA', 2, 'POINT')}"></span></p>
-            <p><strong>Comienzo:</strong> <span
-                th:text="${#temporals.format(auction.startDate, 'yyyy-MM-dd HH:mm')}"></span></p>
-            <p><strong>Finalización:</strong> <span
-                th:text="${#temporals.format(auction.endDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+        <div class="col-md-6 d-flex flex-column justify-content-center p-4">
+          <h1 class="text-gold fw-bold mb-3"><span th:text="${auction.id}" id="auctionId"></span></h1>
+          <p class="text-muted mb-2">Joya: <span th:text="${auction.jewel.name}" class="text-white"></span></p>
+          <p class="text-muted mb-2">Apertura: <span
+              th:text="${#temporals.format(auction.startDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+          <p class="text-muted mb-2">Cierre: <span
+              th:text="${#temporals.format(auction.endDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+          <p class="lead text-white mb-3">Precio Inicial: <span
+              th:text="${'$' + #numbers.formatDecimal(auction.startPrice, 1, 'COMMA', 2, 'POINT')}"
+              class="text-white"></span></p>
+          <p class="lead text-white mb-4">Precio Actual: <span id="current-price"
+              th:text="${'$' + #numbers.formatDecimal(auction.currentPrice, 1, 'COMMA', 2, 'POINT')}"
+              class="text-white"></span></p>
 
-            <p th:if="${auction.status}"><strong>¡Haz una Oferta!</strong></p>
-            <div class="mb-3" th:if="${auction.status}">
-              <label for="offerAmount" class="form-label">Oferta:</label>
-              <input type="number" id="offerAmount" name="offerAmount" class="form-control"
-                placeholder="Ingresa el monto de tu oferta">
+
+          <div class="mt-auto">
+            <a th:href="@{/orders}" class="btn-regresar me-3">
+              <i class="fas fa-arrow-left me-2"></i>Volver a la Lista
+            </a>
+            <div class="mb-5 position-relative">
+              <label class="form-label text-gold" for="offerAmount"><i
+                  class="fas fa-dollar-sign me-2"></i>Oferta</label>
+              <input type="number" step="0.01" class="form-control jewel-input" id="offerAmount" name="offerAmount"
+                required placeholder="0.00" />
+              <div class="invalid-feedback">Por favor, ingresa un precio válido.</div>
             </div>
-
-            <div class="d-grid" th:if="${auction.status}">
-              <button type="button" onclick="placeOffer()" id="offerButton" class="btn btn-primary">Pujar</button>
+            <div class="d-flex justify-content-between align-items-center">
+              <button type="button" onclick="placeOffer()" id="offerButton" class="btn btn-gold btn-lg px-5"><i
+                  class="fas fa-money me-2"></i>Pujar</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <div th:replace="~{fragments/footer :: footer}"></div>
+  </main>
 
   <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
   <script th:src="@{/js/messages.js}"></script>
   <script th:src="@{/js/auction/show.js}"></script>
+  <footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 
 </html>

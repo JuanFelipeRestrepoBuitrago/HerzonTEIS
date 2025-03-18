@@ -3,15 +3,21 @@
 <head>
   <div th:replace="~{fragments/head :: head}"></div>
   <title>Administrar Joyas</title>
-  <link rel="stylesheet" href="/css/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
 <body>
-
   <!-- Incluir el header -->
   <header th:replace="~{fragments/header :: header}"></header>
 
   <main class="container my-5 py-5">
+    <!-- Botón Regresar -->
+    <div class="mb-4">
+      <a th:href="@{/admin}" class="btn-regresar">
+        <i class="fas fa-arrow-left me-2"></i> Regresar al Dashboard
+      </a>
+    </div>
+
+    <!-- Título -->
     <div class="text-center mb-5 animate__animated animate__fadeIn">
       <h1 class="text-gold fw-bold display-4">
         <i class="fas fa-gem me-1"></i> Administrar Joyas
@@ -27,7 +33,7 @@
     </div>
 
     <!-- Tabla de joyas -->
-    <div th:if="${jewels}" class="jewel-table-container animate__animated animate__fadeInUp">
+    <div th:if="${jewels}" class="jewel-table-container jewels-table-small animate__animated animate__fadeInUp">
       <div class="table-responsive">
         <table class="table table-hover table-bordered align-middle m-0">
           <thead class="bg-dark-green text-gold text-center">
@@ -68,33 +74,30 @@
     </div>
 
     <!-- Paginación -->
-<nav aria-label="Page navigation" th:if="${totalPages > 1}">
-  <ul class="pagination justify-content-center mt-4">
-    
-    <!-- Botón "Anterior" -->
-    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-      <a class="page-link" th:href="@{/admin/jewels(page=${currentPage - 1})}">
-        <i class="fas fa-arrow-left"></i> Anterior
-      </a>
-    </li>
+    <nav aria-label="Page navigation" th:if="${totalPages > 1}">
+      <ul class="pagination justify-content-center mt-4">
+        <!-- Botón "Anterior" -->
+        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+          <a class="page-link" th:href="@{/admin/jewels(page=${currentPage - 1})}">
+            <i class="fas fa-arrow-left"></i> Anterior
+          </a>
+        </li>
 
-    <!-- Números de Página -->
-    <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
-        th:classappend="${pageNumber == currentPage} ? 'active'">
-      <a class="page-link" th:href="@{/admin/jewels(page=${pageNumber})}" th:text="${pageNumber + 1}"
-         th:style="${pageNumber == currentPage} ? 'background-color: #D4AF37; color: #FFFFFF;' : ''"></a>
-    </li>
+        <!-- Números de Página -->
+        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${pageNumber == currentPage} ? 'active'">
+          <a class="page-link" th:href="@{/admin/jewels(page=${pageNumber})}" th:text="${pageNumber + 1}"
+             th:style="${pageNumber == currentPage} ? 'background-color: #D4AF37; color: #FFFFFF;' : ''"></a>
+        </li>
 
-    <!-- Botón "Siguiente" -->
-    <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
-      <a class="page-link" th:href="@{/admin/jewels(page=${currentPage + 1})}">
-        Siguiente <i class="fas fa-arrow-right"></i>
-      </a>
-    </li>
-
-  </ul>
-</nav>
-
+        <!-- Botón "Siguiente" -->
+        <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+          <a class="page-link" th:href="@{/admin/jewels(page=${currentPage + 1})}">
+            Siguiente <i class="fas fa-arrow-right"></i>
+          </a>
+        </li>
+      </ul>
+    </nav>
 
     <!-- Mensaje si no hay joyas registradas -->
     <div th:unless="${jewels}" class="text-center py-5 animate__animated animate__zoomIn">
@@ -111,6 +114,5 @@
 
   <!-- Incluir scripts -->
   <div th:replace="~{fragments/scripts :: scripts}"></div>
-
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.eafit.herzon.teis.services;
 
+import com.eafit.herzon.teis.exceptions.InvalidAuctionException;
 import com.eafit.herzon.teis.models.Auction;
 import com.eafit.herzon.teis.models.Offer;
 import com.eafit.herzon.teis.models.Order;
@@ -9,6 +10,9 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +34,7 @@ public class AuctionService {
 
   /**
    * Constructor of the AuctionService class.
-
+   *
    * @param auctionRepository the AuctionRepository object.
    */
   public AuctionService(AuctionRepository auctionRepository, OrderRepository orderRepository) {
@@ -40,33 +44,45 @@ public class AuctionService {
 
   /**
    * Method to get all active the auctions in the database.
-
-   * @return List of all active the auctions in the database
+   *
+   * @param page the page number (0-based).
+   * @param size the number of items per page.
+   * @return List of all active the auctions in the database (with pagination).
    */
   @Transactional(readOnly = true)
-  public List<Auction> getAllActiveAuctions() {
-    return auctionRepository.findAllActiveAuctions(LocalDateTime.now());
+  public Page<Auction> getAllActiveAuctions(int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    return auctionRepository.findAllActiveAuctions(LocalDateTime.now(), pageable);
   }
 
   /**
    * Method to get all inactive the auctions in the database.
-
-   * @return List of all inactive the auctions in the database
+   *
+   * @param page the page number (0-based).
+   * @param size the number of items per page.
+   * @return List of all inactive the auctions in the database (with pagination).
    */
   @Transactional(readOnly = true)
-  public List<Auction> getAllInactiveAuctions() {
-    return auctionRepository.findAllByStatusAndEndDateBefore(false, LocalDateTime.now());
+  public Page<Auction> getAllInactiveAuctions(int page, int size) {
+    return auctionRepository.findAllByStatusAndEndDateBefore(
+        false, 
+        LocalDateTime.now(), 
+        PageRequest.of(page, size));
   }
 
   /**
    * Method to get the auction with the specified ID.
-
+   *
    * @param auctionId the ID of the auction.
    * @return the auction with the specified ID.
    */
   @Transactional(readOnly = true)
   public Auction getAuctionById(Long auctionId) {
-    return auctionRepository.findById(auctionId).orElse(null);
+    Auction auction = auctionRepository.findById(auctionId).orElse(null);
+    if (auction == null) {
+      throw new InvalidAuctionException("Auction with ID " + auctionId + " not found.");
+    }
+    return auction;
   }
 
   /**
