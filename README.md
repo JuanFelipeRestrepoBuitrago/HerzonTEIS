@@ -16,21 +16,32 @@ HERZON is a high-end jewelry e-commerce platform bridging Colombian craftsmanshi
 - Java 21
 - Docker 20.0.1 (optional)
 - Maven 3.9.9 (optional)
-- MySQL 8.4.0 (optional)
+- PostgreSQL 16 (optional)
 
 ## Setup
 1. Clone repository:
 ```bash
 git clone https://github.com/JuanFelipeRestrepoBuitrago/HerzonTEIS.git
 ```
-2. Run MySQL server with the docker-compose file at the root of the project:
+2. Run PostgreSQL server with the docker-compose file at the root of the project:
 ```bash
 docker-compose up -d
 ```
-3. Enter to MyPHPAdmin, login with customUser `root` and password `123`, and create a new database named `herzon_db`:
+3. Set the following environment variables in your system:
+   Linux or MacOS:
 ```bash
-http://localhost:8081
+export DATABASE_URL=jdbc:postgresql://localhost:YOUR_DB_PORT/name_of_your_database
+export DATABASE_USER=YOUR_USERNAME
+export DATABASE_PASSWORD=YOUR_PASSWORD
 ```
+Windows:
+```bash
+set DATABASE_URL=jdbc:postgresql://localhost:YOUR_DB_PORT/name_of_your_database
+set DATABASE_USER=YOUR_USERNAME
+set DATABASE_PASSWORD=YOUR_PASSWORD
+```
+Replace `YOUR_DB_PORT`, `YOUR_USERNAME`, and `YOUR_PASSWORD` with your PostgreSQL port, username, and password respectively. The docker-compose file sets the default port to `5432`, the default username to `root`, and the default password to `123`.
+
 4. Optionally, you can run the following command to clean and build the project:
 ```bash
 mvn clean install
@@ -39,22 +50,8 @@ or if you don't have Maven installed:
 ```bash
 ./mvnw clean install
 ```
-5. Set the following environment variables in your system:
-   Linux or MacOS:
-```bash
-export DATABASE_URL=jdbc:mysql://localhost:YOUR_DB_PORT/name_of_your_database
-export DATABASE_USER=YOUR_USERNAME
-export DATABASE_PASSWORD=YOUR_PASSWORD
-```
-Windows:
-```bash
-set DATABASE_URL=jdbc:mysql://localhost:YOUR_DB_PORT/name_of_your_database
-set DATABASE_USER=YOUR_USERNAME
-set DATABASE_PASSWORD=YOUR_PASSWORD
-```
-Replace `YOUR_DB_PORT`, `YOUR_USERNAME`, and `YOUR_PASSWORD` with your MySQL port, username, and password respectively.
 
-6. Execute Migrations with Flyway:
+5. Execute Migrations with Flyway:
 ```bash
 mvn clean flyway:migrate
 ```
@@ -63,7 +60,7 @@ or if you don't have Maven installed:
 ./mvnw clean flyway:migrate
 ```
 
-7. Run the project with Maven:
+6. Run the project with Maven:
 ```bash
 mvn spring-boot:run
 ```
@@ -71,11 +68,11 @@ or if you don't have Maven installed:
 ```bash
 ./mvnw spring-boot:run
 ```
-8. Access the application at:
+7. Access the application at:
 ```bash
 http://localhost:8080
 ```
-9. When you're done, exit the spring-boot application with `Ctrl+C` and stop the MySQL server with:
+8. When you're done, exit the spring-boot application with `Ctrl+C` and stop the MySQL server with:
 ```bash
 docker-compose down
 ```
