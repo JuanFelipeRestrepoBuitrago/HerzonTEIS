@@ -44,7 +44,7 @@ public class Jewel {
   private double price;
 
   @Column(nullable = false)
-  private String imageUrl; // New field for the image URL
+  private String imageUrl;
 
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "created_at", nullable = false, updatable = false)
@@ -73,11 +73,11 @@ public class Jewel {
   /**
    * Constructor with required fields.
    *
-   * @param name     The name of the jewel.
-   * @param category The category of the jewel.
-   * @param details  Additional details about the jewel.
-   * @param price    The price of the jewel.
-   * @param imageUrl The URL of the jewel's image.
+   * @param name the name of the jewel
+   * @param category the category of the jewel
+   * @param details additional details about the jewel
+   * @param price the price of the jewel
+   * @param imageUrl the URL of the jewel's image
    */
   public Jewel(String name, String category, String details, double price, String imageUrl) {
     this.name = name;
@@ -89,7 +89,7 @@ public class Jewel {
   }
 
   /**
-   * Sets the creation and initial modification dates before persisting.
+   * Sets the creation and modification timestamps before persisting the entity.
    */
   @PrePersist
   protected void onCreate() {
@@ -98,7 +98,7 @@ public class Jewel {
   }
 
   /**
-   * Updates the modification date before updating.
+   * Updates the modification timestamp before updating the entity.
    */
   @PreUpdate
   protected void onUpdate() {
@@ -108,7 +108,7 @@ public class Jewel {
   /**
    * Gets the ID of the jewel.
    *
-   * @return The jewel's ID.
+   * @return the jewel's ID
    */
   public Long getId() {
     return id;
@@ -117,7 +117,7 @@ public class Jewel {
   /**
    * Sets the ID of the jewel.
    *
-   * @param id The jewel's ID.
+   * @param id the jewel's ID
    */
   public void setId(Long id) {
     this.id = id;
@@ -126,7 +126,7 @@ public class Jewel {
   /**
    * Gets the name of the jewel.
    *
-   * @return The jewel's name.
+   * @return the jewel's name
    */
   public String getName() {
     return name;
@@ -135,7 +135,7 @@ public class Jewel {
   /**
    * Sets the name of the jewel.
    *
-   * @param name The jewel's name.
+   * @param name the jewel's name
    */
   public void setName(String name) {
     this.name = name;
@@ -144,7 +144,7 @@ public class Jewel {
   /**
    * Gets the category of the jewel.
    *
-   * @return The jewel's category.
+   * @return the jewel's category
    */
   public String getCategory() {
     return category;
@@ -153,7 +153,7 @@ public class Jewel {
   /**
    * Sets the category of the jewel.
    *
-   * @param category The jewel's category.
+   * @param category the jewel's category
    */
   public void setCategory(String category) {
     this.category = category;
@@ -162,7 +162,7 @@ public class Jewel {
   /**
    * Gets the details of the jewel.
    *
-   * @return The jewel's details.
+   * @return the jewel's details
    */
   public String getDetails() {
     return details;
@@ -171,7 +171,7 @@ public class Jewel {
   /**
    * Sets the details of the jewel.
    *
-   * @param details The jewel's details.
+   * @param details the jewel's details
    */
   public void setDetails(String details) {
     this.details = details;
@@ -180,7 +180,7 @@ public class Jewel {
   /**
    * Gets the price of the jewel.
    *
-   * @return The jewel's price.
+   * @return the jewel's price
    */
   public double getPrice() {
     return price;
@@ -189,7 +189,7 @@ public class Jewel {
   /**
    * Sets the price of the jewel.
    *
-   * @param price The jewel's price.
+   * @param price the jewel's price
    */
   public void setPrice(double price) {
     this.price = price;
@@ -198,7 +198,7 @@ public class Jewel {
   /**
    * Gets the image URL of the jewel.
    *
-   * @return The jewel's image URL.
+   * @return the jewel's image URL
    */
   public String getImageUrl() {
     return imageUrl;
@@ -207,7 +207,7 @@ public class Jewel {
   /**
    * Sets the image URL of the jewel.
    *
-   * @param imageUrl The jewel's image URL.
+   * @param imageUrl the jewel's image URL
    */
   public void setImageUrl(String imageUrl) {
     this.imageUrl = imageUrl;
@@ -216,7 +216,7 @@ public class Jewel {
   /**
    * Gets the creation date of the jewel.
    *
-   * @return The jewel's creation date.
+   * @return the jewel's creation date
    */
   public Date getCreatedAt() {
     return createdAt;
@@ -225,7 +225,7 @@ public class Jewel {
   /**
    * Gets the last modification date of the jewel.
    *
-   * @return The jewel's last modification date.
+   * @return the jewel's last modification date
    */
   public Date getModifiedAt() {
     return modifiedAt;

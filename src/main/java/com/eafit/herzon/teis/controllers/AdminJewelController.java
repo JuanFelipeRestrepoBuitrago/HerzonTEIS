@@ -23,15 +23,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AdminJewelController {
 
   @Autowired
-  private JewelService jewelService;
+  private final JewelService jewelService;
+
+  /**
+   * Constructs a new AdminJewelController with the specified JewelService.
+   *
+   * @param jewelService the service to manage jewel operations
+   */
+  @Autowired
+  public AdminJewelController(JewelService jewelService) {
+    this.jewelService = jewelService;
+  }
 
   /**
    * Displays the jewel management page with pagination.
    *
    * @param page the page number (default 0)
    * @param size the number of items per page (default 9)
-   * @param model The model to add attributes to the view.
-   * @return The admin jewels management page.
+   * @param model the model to add attributes to the view
+   * @return the admin jewels management page
    */
   @GetMapping
   public String manageJewels(
@@ -48,8 +58,8 @@ public class AdminJewelController {
   /**
    * Displays the form to create a new jewel.
    *
-   * @param model The model to add attributes to the view.
-   * @return The form view for creating a jewel.
+   * @param model the model to add attributes to the view
+   * @return the form view for creating a jewel
    */
   @GetMapping("/create")
   public String showCreateForm(Model model) {
@@ -60,16 +70,15 @@ public class AdminJewelController {
   /**
    * Handles the creation of a new jewel.
    *
-   * @param jewel The jewel object submitted from the form.
-   * @return Redirects to the jewel management page.
+   * @param jewel the jewel object submitted from the form
+   * @return redirects to the jewel management page
    */
   @PostMapping("/save")
   public String saveJewel(@ModelAttribute Jewel jewel) {
-    // Set default image URL
     jewel.setImageUrl(
         "https://cdn-media.glamira.com/media/product/newgeneration/view/1/sku/15549gisu/"
-            + "diamond/emerald_AA/stone2/diamond-Brillant_AAA/stone3/diamond-Brillant_AAA/"
-            + "alloycolour/yellow.jpg");
+        + "diamond/emerald_AA/stone2/diamond-Brillant_AAA/stone3/diamond-Brillant_AAA/"
+        + "alloycolour/yellow.jpg");
     jewelService.saveJewel(jewel);
     return "redirect:/admin/jewels";
   }
@@ -77,9 +86,9 @@ public class AdminJewelController {
   /**
    * Displays the form to edit an existing jewel.
    *
-   * @param id    The ID of the jewel to edit.
-   * @param model The model to add attributes to the view.
-   * @return The form view for editing a jewel.
+   * @param id the ID of the jewel to edit
+   * @param model the model to add attributes to the view
+   * @return the form view for editing a jewel
    */
   @GetMapping("/edit/{id}")
   public String showEditForm(@PathVariable Long id, Model model) {
@@ -91,10 +100,10 @@ public class AdminJewelController {
   /**
    * Deletes a jewel.
    *
-   * @param id The ID of the jewel to delete.
-   * @return Redirects to the jewel management page.
+   * @param id the ID of the jewel to delete
+   * @return redirects to the jewel management page
    */
-  @GetMapping("/delete/{id}")
+  @PostMapping("/delete/{id}")
   public String deleteJewel(@PathVariable Long id) {
     jewelService.deleteJewel(id);
     return "redirect:/admin/jewels";

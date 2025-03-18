@@ -67,9 +67,9 @@ public class DataLoader implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
     Faker faker = new Faker(new Locale("es"));
-    Random random = new Random();
 
     // Generate users if none exist
+    System.out.println("Checking if users exist...");
     if (userRepository.count() == 0) {
       // Create Admin User
       CustomUser admin = new CustomUser();
@@ -94,28 +94,57 @@ public class DataLoader implements CommandLineRunner {
       }
 
       System.out.println("Initial users (1 ADMIN, 9 USERS) generated.");
+    } else {
+      System.out.println("Users already exist, skipping user generation.");
     }
 
     // Generate jewels if none exist
-    if (jewelRepository.count() == 0) {
+    System.out.println("Checking if jewels exist...");
+    long jewelCount = jewelRepository.count();
+    System.out.println("Current jewel count: " + jewelCount);
+    if (jewelCount == 0) {
+      System.out.println("No jewels found, generating initial jewels...");
+      List<String> jewelCategories = Arrays.asList(
+          "Anillos",
+          "Pulseras",
+          "Pendientes",
+          "Cadenas",
+          "Dijes"
+      );
+      Random random = new Random();
       for (int i = 0; i < 10; i++) {
         Jewel jewel = new Jewel();
         jewel.setName(faker.commerce().productName());
-        jewel.setCategory(faker.commerce().department());
+        String selectedCategory = jewelCategories.get(random.nextInt(jewelCategories.size()));
+        jewel.setCategory(selectedCategory);
         jewel.setDetails(faker.lorem().sentence());
         jewel.setPrice(Double.parseDouble(faker.commerce().price(50, 1000)));
-        jewel.setImageUrl(
-            "https://cdn-media.glamira.com/media/product/newgeneration/view/1/sku/15549gisu/"
-                + "diamond/emerald_AA/stone2/diamond-Brillant_AAA/stone3/diamond-Brillant_AAA/"
-                + "alloycolour/yellow.jpg");
-        jewelRepository.save(jewel);
+        String imageUrlBase = "https://cdn-media.glamira.com/media/product/newgeneration/view/1/sku/15549gisu/";
+        String imageUrlDetailsPart1 = "diamond/emerald_AA/stone2/";
+        String imageUrlDetailsPart2 = "diamond-Brillant_AAA/stone3/diamond-Brillant_AAA/";
+        String imageUrlEnd = "alloycolour/yellow.jpg";
+        String fullImageUrl = imageUrlBase + imageUrlDetailsPart1
+            + imageUrlDetailsPart2 + imageUrlEnd;
+        jewel.setImageUrl(fullImageUrl);
+        System.out.println("Saving jewel: " + jewel.getName() 
+            + ", Category: " + jewel.getCategory());
+        try {
+          jewelRepository.save(jewel);
+        } catch (Exception e) {
+          System.err.println("Error saving jewel: " + e.getMessage());
+          e.printStackTrace();
+        }
       }
 
       System.out.println("Initial jewels generated.");
+    } else {
+      System.out.println("Jewels already exist, skipping jewel generation.");
     }
 
     // Generate auctions if none exist
+    System.out.println("Checking if auctions exist...");
     if (auctionRepository.count() == 0) {
+      Random random = new Random();
       // Active auctions (future dates)
       for (int i = 0; i < 3; i++) {
         double startPrice = Double.parseDouble(faker.commerce().price(50, 1000));
@@ -168,6 +197,7 @@ public class DataLoader implements CommandLineRunner {
         LocalDateTime startDate = LocalDateTime.now().minusDays(7);
         LocalDateTime endDate = startDate.minusDays(1);
 
+        
         Auction auction = new Auction();
         auction.setStartPrice(startPrice);
         auction.setCurrentPrice(startPrice);
@@ -257,14 +287,19 @@ public class DataLoader implements CommandLineRunner {
       }
 
       System.out.println("Initial auctions and offers generated.");
+    } else {
+      System.out.println("Auctions already exist, skipping auction generation.");
     }
 
     // Generate orders if none exist
+    System.out.println("Checking if orders exist...");
     if (orderRepository.count() == 0) {
+      Random random = new Random();
       List<Order.OrderStatus> statuses = Arrays.asList(
           Order.OrderStatus.PENDING,
           Order.OrderStatus.PAID,
-          Order.OrderStatus.CANCELED);
+          Order.OrderStatus.CANCELED
+      );
 
       for (int i = 0; i < 10; i++) {
         Order order = new Order();
@@ -277,6 +312,8 @@ public class DataLoader implements CommandLineRunner {
       }
 
       System.out.println("Initial orders generated.");
+    } else {
+      System.out.println("Orders already exist, skipping order generation.");
     }
   }
 }

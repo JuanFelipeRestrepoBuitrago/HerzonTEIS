@@ -3,14 +3,42 @@
 <head>
   <div th:replace="~{fragments/head :: head}"></div>
   <title>Lista de Joyas</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" /> <!-- Asegúrate de incluir Font Awesome si usas íconos -->
 </head>
 <body>
   <header th:replace="~{fragments/header :: header}"></header>
 
   <main class="container my-5 py-4">
     <h1 class="text-gold text-center mb-4" style="font-size: 2.5rem; font-weight: 700;">Lista de Joyas</h1>
-    
-    <div th:if="${jewels}" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+    <form action="/jewels/filter" method="get" class="filter-panel">
+      <div class="row mb-3 align-items-center">
+        <div class="col-md-4 mb-3 mb-md-0">
+          <input type="text" name="search" id="search" class="form-control jewel-input" placeholder="Buscar por nombre..." style="color: var(--blanco);" />
+        </div>
+        <div class="col-md-3 mb-3 mb-md-0">
+          <select name="category" id="categoryFilter" class="form-control custom-select" style="color: var(--blanco);">
+            <option value="">Filtrar por categoría</option>
+            <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
+          </select>
+        </div>
+        <div class="col-md-3 mb-3 mb-md-0">
+          <select name="price" id="priceFilter" class="form-control custom-select" style="color: var(--blanco);">
+            <option value="">Filtrar por precio</option>
+            <option value="low">Menor a Mayor</option>
+            <option value="high">Mayor a Menor</option>
+          </select>
+        </div>
+        <div class="col-md-2 d-flex gap-2">
+          <button type="submit" class="btn btn-gold2">Aplicar Filtros</button>
+          <button type="button" id="clearFilter" class="btn btn-secondary">Limpiar Filtros</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- 🎯 Visualización de las Joyas -->
+    <div id="jewels-container" class="row g-4">
       <div class="col" th:each="jewel : ${jewels}">
         <div class="card h-100 shadow-sm border-0">
           <img th:src="${jewel.imageUrl}" alt="Jewel Image" class="card-img-top img-fluid" />
@@ -24,39 +52,15 @@
       </div>
     </div>
 
-    <div th:unless="${jewels}" class="text-center py-5">
-      <div class="empty-state">
-        <i class="fas fa-gem fa-3x text-gold mb-3"></i>
-        <h3 class="text-white">No hay joyas disponibles</h3>
-        <p class="text-muted">Por favor, revisa más tarde o contacta al administrador.</p>
-        <a href="/" class="btn btn-gold mt-3">Volver al Inicio</a>
-      </div>
+    <div class="text-center py-5" id="no-results" th:if="${#lists.isEmpty(jewels)}">
+      <i class="fas fa-gem fa-3x text-gold mb-3"></i>
+      <h3 class="text-white">No se encontraron joyas</h3>
+      <p class="text-muted">Prueba con otro filtro o búsqueda.</p>
     </div>
-
-    <nav aria-label="Page navigation" th:if="${totalPages > 1}">
-      <ul class="pagination justify-content-center mt-4">
-        <!-- Anterior -->
-        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-          <a class="page-link" th:href="@{/jewels(page=${currentPage - 1})}">Anterior</a>
-        </li>
-    
-        <!-- Numeración de páginas -->
-        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
-            th:classappend="${pageNumber == currentPage} ? 'active'">
-          <a class="page-link" th:href="@{/jewels(page=${pageNumber})}" th:text="${pageNumber + 1}"
-             th:style="${pageNumber == currentPage} ? 'background-color: #D4AF37; color: #FFFFFF;' : ''"></a>
-        </li>
-    
-        <!-- Siguiente -->
-        <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
-          <a class="page-link" th:href="@{/jewels(page=${currentPage + 1})}">Siguiente</a>
-        </li>
-      </ul>
-    </nav>
   </main>
 
   <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-  <div th:replace="~{fragments/scripts :: scripts}"></div>
+  <script src="/js/filter.js"></script>
 </body>
 </html>

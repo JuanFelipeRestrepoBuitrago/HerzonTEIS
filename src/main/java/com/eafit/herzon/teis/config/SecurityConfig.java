@@ -103,6 +103,9 @@ public class SecurityConfig {
         .logout(logout -> logout
             .logoutUrl("/logout")
             .logoutSuccessUrl("/login?logout=true")
+            .invalidateHttpSession(true) // Force session invalidation
+            .deleteCookies("JSESSIONID", "XSRF-TOKEN") // Clear auth cookies
+            .clearAuthentication(true) // Explicit auth clearance
             .permitAll());
 
     return http.build();
