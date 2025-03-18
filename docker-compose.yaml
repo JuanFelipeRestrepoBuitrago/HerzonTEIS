@@ -1,31 +1,32 @@
 version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8.4.0
-    container_name: mysql
+  postgres:
+    image: postgres:16
+    container_name: postgres
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 123
-      MYSQL_DATABASE: herzon_db
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: herzon_db
       TZ: "America/Bogota"
     ports:
-      - "3306:3306"
+      - "5432:5432"
     networks:
-      - mysql_network
+      - postgres_network
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
-    container_name: phpmyadmin-container
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
     restart: always
     environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
+      PGADMIN_DEFAULT_EMAIL: admin@herzon.com
+      PGADMIN_DEFAULT_PASSWORD: 123
     ports:
       - "8081:80"
     networks:
-      - mysql_network
+      - postgres_network
 
 networks:
-  mysql_network:
+  postgres_network:
     driver: bridge

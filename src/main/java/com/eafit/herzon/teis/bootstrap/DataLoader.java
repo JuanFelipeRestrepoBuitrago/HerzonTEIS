@@ -1,10 +1,10 @@
 package com.eafit.herzon.teis.bootstrap;
 
 import com.eafit.herzon.teis.models.Auction;
+import com.eafit.herzon.teis.models.CustomUser;
 import com.eafit.herzon.teis.models.Jewel;
 import com.eafit.herzon.teis.models.Offer;
 import com.eafit.herzon.teis.models.Order;
-import com.eafit.herzon.teis.models.User;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
 import com.eafit.herzon.teis.repositories.JewelRepository;
 import com.eafit.herzon.teis.repositories.OrderRepository;
@@ -37,18 +37,17 @@ public class DataLoader implements CommandLineRunner {
    * Constructs a new DataLoader with the required dependencies.
    *
    * @param auctionRepository the repository for managing auctions
-   * @param orderRepository the repository for managing orders
-   * @param jewelRepository the repository for managing jewels
-   * @param userRepository the repository for managing users
-   * @param passwordEncoder the encoder for hashing passwords
+   * @param orderRepository   the repository for managing orders
+   * @param jewelRepository   the repository for managing jewels
+   * @param userRepository    the repository for managing users
+   * @param passwordEncoder   the encoder for hashing passwords
    */
   public DataLoader(
       AuctionRepository auctionRepository,
       OrderRepository orderRepository,
       JewelRepository jewelRepository,
       UserRepository userRepository,
-      PasswordEncoder passwordEncoder
-  ) {
+      PasswordEncoder passwordEncoder) {
     this.auctionRepository = auctionRepository;
     this.orderRepository = orderRepository;
     this.jewelRepository = jewelRepository;
@@ -58,7 +57,8 @@ public class DataLoader implements CommandLineRunner {
 
   /**
    * Loads initial data into the database if it does not already exist.
-   * Generates users (1 admin and 9 regular users), jewels, auctions (active and ended),
+   * Generates users (1 admin and 9 regular users), jewels, auctions (active and
+   * ended),
    * and orders with various statuses.
    *
    * @param args the command-line arguments passed to the application
@@ -72,25 +72,24 @@ public class DataLoader implements CommandLineRunner {
     System.out.println("Checking if users exist...");
     if (userRepository.count() == 0) {
       // Create Admin User
-      User admin = new User();
+      CustomUser admin = new CustomUser();
       admin.setUsername("admin");
       admin.setName("Administrator");
       admin.setEmail("admin@herzon.com");
       admin.setAddress("Calle 123, Ciudad");
       admin.setPassword(passwordEncoder.encode("123"));
-      admin.setRole(User.Role.ADMIN);
+      admin.setRole(CustomUser.Role.ADMIN);
       userRepository.save(admin);
 
       // Create 9 Normal Users
-      Random random = new Random();
       for (int i = 0; i < 9; i++) {
-        User user = new User();
+        CustomUser user = new CustomUser();
         user.setUsername(faker.name().username());
         user.setName(faker.name().fullName());
         user.setEmail(faker.internet().emailAddress());
         user.setAddress(faker.address().fullAddress());
         user.setPassword(passwordEncoder.encode(faker.internet().password(8, 12)));
-        user.setRole(User.Role.USER);
+        user.setRole(CustomUser.Role.USER);
         userRepository.save(user);
       }
 
@@ -159,12 +158,33 @@ public class DataLoader implements CommandLineRunner {
         auction.setEndDate(endDate);
         auction.setStatus(true);
 
+        // Set a random jewel for the auction
+        List<Jewel> jewels = jewelRepository.findAll();
+        Jewel jewel = jewels.get(random.nextInt(jewels.size()));
+        auction.setJewel(jewel);
+
+        // Generate 2-5 offers per auction
         int numOffers = random.nextInt(4) + 2;
         for (int j = 0; j < numOffers; j++) {
           double offerPrice = startPrice + random.nextDouble() * 500;
           Offer offer = new Offer();
           offer.setOfferPrice(offerPrice);
           offer.setAuction(auction);
+
+          if (offerPrice > auction.getCurrentPrice()) {
+            auction.setCurrentPrice(offerPrice);
+            offer.setState(true);
+            // Set Auction active offers to false
+            for (Offer activeOffer : auction.getOffers()) {
+              activeOffer.setState(false);
+            }
+          }
+
+          // Set no admin user as the offer creator
+          List<CustomUser> users = userRepository.findAllByRole(CustomUser.Role.USER);
+          CustomUser user = users.get(random.nextInt(users.size()));
+          offer.setUser(user);
+
           auction.getOffers().add(offer);
         }
 
@@ -177,6 +197,7 @@ public class DataLoader implements CommandLineRunner {
         LocalDateTime startDate = LocalDateTime.now().minusDays(7);
         LocalDateTime endDate = startDate.minusDays(1);
 
+        
         Auction auction = new Auction();
         auction.setStartPrice(startPrice);
         auction.setCurrentPrice(startPrice);
@@ -184,12 +205,81 @@ public class DataLoader implements CommandLineRunner {
         auction.setEndDate(endDate);
         auction.setStatus(false);
 
+        // Set a random jewel for the auction
+        List<Jewel> jewels = jewelRepository.findAll();
+        Jewel jewel = jewels.get(random.nextInt(jewels.size()));
+        auction.setJewel(jewel);
+
+        // Generate 2-5 offers per auction
         int numOffers = random.nextInt(4) + 2;
         for (int j = 0; j < numOffers; j++) {
           double offerPrice = startPrice + random.nextDouble() * 500;
           Offer offer = new Offer();
           offer.setOfferPrice(offerPrice);
           offer.setAuction(auction);
+
+          if (offerPrice > auction.getCurrentPrice()) {
+            auction.setCurrentPrice(offerPrice);
+            offer.setState(true);
+            // Set Auction active offers to false
+            for (Offer activeOffer : auction.getOffers()) {
+              activeOffer.setState(false);
+            }
+          }
+
+          // Set no admin user as the offer creator
+          List<CustomUser> users = userRepository.findAllByRole(CustomUser.Role.USER);
+          CustomUser user = users.get(random.nextInt(users.size()));
+          offer.setUser(user);
+
+          auction.getOffers().add(offer);
+        }
+
+        // Save auction (and cascade-save offers if configured)
+        auctionRepository.save(auction);
+      }
+
+      // Generate 3 auctions which will end in 5 minutes, 10 minutes, and 15 minutes
+      for (int i = 0; i < 3; i++) {
+        // Create auction
+        double startPrice = Double.parseDouble(faker.commerce().price(50, 1000));
+        LocalDateTime startDate = LocalDateTime.now();
+        LocalDateTime endDate = startDate.plusMinutes(5 * i + 5);
+
+        Auction auction = new Auction();
+        auction.setStartPrice(startPrice);
+        auction.setCurrentPrice(startPrice);
+        auction.setStartDate(startDate);
+        auction.setEndDate(endDate);
+        auction.setStatus(true);
+
+        // Set a random jewel for the auction
+        List<Jewel> jewels = jewelRepository.findAll();
+        Jewel jewel = jewels.get(random.nextInt(jewels.size()));
+        auction.setJewel(jewel);
+
+        // Generate 2-5 offers per auction
+        int numOffers = random.nextInt(4) + 2;
+        for (int j = 0; j < numOffers; j++) {
+          double offerPrice = startPrice + random.nextDouble() * 500;
+          Offer offer = new Offer();
+          offer.setOfferPrice(offerPrice);
+          offer.setAuction(auction);
+
+          if (offerPrice > auction.getCurrentPrice()) {
+            auction.setCurrentPrice(offerPrice);
+            offer.setState(true);
+            // Set Auction active offers to false
+            for (Offer activeOffer : auction.getOffers()) {
+              activeOffer.setState(false);
+            }
+          }
+
+          // Set no admin user as the offer creator
+          List<CustomUser> users = userRepository.findAllByRole(CustomUser.Role.USER);
+          CustomUser user = users.get(random.nextInt(users.size()));
+          offer.setUser(user);
+
           auction.getOffers().add(offer);
         }
 
@@ -215,8 +305,8 @@ public class DataLoader implements CommandLineRunner {
         Order order = new Order();
         order.setTotal(Double.parseDouble(faker.commerce().price(100, 2000)));
         Order.OrderStatus status = statuses.get(
-            random.nextInt(i < 7 ? 3 : 2)
-        );
+            // First 5 orders get PENDING, last 5 get PAID/CANCELED
+            random.nextInt(i < 5 ? 1 : 3) % statuses.size());
         order.setStatus(status);
         orderRepository.save(order);
       }

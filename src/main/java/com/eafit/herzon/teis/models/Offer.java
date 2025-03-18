@@ -2,6 +2,7 @@ package com.eafit.herzon.teis.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -49,12 +50,12 @@ public class Offer {
   @JoinColumn(name = "auction_id", nullable = false)
   private Auction auction;
 
-  // /**
-  //  * The user who made the offer.
-  //  */
-  // @ManyToOne(fetch = FetchType.EAGER, optional = false)
-  // @JoinColumn(name = "user_id", nullable = false)
-  // private User user;
+  /**
+   * The user who made the offer.
+   */
+  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @JoinColumn(name = "user_id", nullable = false)
+  private CustomUser user;
 
   /**
    * The price offered by the user.
@@ -71,38 +72,43 @@ public class Offer {
   /**
    * Default constructor required by JPA.
    */
-  public Offer() {}
+  public Offer() {
+  }
 
   /**
    * Creates a new offer with the specified offer price, state, and
    * auction.
-
+   *
    * @param offerPrice the price offered by the user.
-   * @param state the state of the offer.
-   * @param auction the auction for which the offer was made.
+   * @param state      the state of the offer.
+   * @param auction    the auction for which the offer was made.
+   * @param user       the user who made the offer.
    */
-  public Offer(double offerPrice, boolean state, Auction auction) {
+  public Offer(double offerPrice, boolean state, Auction auction, CustomUser user) {
     this.auction = auction;
     this.offerPrice = offerPrice;
     this.state = state;
+    this.user = user;
   }
 
   /**
    * Creates a new offer with the specified offer price, and
    * auction. The state of the offer is set to true by default.
-
+   *
    * @param offerPrice the price offered by the user.
-   * @param auction the auction for which the offer was made.
+   * @param auction    the auction for which the offer was made.
+   * @param user       the user who made the offer.
    */
-  public Offer(double offerPrice, Auction auction) {
+  public Offer(double offerPrice, Auction auction, CustomUser user) {
     this.auction = auction;
     this.offerPrice = offerPrice;
     this.state = true;
+    this.user = user;
   }
 
   /**
    * Returns the ID of the offer.
-
+   *
    * @return the ID of the offer.
    */
   public Long getId() {
@@ -111,7 +117,7 @@ public class Offer {
 
   /**
    * Returns the date and time when the offer was created.
-
+   *
    * @return the date and time when the offer was created.
    */
   public LocalDateTime getCreatedAt() {
@@ -120,7 +126,7 @@ public class Offer {
 
   /**
    * Returns the date and time when the offer was last updated.
-
+   *
    * @return the date and time when the offer was last updated.
    */
   public LocalDateTime getModifiedAt() {
@@ -129,25 +135,25 @@ public class Offer {
 
   /**
    * Returns the auction for which the offer was made.
-
+   *
    * @return the auction for which the offer was made.
    */
   public Auction getAuction() {
     return auction;
   }
 
-  // /**
-  //  * Returns the user who made the offer.
-
-  //  * @return the user who made the offer.
-  //  */
-  // public User getUser() {
-  //   return user;
-  // }
+  /**
+   * Returns the user who made the offer.
+   *
+   * @return the user who made the offer.
+   */
+  public CustomUser getUser() {
+    return user;
+  }
 
   /**
    * Returns the price offered by the user.
-
+   *
    * @return the price offered by the user.
    */
   public Double getOfferPrice() {
@@ -156,7 +162,7 @@ public class Offer {
 
   /**
    * Returns the state of the offer.
-
+   *
    * @return the state of the offer.
    */
   public boolean getState() {
@@ -165,7 +171,7 @@ public class Offer {
 
   /**
    * Sets the state of the offer.
-
+   *
    * @param state the state of the offer.
    */
   public void setState(boolean state) {
@@ -174,25 +180,25 @@ public class Offer {
 
   /**
    * Sets the price offered by the user.
-
+   *
    * @param offerPrice the price offered by the user.
    */
   public void setOfferPrice(Double offerPrice) {
     this.offerPrice = offerPrice;
   }
 
-  // /**
-  //  * Sets the user who made the offer.
-
-  //  * @param user the user who made the offer.
-  //  */
-  // public void setUser(User user) {
-  //   this.user = user;
-  // }
+  /**
+   * Sets the user who made the offer.
+   *
+   * @param user the user who made the offer.
+   */
+  public void setUser(CustomUser user) {
+    this.user = user;
+  }
 
   /**
    * Sets the auction for which the offer was made.
-
+   *
    * @param auction the auction for which the offer was made.
    */
   public void setAuction(Auction auction) {

@@ -8,10 +8,10 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-// import jakarta.persistence.JoinColumn;
-// import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,12 +72,12 @@ public class Auction {
   @Column(name = "current_price", nullable = false)
   private Double currentPrice;
 
-  // /**
-  //  * The Jewel associated with the auction.
-  //  */
-  // @ManyToOne(fetch = FetchType.EAGER, optional = false)
-  // @JoinColumn(name = "jewel_id", nullable = false)
-  // private Jewel jewel;
+  /**
+   * The Jewel associated with the auction.
+   */
+  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @JoinColumn(name = "jewel_id", nullable = false)
+  private Jewel jewel;
 
   /**
    * The list of offers which have been made to the auction.
@@ -103,28 +103,29 @@ public class Auction {
 
   /**
    * Constructor for the Auction class.
-
+   *
    * @param startDate The date and time when the auction starts.
    * @param endDate The date and time when the auction ends.
    * @param startPrice The minimum or start price of the auction.
    * @param currentPrice The current price of the auction.
+   * @param jewel The Jewel associated with the auction.
    */
   public Auction(
       LocalDateTime startDate, LocalDateTime endDate, 
-      Double startPrice, Double currentPrice //, Jewel
+      Double startPrice, Double currentPrice, Jewel jewel
   ) { 
     this.startDate = startDate;
     this.endDate = endDate;
     this.startPrice = startPrice;
     this.currentPrice = currentPrice;
-    // this.jewel = jewel;
+    this.jewel = jewel;
     this.offers = new ArrayList<>();
     this.status = true;
   }
 
   /**
    * Returns the ID of the auction.
-
+   *
    * @return The ID of the auction.
    */
   public Long getId() {
@@ -133,7 +134,7 @@ public class Auction {
 
   /**
    * Returns the date and time when the auction was created.
-
+   *
    * @return The date and time when the auction was created.
    */
   public LocalDateTime getCreatedAt() {
@@ -142,7 +143,7 @@ public class Auction {
 
   /**
    * Returns the date and time when the auction was last updated.
-
+   *
    * @return The date and time when the auction was last updated.
    */
   public LocalDateTime getModifiedAt() {
@@ -151,7 +152,7 @@ public class Auction {
 
   /**
    * Returns the date and time when the auction starts.
-
+   *
    * @return The date and time when the auction starts.
    */
   public LocalDateTime getStartDate() {
@@ -160,7 +161,7 @@ public class Auction {
 
   /**
    * Returns the date and time when the auction ends.
-
+   *
    * @return The date and time when the auction ends.
    */
   public LocalDateTime getEndDate() {
@@ -169,7 +170,7 @@ public class Auction {
 
   /**
    * Returns the minimum or start price of the auction.
-
+   *
    * @return The minimum or start price of the auction.
    */
   public Double getStartPrice() {
@@ -178,25 +179,25 @@ public class Auction {
 
   /**
    * Returns the current price of the auction.
-
+   *
    * @return The current price of the auction.
    */
   public Double getCurrentPrice() {
     return currentPrice;
   }
 
-  // /**
-  //  * Returns the Jewel associated with the auction.
-  
-  //  * @return The Jewel associated with the auction.
-  //  */
-  // public Jewel getJewel() {
-  //   return jewel;
-  // }
+  /**
+   * Returns the Jewel associated with the auction.
+   *
+   * @return The Jewel associated with the auction.
+   */
+  public Jewel getJewel() {
+    return jewel;
+  }
 
   /**
    * Returns the list of offers which have been made to the auction.
-
+   *
    * @return The list of offers which have been made to the auction.
    */
   public List<Offer> getOffers() {
@@ -205,7 +206,7 @@ public class Auction {
 
   /**
    * Returns the status of the Auction. True if the auction is active, false otherwise.
-
+   *
    * @return The status of the Auction. True if the auction is active, false otherwise.
    */
   public boolean getStatus() {
@@ -214,7 +215,7 @@ public class Auction {
 
   /**
    * Sets the status of the Auction. True if the auction is active, false otherwise.
-
+   *
    * @param status The status of the Auction. True if the auction is active, false otherwise.
    */
   public void setStatus(boolean status) {
@@ -223,7 +224,7 @@ public class Auction {
 
   /**
    * Sets the date and time when the auction starts.
-
+   *
    * @param startDate The date and time when the auction starts.
    */
   public void setStartDate(LocalDateTime startDate) {
@@ -232,7 +233,7 @@ public class Auction {
 
   /**
    * Sets the date and time when the auction ends.
-
+   *
    * @param endDate The date and time when the auction ends.
    */
   public void setEndDate(LocalDateTime endDate) {
@@ -241,7 +242,7 @@ public class Auction {
 
   /**
    * Sets the minimum or start price of the auction.
-
+   *
    * @param startPrice The minimum or start price of the auction.
    */
   public void setStartPrice(Double startPrice) {
@@ -250,25 +251,25 @@ public class Auction {
 
   /**
    * Sets the current price of the auction.
-
+   *
    * @param currentPrice The current price of the auction.
    */
   public void setCurrentPrice(Double currentPrice) {
     this.currentPrice = currentPrice;
   }
 
-  // /**
-  //  * Sets the Jewel associated with the auction.
-
-  //  * @param jewel The Jewel associated with the auction.
-  //  */
-  // public void setJewel(Jewel jewel) {
-  //   this.jewel = jewel;
-  // }
+  /**
+   * Sets the Jewel associated with the auction.
+   *
+   * @param jewel The Jewel associated with the auction.
+   */
+  public void setJewel(Jewel jewel) {
+    this.jewel = jewel;
+  }
 
   /**
    * Sets the list of offers which have been made to the auction.
-
+   *
    * @param offers The list of offers which have been made to the auction.
    */
   public void setOffers(List<Offer> offers) {

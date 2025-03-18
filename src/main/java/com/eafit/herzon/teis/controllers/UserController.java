@@ -1,10 +1,14 @@
 package com.eafit.herzon.teis.controllers;
 
-import com.eafit.herzon.teis.models.User;
+import com.eafit.herzon.teis.dto.UserForm;
+import com.eafit.herzon.teis.exceptions.InvalidUserException;
+import com.eafit.herzon.teis.models.CustomUser;
 import com.eafit.herzon.teis.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,26 +31,35 @@ public class UserController {
    */
   @GetMapping("/register")
   public String getRegisterPage(Model model) {
-    model.addAttribute("user", new User());
+    model.addAttribute("userForm", new UserForm());
     return "users/register"; // Coincide con templates/users/register.html
   }
 
   /**
    * Handles user registration requests from the form.
    *
-   * @param user the user data from the form
+   * @param userForm           the user data from the form
    * @param redirectAttributes attributes for passing flash messages
-   * @return a redirect to the login page on success, or back to register on failure
+   * @return a redirect to the login page on success, or back to register on
+   *         failure
    */
   @PostMapping("/api/users/register")
-  public String registerUser(@ModelAttribute User user,
+  public String registerUser(
+      @Valid @ModelAttribute("userForm") UserForm userForm,
+      BindingResult bindingResult,
       RedirectAttributes redirectAttributes) {
+    if (bindingResult.hasErrors()) {
+      redirectAttributes.addFlashAttribute("error",
+          "Por favor, corrija los errores en el formulario.");
+      return "redirect:/register";
+    }
+
     try {
-      userService.register(user);
+      userService.register(userForm);
       redirectAttributes.addFlashAttribute("success",
           "¡Usuario registrado correctamente! Inicia sesión.");
       return "redirect:/login";
-    } catch (IllegalArgumentException e) {
+    } catch (InvalidUserException e) {
       redirectAttributes.addFlashAttribute("error", e.getMessage());
       return "redirect:/register";
     }

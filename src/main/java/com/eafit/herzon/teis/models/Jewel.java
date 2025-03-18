@@ -1,16 +1,24 @@
 package com.eafit.herzon.teis.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * Represents a jewelry item in the system.
@@ -47,9 +55,19 @@ public class Jewel {
   private Date modifiedAt;
 
   /**
+   * The list of auctions which have been made to the jewel.
+   */
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "jewel", 
+      cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
+  @Fetch(FetchMode.SUBSELECT)
+  private List<Auction> auctions;
+
+  /**
    * Default constructor required by JPA.
    */
   public Jewel() {
+    this.auctions = new ArrayList<>();
   }
 
   /**
@@ -67,6 +85,7 @@ public class Jewel {
     this.details = details;
     this.price = price;
     this.imageUrl = imageUrl;
+    this.auctions = new ArrayList<>();
   }
 
   /**
@@ -210,5 +229,23 @@ public class Jewel {
    */
   public Date getModifiedAt() {
     return modifiedAt;
+  }
+
+  /**
+   * Gets the list of auctions associated with the jewel.
+   *
+   * @return The list of auctions.
+   */
+  public List<Auction> getAuctions() {
+    return auctions;
+  }
+
+  /**
+   * Sets the list of auctions associated with the jewel.
+   *
+   * @param auctions The list of auctions.
+   */
+  public void setAuctions(List<Auction> auctions) {
+    this.auctions = auctions;
   }
 }

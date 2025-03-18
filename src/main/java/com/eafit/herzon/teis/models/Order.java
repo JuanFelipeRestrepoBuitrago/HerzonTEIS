@@ -43,7 +43,7 @@ public class Order {
   // /**
   // * The list of cart items in the order.
   // */
-  // @OneToMany(fetch = FetchType.EAGER, mappedBy = "cart_items",
+  // @OneToMany(fetch = FetchType.EAGER, mappedBy = "cart_item",
   // cascade = CascadeType.ALL, orphanRemoval = true)
   // @JsonIgnore
   // @Fetch(FetchMode.SUBSELECT)
@@ -87,7 +87,7 @@ public class Order {
   /**
    * Creates a new order with the specified total price.
    * The state of the order is set to true by default.
-
+   *
    * @param total the total price of the order.
    */
   public Order(Double total) {
@@ -97,7 +97,7 @@ public class Order {
 
   /**
    * Returns the ID of the offer.
-
+   *
    * @return the ID of the offer.
    */
   public Long getId() {
@@ -106,7 +106,7 @@ public class Order {
 
   /**
    * Returns the date and time when the offer was created.
-
+   *
    * @return the date and time when the offer was created.
    */
   public LocalDateTime getCreatedAt() {
@@ -115,7 +115,7 @@ public class Order {
 
   /**
    * Returns the date and time when the offer was last updated.
-
+   *
    * @return the date and time when the offer was last updated.
    */
   public LocalDateTime getModifiedAt() {
@@ -142,7 +142,7 @@ public class Order {
 
   /**
    * Returns the total price of the order.
-
+   *
    * @return the total price of the order.
    */
   public Double getTotal() {
@@ -151,7 +151,7 @@ public class Order {
 
   /**
    * Returns the status of the order.
-
+   *
    * @return the status of the order.
    */
   public OrderStatus getStatus() {
@@ -160,7 +160,7 @@ public class Order {
 
   /**
    * Sets the status of the order.
-
+   *
    * @param status the status of the order.
    */
   public void setStatus(OrderStatus status) {
@@ -187,7 +187,7 @@ public class Order {
 
   /**
    * Sets the total price of the order.
-
+   *
    * @param total the total price of the order.
    */
   public void setTotal(Double total) {
