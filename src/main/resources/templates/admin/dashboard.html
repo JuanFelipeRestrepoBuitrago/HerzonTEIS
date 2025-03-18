@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <div th:replace="~{fragments/head :: head}"></div>
   <title>Panel de Administración</title>
 </head>
+
 <body>
   <!-- Incluir el header -->
   <header th:replace="~{fragments/header :: header}"></header>
@@ -40,6 +42,18 @@
           </div>
         </div>
       </div>
+
+      <!-- Gestión de Subastas -->
+      <div class="col-md-6 col-lg-5 mb-4">
+        <div class="jewel-details-card">
+          <div class="card-body dashboard-card">
+            <i class="fas fa-heart fa-4x" style="color: var(--dorado);"></i>
+            <h5 class="card-title text-gold">Gestión de Subastas</h5>
+            <p class="card-text text-white">Administra las subastas de la tienda, añade y edita subastas.</p>
+            <a th:href="@{/admin/auctions}" class="btn-gold">Ir a Subastas</a>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 
@@ -49,4 +63,5 @@
   <!-- Incluir scripts -->
   <div th:replace="~{fragments/scripts :: scripts}"></div>
 </body>
+
 </html>

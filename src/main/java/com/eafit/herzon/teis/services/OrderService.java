@@ -85,7 +85,8 @@ public class OrderService {
     }
 
     if (!order.getUser().getUsername().equals(username)) {
-      throw new InvalidOrderException("La orden con el id " + id + " no pertenece al usuario " + username);
+      throw new InvalidOrderException(
+          "La orden con el id " + id + " no pertenece al usuario " + username);
     }
 
     return order;
@@ -103,7 +104,8 @@ public class OrderService {
 
     if (order != null) {
       if (!order.getUser().getUsername().equals(username)) {
-        throw new InvalidOrderException("La orden con el id " + id + " no pertenece al usuario " + username);
+        throw new InvalidOrderException(
+            "La orden con el id " + id + " no pertenece al usuario " + username);
       }
       order.setStatus(OrderStatus.CANCELED);
       orderRepository.save(order);
@@ -124,7 +126,8 @@ public class OrderService {
 
     if (order != null) {
       if (!order.getUser().getUsername().equals(username)) {
-        throw new InvalidOrderException("La orden con el id " + id + " no pertenece al usuario " + username);
+        throw new InvalidOrderException(
+            "La orden con el id " + id + " no pertenece al usuario " + username);
       }
       order.setStatus(OrderStatus.PAID);
       orderRepository.save(order);
