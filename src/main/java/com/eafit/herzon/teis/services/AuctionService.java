@@ -101,9 +101,7 @@ public class AuctionService {
 
       winningOffer.ifPresent(offer -> {
         // Create order for winner
-        Order order = new Order();
-        order.setTotal(offer.getOfferPrice());
-        order.setStatus(Order.OrderStatus.PENDING);
+        Order order = new Order(offer.getOfferPrice(), offer.getUser());
         orderRepository.save(order);
       });
 

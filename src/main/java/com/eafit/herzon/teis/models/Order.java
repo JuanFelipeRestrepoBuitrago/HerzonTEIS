@@ -92,10 +92,12 @@ public class Order {
    * The state of the order is set to true by default.
    *
    * @param total the total price of the order.
+   * @param user  the user who owns the order.
    */
-  public Order(Double total) {
+  public Order(Double total, CustomUser user) {
     this.total = total;
     this.status = OrderStatus.PENDING;
+    this.user = user;
   }
 
   /**

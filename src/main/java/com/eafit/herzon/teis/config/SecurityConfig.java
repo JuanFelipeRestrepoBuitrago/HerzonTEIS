@@ -87,7 +87,7 @@ public class SecurityConfig {
             .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
             .requestMatchers("/jewels", "/jewels/**").permitAll()
             .requestMatchers("/auction", "/auction/**").permitAll()
-            .requestMatchers("/auctions", "/auctions/**", "/orders", "/orders/**").permitAll()
+            .requestMatchers("/auctions", "/auctions/**").permitAll()
             .requestMatchers("/ws/**", "/ws/auction/websocket/**").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .requestMatchers("/", "/home", "/register", "/api/users/register",
