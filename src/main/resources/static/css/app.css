@@ -914,6 +914,19 @@ main .btn-gold {
 }
 
 /* ==========================================================================
+   Admin Auction Form Classes
+   ========================================================================== */
+/* Admin Auction Form classes for text colors */
+select.form-control.jewel-select {
+  color: black !important;
+}
+
+select.form-control.jewel-select option {
+  color: black !important;
+  background-color: white;
+}
+
+/* ==========================================================================
    Responsive Adjustments
    ========================================================================== */
 /* Media query for medium screens and up */

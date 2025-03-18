@@ -17,15 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class JewelService {
 
-  @Autowired
-  private JewelRepository jewelRepository;
+  private final JewelRepository jewelRepository;
 
   /**
    * Constructs a new JewelService with the specified JewelRepository.
    *
    * @param jewelRepository the repository to manage jewel data
    */
-  @Autowired
   public JewelService(JewelRepository jewelRepository) {
     this.jewelRepository = jewelRepository;
   }
@@ -48,6 +46,16 @@ public class JewelService {
   }
 
   /**
+   * Gets all jewels in the database.
+   *
+   * @return a list of all jewels
+   */
+  @Transactional(readOnly = true)
+  public List<Jewel> getAllJewels() {
+    return jewelRepository.findAll();
+  }
+
+  /**
    * Retrieves all distinct categories.
    *
    * @return a list of distinct category names
@@ -60,12 +68,12 @@ public class JewelService {
   /**
    * Filters jewels based on search, category, price, and sorting criteria.
    *
-   * @param search the search term for jewel names (can be null)
+   * @param search   the search term for jewel names (can be null)
    * @param category the category to filter by (can be null)
-   * @param price the price filter ("high" or "low", can be null)
-   * @param sort the sorting criteria ("name" or "price", can be null)
-   * @param page the page number (zero-based)
-   * @param size the number of items per page
+   * @param price    the price filter ("high" or "low", can be null)
+   * @param sort     the sorting criteria ("name" or "price", can be null)
+   * @param page     the page number (zero-based)
+   * @param size     the number of items per page
    * @return a page of filtered jewels
    * @throws IllegalArgumentException if page or size is invalid
    */
@@ -105,7 +113,7 @@ public class JewelService {
    * @param id the ID of the jewel to retrieve
    * @return the jewel if found
    * @throws IllegalArgumentException if the ID is null or invalid
-   * @throws EntityNotFoundException if the jewel is not found
+   * @throws EntityNotFoundException  if the jewel is not found
    */
   @Transactional(readOnly = true)
   public Jewel getJewelById(Long id) {

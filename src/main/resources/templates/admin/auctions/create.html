@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <div th:replace="~{fragments/head :: head}"></div>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+
+<body>
+  <!-- Incluir el header -->
+  <header th:replace="~{fragments/header :: header}"></header>
+
+  <main class="container mt-5">
+    <div class="text-center mb-5 animate__animated animate__fadeIn">
+      <h1 class="text-gold display-5 fw-bold"><i class="fas fa-gem me-2"></i>Gestionar Subasta</h1>
+      <p class="text-muted lead">Administra los detalles de la subasta con facilidad</p>
+    </div>
+
+    <!-- Alert Messages -->
+    <div class="row w-100 g-0">
+      <div id="messagesAlert" class="d-none py-2" th:data-messages="${#strings.listJoin(messages, '||')}"
+        th:data-error="${error != null ? error : 'false'}">
+        <!-- Individual error alerts will be dynamically inserted here -->
+      </div>
+    </div>
+
+    <div class="jewel-form-container animate__animated animate__fadeInUp">
+      <form th:action="@{/admin/auctions/save}" method="post" th:object="${auctionForm}"
+        class="p-5 rounded-lg shadow-lg bg-dark-green border-gold">
+        <!-- Auction ID (Available when creating) -->
+        <input type="number" hidden th:field="*{auctionId}" th:if="${auction == null}" value="-1" />
+
+        <!-- Auction ID (Only visible when editing) -->
+        <div class="mb-5 position-relative" th:if="${auction}">
+          <label class="form-label text-gold" for="auctionId">
+            <i class="fas fa-hashtag me-2"></i>ID de Subasta
+          </label>
+          <input type="number" class="form-control jewel-input" id="auctionId" th:field="*{auctionId}" readonly
+            th:value="${auction.id}" disabled required>
+          <div class="invalid-feedback">Id de subasta requerido</div>
+        </div>
+
+        <!-- Jewel Selection -->
+        <div class="mb-5 position-relative">
+          <label class="form-label text-gold" for="jewelId">
+            <i class="fas fa-gem me-2"></i>Seleccionar Joya
+          </label>
+          <select class="form-control jewel-select" id="jewelId" th:field="*{jewelId}" required>
+            <option value="" disabled selected>Selecciona una joya</option>
+            <option th:each="jewel : ${jewels}" th:value="${jewel.id}"
+              th:text="${jewel.name + ' (' + jewel.category + ') - $' + #numbers.formatDecimal(jewel.price, 1, 'COMMA', 2, 'POINT')}"
+              th:selected="${auction != null && jewel.id == auction.getJewel.id}">
+            </option>
+          </select>
+          <div class="invalid-feedback">Por favor, selecciona una joya</div>
+        </div>
+
+        <!-- Start Date -->
+        <div class="mb-5 position-relative">
+          <label class="form-label text-gold" for="startDate">
+            <i class="fas fa-clock me-2"></i>Fecha de Inicio
+          </label>
+          <input type="datetime-local" class="form-control jewel-input" id="startDate" th:field="*{startDate}" required
+            min="2023-01-01T00:00" max="2030-12-31T23:59" th:value="${auction != null ? auction.startDate : ''}">
+          <div class="invalid-feedback">Por favor, ingresa una fecha válida</div>
+        </div>
+
+        <!-- End Date -->
+        <div class="mb-5 position-relative">
+          <label class="form-label text-gold" for="endDate">
+            <i class="fas fa-clock me-2"></i>Fecha de Finalización
+          </label>
+          <input type="datetime-local" class="form-control jewel-input" id="endDate" th:field="*{endDate}" required
+            min="2023-01-01T00:00" max="2030-12-31T23:59" th:value="${auction != null ? auction.endDate : ''}">
+          <div class="invalid-feedback">Por favor, ingresa una fecha válida</div>
+        </div>
+
+        <!-- Start Price -->
+        <div class="mb-5 position-relative">
+          <label class="form-label text-gold" for="startPrice">
+            <i class="fas fa-dollar-sign me-2"></i>Precio Inicial
+          </label>
+          <input type="number" step="0.01" class="form-control jewel-input" id="startPrice" th:field="*{startPrice}"
+            required min="0.01" placeholder="Ej. 500.00" th:value="${auction != null ? auction.startPrice : ''}">
+          <div class="invalid-feedback">Por favor, ingresa un precio válido</div>
+        </div>
+
+        <!-- Current Price (Only visible when editing) -->
+        <div class="mb-5 position-relative" th:if="${auction}">
+          <label class="form-label text-gold" for="currentPrice">
+            <i class="fas fa-chart-line me-2"></i>Precio Actual
+          </label>
+          <input type="number" step="0.01" class="form-control jewel-input" id="currentPrice" th:field="*{currentPrice}"
+            th:value="${auction.currentPrice}" required>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center">
+          <button type="submit" class="btn btn-gold btn-lg px-5">
+            <i class="fas fa-floppy-o me-2"></i>Guardar
+          </button>
+          <a th:href="@{/admin/auctions}" class="btn-regresar btn-lg px-5">
+            <i class="fas fa-arrow-left me-2"></i>Regresar
+          </a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer th:replace="~{fragments/footer :: footer}"></footer>
+  <script th:src="@{/js/messages.js}"></script>
+  <script th:src="@{/js/order/show.js}"></script>
+</body>
+
+</html>

@@ -40,8 +40,10 @@
               <th scope="col">Imagen Joya</th>
               <th scope="col">Nombre Joya</th>
               <th scope="col">Subasta ID</th>
+              <th scope="col">Apertura</th>
               <th scope="col">Estado</th>
               <th scope="col">Precio Actual</th>
+              <th scope="col">Cierre</th>
               <th scope="col">Acciones</th>
             </tr>
           </thead>
@@ -53,8 +55,10 @@
               </td>
               <td class="fw-bold text-dark" th:text="${auction.jewel.name}"></td>
               <td class="fw-bold text-dark" th:text="${auction.id}"></td>
+              <td class="fw-bold text-dark" th:text="${#temporals.format(auction.startDate, 'yyyy-MM-dd HH:mm')}"></td>
               <td class="fw-bold text-dark" th:text="${auction.status ? 'Abierto' : 'Cerrado'}"></td>
               <td class="fw-bold text-success" th:text="'$' + ${#numbers.formatDecimal(auction.currentPrice, 1, 'COMMA', 2, 'POINT')}"></td>
+              <td class="fw-bold text-dark" th:text="${#temporals.format(auction.endDate, 'yyyy-MM-dd HH:mm')}"></td>
               <td>
                 <div class="d-flex justify-content-center gap-2">
                   <a th:href="@{/admin/auctions/edit/{id}(id=${auction.id})}" 
