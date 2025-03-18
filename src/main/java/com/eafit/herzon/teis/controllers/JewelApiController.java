@@ -2,10 +2,10 @@ package com.eafit.herzon.teis.controllers;
 
 import com.eafit.herzon.teis.models.Jewel;
 import com.eafit.herzon.teis.services.JewelService;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,12 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin/jewels")
 public class JewelApiController {
 
+  @Autowired
   private final JewelService jewelService;
 
   /**
-   * Constructs a new JewelApiController with the required service.
+   * Constructs a new JewelApiController with the specified JewelService.
    *
-   * @param jewelService the service for jewel operations
+   * @param jewelService the service to manage jewel operations
    */
   @Autowired
   public JewelApiController(JewelService jewelService) {
@@ -63,26 +64,32 @@ public class JewelApiController {
    * @param id the ID of the jewel to delete
    * @return a ResponseEntity indicating success
    */
-  @PostMapping("/delete/{id}")
+  @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteJewel(@PathVariable Long id) {
     jewelService.deleteJewel(id);
     return ResponseEntity.noContent().build();
   }
 
   /**
-   * Searches for jewels by name with pagination.
+   * Searches for jewels by name with pagination and filtering.
    *
-   * @param name the name to search for
+   * @param search the search term (optional)
+   * @param category the category filter (optional)
+   * @param price the price filter ("high" or "low", optional)
+   * @param sort the sort criteria ("name" or "price", optional)
    * @param page the page number (default 0)
    * @param size the number of items per page (default 9)
    * @return a ResponseEntity containing the page of matching jewels
    */
   @GetMapping("/search")
-  public ResponseEntity<Page<Jewel>> searchJewelsByName(
-      @RequestParam String name,
+  public ResponseEntity<Page<Jewel>> searchJewels(
+      @RequestParam(required = false) String search,
+      @RequestParam(required = false) String category,
+      @RequestParam(required = false) String price,
+      @RequestParam(required = false) String sort,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "9") int size) {
-    Page<Jewel> jewelPage = jewelService.findJewelsByName(name, page, size);
+    Page<Jewel> jewelPage = jewelService.filterJewels(search, category, price, sort, page, size);
     return ResponseEntity.ok(jewelPage);
   }
 }
