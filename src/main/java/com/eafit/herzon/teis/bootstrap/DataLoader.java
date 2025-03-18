@@ -1,11 +1,13 @@
 package com.eafit.herzon.teis.bootstrap;
 
 import com.eafit.herzon.teis.models.Auction;
+import com.eafit.herzon.teis.models.CartItem;
 import com.eafit.herzon.teis.models.CustomUser;
 import com.eafit.herzon.teis.models.Jewel;
 import com.eafit.herzon.teis.models.Offer;
 import com.eafit.herzon.teis.models.Order;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
+import com.eafit.herzon.teis.repositories.CartItemRepository;
 import com.eafit.herzon.teis.repositories.JewelRepository;
 import com.eafit.herzon.teis.repositories.OrderRepository;
 import com.eafit.herzon.teis.repositories.UserRepository;
@@ -32,6 +34,7 @@ public class DataLoader implements CommandLineRunner {
   private final JewelRepository jewelRepository;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
+  private final CartItemRepository cartItemRepository;
 
   /**
    * Constructs a new DataLoader with the required dependencies.
@@ -41,18 +44,21 @@ public class DataLoader implements CommandLineRunner {
    * @param jewelRepository   the repository for managing jewels
    * @param userRepository    the repository for managing users
    * @param passwordEncoder   the encoder for hashing passwords
+   * @param cartItemRepository the repository for managing cart items
    */
   public DataLoader(
       AuctionRepository auctionRepository,
       OrderRepository orderRepository,
       JewelRepository jewelRepository,
       UserRepository userRepository,
-      PasswordEncoder passwordEncoder) {
+      PasswordEncoder passwordEncoder,
+      CartItemRepository cartItemRepository) {
     this.auctionRepository = auctionRepository;
     this.orderRepository = orderRepository;
     this.jewelRepository = jewelRepository;
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
+    this.cartItemRepository = cartItemRepository;
   }
 
   /**
@@ -299,17 +305,28 @@ public class DataLoader implements CommandLineRunner {
           Order.OrderStatus.CANCELED);
       // Set no admin user as the offer creator
       List<CustomUser> users = userRepository.findAllByRole(CustomUser.Role.USER);
+      List<Jewel> jewels = jewelRepository.findAll();
       
 
       for (int i = 0; i < 10; i++) {
+        CustomUser user = users.get(random.nextInt(users.size()));
         Order order = new Order();
-        order.setTotal(Double.parseDouble(faker.commerce().price(100, 2000)));
+        order.setUser(user);
+        order.setTotal(0.0);
+        
+        // Add 1-3 cart items to order
+        int numItems = random.nextInt(3) + 1;
+        for (int j = 0; j < numItems; j++) {
+          Jewel jewel = jewels.get(random.nextInt(jewels.size()));
+          CartItem cartItem = new CartItem(jewel, random.nextInt(3) + 1);
+          order.getCartItems().add(cartItem);
+          order.setTotal(order.getTotal() + cartItem.getQuantity() * jewel.getPrice());
+        }
+
         Order.OrderStatus status = statuses.get(
             // First 5 orders get PENDING, last 5 get PAID/CANCELED
             random.nextInt(i < 5 ? 1 : 3) % statuses.size());
         order.setStatus(status);
-        CustomUser user = users.get(random.nextInt(users.size()));
-        order.setUser(user);
         orderRepository.save(order);
       }
 

@@ -1,5 +1,6 @@
 package com.eafit.herzon.teis.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,9 +10,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -42,16 +47,6 @@ public class Order {
   @UpdateTimestamp
   @Column(name = "modified_at", nullable = false)
   private LocalDateTime modifiedAt;
-
-  // /**
-  // * The list of cart items in the order.
-  // */
-  // @OneToMany(fetch = FetchType.EAGER, mappedBy = "cart_item",
-  // cascade = CascadeType.ALL, orphanRemoval = true)
-  // @JsonIgnore
-  // @Fetch(FetchMode.SUBSELECT)
-  // private List<CartItem> cartItems;
-
   /**
    * The user who owns the order.
    */
@@ -80,6 +75,13 @@ public class Order {
   @Enumerated(EnumType.STRING)
   @Column(columnDefinition = "ENUM('PENDING', 'PAID', 'CANCELED')")
   private OrderStatus status;
+
+  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @JoinTable(
+      name = "order_cart_items",
+      joinColumns = @JoinColumn(name = "order_id"),
+      inverseJoinColumns = @JoinColumn(name = "cart_item_id"))
+  private List<CartItem> cartItems = new ArrayList<>();
 
   /**
    * Default constructor required by JPA.
@@ -127,14 +129,14 @@ public class Order {
     return modifiedAt;
   }
 
-  // /**
-  // * Returns the list of cart items in the order.
-
-  // * @return the list of cart items in the order.
-  // */
-  // public List<CartItem> getCartItems() {
-  // return cartItems;
-  // }
+  /**
+  * Returns the list of cart items in the order.
+  *
+  * @return the list of cart items in the order.
+  */
+  public List<CartItem> getCartItems() {
+    return cartItems;
+  }
 
   /**
    * Returns the user who owns the order.
@@ -181,14 +183,14 @@ public class Order {
     this.user = user;
   }
 
-  // /**
-  // * Sets the list of cart items in the order.
-
-  // * @param cartItems the list of cart items in the order.
-  // */
-  // public void setCartItems(List<CartItem> cartItems) {
-  // this.cartItems = cartItems;
-  // }
+  /**
+  * Sets the list of cart items in the order.
+  *
+  * @param cartItems the list of cart items in the order.
+  */
+  public void setCartItems(List<CartItem> cartItems) {
+    this.cartItems = cartItems;
+  }
 
   /**
    * Sets the total price of the order.
