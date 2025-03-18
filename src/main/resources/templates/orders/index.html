@@ -8,19 +8,22 @@
 
   <main class="container my-5 py-4">
     <h1 class="text-gold text-center mb-4" style="font-size: 2.5rem; font-weight: 700;">Lista de Ordenes</h1>
-    
-    <div th:if="${orders}" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-      <div class="col" th:each="order : ${orders}">
-        <div class="card h-100 shadow-sm border-0">
-          <div class="card-body text-center">
-            <h5 class="card-title text-gold" th:text="${'Orden: ' + order.id}"></h5>
-            <p class="card-text fw-bold" th:text="${'$' + #numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT')}"></p>
-            <p class="card-text"><strong>Fecha: </strong><span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></span></p>
-            <a th:href="@{/orders/{id}(id=${order.id})}" class="btn btn-gold mt-3">Ver Detalles</a>
+
+    <div th:if="${orders}" class="container">
+      <div class="row justify-content-center gy-4">
+        <div class="col-md-6 col-lg-4" th:each="order : ${orders}">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center">
+              <h5 class="card-title text-gold" th:text="${'Orden: ' + order.id}"></h5>
+              <p class="card-text fw-bold" th:text="${'$' + #numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT')}"></p>
+              <p class="card-text"><strong>Fecha: </strong><span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></span></p>
+              <a th:href="@{/orders/{id}(id=${order.id})}" class="btn btn-gold mt-3">Ver Detalles</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    
 
     <div th:unless="${orders}" class="text-center py-5">
       <div class="empty-state">

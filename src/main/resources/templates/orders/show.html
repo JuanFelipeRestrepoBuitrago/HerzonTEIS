@@ -11,7 +11,7 @@
   <main class="container my-5 py-4">
     <!-- Alert Messages -->
     <div class="row w-100 g-0">
-      <div id="messagesAlert" class="d-none py-2 w-100">
+      <div id="messagesAlert" class="d-none py-2" th:data-messages="${#strings.listJoin(messages, '||')}" th:data-error="${error != null ? error : 'false'}">
         <!-- Individual error alerts will be dynamically inserted here -->
       </div>
     </div>

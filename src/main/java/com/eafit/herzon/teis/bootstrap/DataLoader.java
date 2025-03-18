@@ -88,7 +88,7 @@ public class DataLoader implements CommandLineRunner {
         user.setName(faker.name().fullName());
         user.setEmail(faker.internet().emailAddress());
         user.setAddress(faker.address().fullAddress());
-        user.setPassword(passwordEncoder.encode(faker.internet().password(8, 12)));
+        user.setPassword(passwordEncoder.encode("123"));
         user.setRole(CustomUser.Role.USER);
         userRepository.save(user);
       }

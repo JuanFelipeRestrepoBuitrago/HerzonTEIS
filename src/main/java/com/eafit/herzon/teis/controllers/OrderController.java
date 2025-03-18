@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,7 +46,8 @@ public class OrderController {
       @RequestParam(defaultValue = "grid") String view, 
       Model model
   ) {
-    Page<Order> orderPage = orderService.getAllOrders(page, size);
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    Page<Order> orderPage = orderService.getAllOrdersByUsername(username, page, size);
     
     model.addAttribute("title", "Ordenes - Herzon");
     model.addAttribute("orders", orderPage.getContent());
@@ -69,9 +71,10 @@ public class OrderController {
   @GetMapping({"/{id}", "/{id}/"})
   public String show(@PathVariable String id, Model model) {
     long orderId = Long.parseLong(id);
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
     try {
-      Order order = orderService.getOrderById(orderId);
+      Order order = orderService.getOrderById(orderId, username);
       model.addAttribute("title", "Orden " + order.getId() + " - Herzone");
       model.addAttribute("order", order);
       model.addAttribute("orderForm", new OrderForm());
@@ -95,8 +98,10 @@ public class OrderController {
       @Valid @ModelAttribute("orderForm") OrderForm orderForm, 
       BindingResult result, Model model, RedirectAttributes redirectAttributes
   ) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
     try {
-      orderService.submit(orderForm.getId());
+      orderService.submit(orderForm.getId(), username);
       redirectAttributes.addFlashAttribute("messages",
           Collections.singletonList("Pago realizado exitosamente"));
       redirectAttributes.addFlashAttribute("error", false);
@@ -122,8 +127,10 @@ public class OrderController {
       @Valid @ModelAttribute("orderForm") OrderForm orderForm, 
       BindingResult result, Model model, RedirectAttributes redirectAttributes
   ) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    
     try {
-      orderService.cancel(orderForm.getId());
+      orderService.cancel(orderForm.getId(), username);
       redirectAttributes.addFlashAttribute("messages",
           Collections.singletonList("Se ha cancelado la orden exitosamente"));
       redirectAttributes.addFlashAttribute("error", false);
