@@ -76,6 +76,7 @@ public class CartService {
    * @param cartItemId the ID of the cart item to remove
    * @throws RuntimeException if the user or cart item is not found
    */
+  @Transactional
   public void removeItem(long userId, long cartItemId) {
     CustomUser customUser = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));

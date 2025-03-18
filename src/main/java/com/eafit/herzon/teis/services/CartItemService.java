@@ -3,7 +3,9 @@ package com.eafit.herzon.teis.services;
 import com.eafit.herzon.teis.models.CartItem;
 import com.eafit.herzon.teis.repositories.CartItemRepository;
 import java.util.Optional;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service class for managing cart item-related operations.
@@ -31,6 +33,7 @@ public class CartItemService {
    * @param id the ID of the cart item to find
    * @return an Optional containing the cart item if found, otherwise empty
    */
+  @Transactional(readOnly = true)
   public Optional<CartItem> findById(Long id) {
     return cartItemRepository.findById(id);
   }
