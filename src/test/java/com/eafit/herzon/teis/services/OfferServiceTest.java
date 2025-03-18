@@ -104,9 +104,6 @@ public class OfferServiceTest {
    */
   @Test
   void placeOffer_ShouldRejectLowerPrice() {
-    // Arrange the mock repository behavior and the necessary data to test
-    Auction auction = new Auction();
-
     when(auctionRepository.findById(anyLong()))
         .thenReturn(Optional.of(auction));
     when(offerRepository.findByAuctionAndStateAndUser(auction, true, user))
@@ -119,7 +116,7 @@ public class OfferServiceTest {
         () -> offerService.placeOffer(150, 1L, user));
 
     assertTrue(exception.getMessage()
-        .contains("must be higher than the current offer price"));
+        .contains("oferta debe ser mayor al precio actual"));
   }
 
   /**
