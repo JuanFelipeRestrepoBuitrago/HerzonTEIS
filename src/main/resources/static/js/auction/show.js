@@ -53,12 +53,16 @@ async function placeOffer() {
   const offerAmount = parseFloat(offerInput.value);
   offerButton.disabled = true;
 
+  const csrfToken = document.querySelector("meta[name='_csrf']").content;
+  const csrfHeader = document.querySelector("meta[name='_csrf_header']").content;
+
   // Make a POST request to place the offer for the auction
   try {
     const response = await fetch(`/auction/offer/place`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        [csrfHeader]: csrfToken
       },
       body: JSON.stringify({
         auctionId: parseInt(auctionId),

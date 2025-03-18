@@ -73,4 +73,16 @@ public class UserService {
   public List<CustomUser> getAllUsers() {
     return userRepository.findAll();
   }
+
+  /**
+   * Retrieves a user by their username.
+   *
+   * @param username the username of the user to retrieve
+   * @return the user with the specified username
+   */
+  @Transactional(readOnly = true)
+  public CustomUser getUserByUsername(String username) {
+    return userRepository.findByUsername(username)
+        .orElseThrow(() -> new InvalidUserException("Usuario no encontrado"));
+  }
 }
