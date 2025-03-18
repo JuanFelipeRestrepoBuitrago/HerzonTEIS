@@ -2,6 +2,7 @@ package com.eafit.herzon.teis.services;
 
 import com.eafit.herzon.teis.exceptions.InvalidAuctionException;
 import com.eafit.herzon.teis.models.Auction;
+import com.eafit.herzon.teis.models.CartItem;
 import com.eafit.herzon.teis.models.Offer;
 import com.eafit.herzon.teis.models.Order;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
@@ -101,9 +102,8 @@ public class AuctionService {
 
       winningOffer.ifPresent(offer -> {
         // Create order for winner
-        Order order = new Order();
-        order.setTotal(offer.getOfferPrice());
-        order.setStatus(Order.OrderStatus.PENDING);
+        Order order = new Order(offer.getOfferPrice(), offer.getUser());
+        order.getCartItems().add(new CartItem(auction.getJewel(), 1));
         orderRepository.save(order);
       });
 
