@@ -73,11 +73,21 @@ public class CustomUser {
   private List<Offer> offers;
 
   /**
+   * The list of orders which owned by the user.
+   */
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", 
+      cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
+  @Fetch(FetchMode.SUBSELECT)
+  private List<Order> orders;
+
+  /**
    * Default constructor.
    */
   public CustomUser() {
     this.creditCards = new ArrayList<>();
     this.offers = new ArrayList<>();
+    this.orders = new ArrayList<>();
   }
 
   /**
@@ -94,6 +104,7 @@ public class CustomUser {
     this.role = Role.USER; // Default role
     this.creditCards = new ArrayList<>();
     this.offers = new ArrayList<>();
+    this.orders = new ArrayList<>();
   }
 
   /**
@@ -307,5 +318,23 @@ public class CustomUser {
    */
   public void setOffers(List<Offer> offers) {
     this.offers = offers;
+  }
+
+  /**
+   * Gets the list of orders owned by the user.
+   *
+   * @return the list of orders
+   */
+  public List<Order> getOrders() {
+    return orders;
+  }
+
+  /**
+   * Sets the list of orders owned by the user.
+   *
+   * @param orders the list of orders to set
+   */
+  public void setOrders(List<Order> orders) {
+    this.orders = orders;
   }
 }

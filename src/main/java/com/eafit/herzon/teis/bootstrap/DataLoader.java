@@ -109,8 +109,7 @@ public class DataLoader implements CommandLineRunner {
           "Pulseras",
           "Pendientes",
           "Cadenas",
-          "Dijes"
-      );
+          "Dijes");
       Random random = new Random();
       for (int i = 0; i < 10; i++) {
         Jewel jewel = new Jewel();
@@ -126,7 +125,7 @@ public class DataLoader implements CommandLineRunner {
         String fullImageUrl = imageUrlBase + imageUrlDetailsPart1
             + imageUrlDetailsPart2 + imageUrlEnd;
         jewel.setImageUrl(fullImageUrl);
-        System.out.println("Saving jewel: " + jewel.getName() 
+        System.out.println("Saving jewel: " + jewel.getName()
             + ", Category: " + jewel.getCategory());
         try {
           jewelRepository.save(jewel);
@@ -197,7 +196,6 @@ public class DataLoader implements CommandLineRunner {
         LocalDateTime startDate = LocalDateTime.now().minusDays(7);
         LocalDateTime endDate = startDate.minusDays(1);
 
-        
         Auction auction = new Auction();
         auction.setStartPrice(startPrice);
         auction.setCurrentPrice(startPrice);
@@ -298,8 +296,10 @@ public class DataLoader implements CommandLineRunner {
       List<Order.OrderStatus> statuses = Arrays.asList(
           Order.OrderStatus.PENDING,
           Order.OrderStatus.PAID,
-          Order.OrderStatus.CANCELED
-      );
+          Order.OrderStatus.CANCELED);
+      // Set no admin user as the offer creator
+      List<CustomUser> users = userRepository.findAllByRole(CustomUser.Role.USER);
+      
 
       for (int i = 0; i < 10; i++) {
         Order order = new Order();
@@ -308,6 +308,8 @@ public class DataLoader implements CommandLineRunner {
             // First 5 orders get PENDING, last 5 get PAID/CANCELED
             random.nextInt(i < 5 ? 1 : 3) % statuses.size());
         order.setStatus(status);
+        CustomUser user = users.get(random.nextInt(users.size()));
+        order.setUser(user);
         orderRepository.save(order);
       }
 
