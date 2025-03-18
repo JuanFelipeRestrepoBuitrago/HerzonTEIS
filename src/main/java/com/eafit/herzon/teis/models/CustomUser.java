@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -59,6 +60,9 @@ public class CustomUser {
   @Column(name = "created_at", nullable = false, updatable = false)
   private Date createdAt;
 
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Cart cart;
+
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "modified_at")
   private Date modifiedAt;
@@ -66,8 +70,8 @@ public class CustomUser {
   /**
    * The list of offers which have been made by the user.
    */
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", 
-      cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "user",
+          cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore
   @Fetch(FetchMode.SUBSELECT)
   private List<Offer> offers;
@@ -337,4 +341,23 @@ public class CustomUser {
   public void setOrders(List<Order> orders) {
     this.orders = orders;
   }
+
+  /**
+   * Gets the user's associated cart.
+   *
+   * @return the cart
+   */
+  public Cart getCart() {
+    return cart;
+  }
+
+  /**
+   * Sets the user's associated cart.
+   *
+   * @param cart the cart to set
+   */
+  public void setCart(Cart cart) {
+    this.cart = cart;
+  }
+
 }
