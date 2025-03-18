@@ -144,12 +144,12 @@ public class AuctionService {
    * Method to save an auction in the database.
    *
    * @param auctionDto the auction to save.
-   * @throws JewelNotFoundException if the jewel associated with the auction is not found.
+   * @throws JewelNotFoundException  if the jewel associated with the auction is
+   *                                 not found.
    * @throws EntityNotFoundException if the auction is not found.
    */
   @Transactional
   public void save(AuctionDto auctionDto) throws JewelNotFoundException, EntityNotFoundException {
-    Auction auction;
     Jewel jewel = jewelRepository.findById(auctionDto.getJewelId())
         .orElse(null);
     if (jewel == null) {
@@ -157,13 +157,19 @@ public class AuctionService {
           "Joya con Id " + auctionDto.getJewelId() + " no encontrada.");
     }
 
+    // Convert date strings to LocalDateTime
+    auctionDto.setStartDate(LocalDateTime.parse(auctionDto.getStartDateString()));
+    auctionDto.setEndDate(LocalDateTime.parse(auctionDto.getEndDateString()));
+
     if (auctionDto.getStartDate().isAfter(auctionDto.getEndDate())) {
       throw new InvalidAuctionException("La fecha de inicio debe ser antes de la fecha de fin.");
     }
 
-    Double currentPrice = auctionDto.getCurrentPrice() == null 
-        ? auctionDto.getStartPrice() : auctionDto.getCurrentPrice();
+    Double currentPrice = auctionDto.getCurrentPrice() == null
+        ? auctionDto.getStartPrice()
+        : auctionDto.getCurrentPrice();
 
+    Auction auction;
     if (auctionDto.getAuctionId() == null) {
       auction = new Auction(
           auctionDto.getStartDate(),
@@ -175,8 +181,8 @@ public class AuctionService {
       auction = auctionRepository.findById(auctionDto.getAuctionId())
           .orElseThrow(
               () -> new EntityNotFoundException(
-                  "Subasta con Id " + auctionDto.getAuctionId() + " no encontrada."
-              ));
+                  "Subasta con Id " + auctionDto.getAuctionId() + " no encontrada."));
+      System.out.println(auctionDto.getStartDate().toString());
       auction.setStartDate(auctionDto.getStartDate());
       auction.setEndDate(auctionDto.getEndDate());
       auction.setStartPrice(auctionDto.getStartPrice());

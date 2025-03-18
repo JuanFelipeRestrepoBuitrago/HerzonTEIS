@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 public class AuctionDto {
   private Long auctionId;
 
-  @NotNull(message = "La fecha de inicio es requerida")
+  
   private LocalDateTime startDate;
 
-  @NotNull(message = "La fecha de fin es requerida")
+  
   private LocalDateTime endDate;
 
   @NotNull(message = "El precio inicial es requerido")
@@ -26,6 +26,11 @@ public class AuctionDto {
 
   @NotNull(message = "El id de la joya es requerido")
   private Long jewelId;
+
+  @NotNull(message = "La fecha de inicio es requerida")
+  private String startDateString;
+  @NotNull(message = "La fecha de fin es requerida")
+  private String endDateString;
 
   /**
    * Constructs a new AuctionDTO with the specified start date, end date, start
@@ -160,5 +165,41 @@ public class AuctionDto {
    */
   public void setJewelId(Long jewelId) {
     this.jewelId = jewelId;
+  }
+
+  /**
+   * Returns the start date of the auction as a string.
+   *
+   * @return the start date of the auction as a string
+   */
+  public String getStartDateString() {
+    return startDateString;
+  }
+
+  /**
+   * Sets the start date of the auction as a string.
+   *
+   * @param startDateString the start date of the auction as a string
+   */
+  public void setStartDateString(String startDateString) {
+    this.startDateString = startDateString;
+  }
+
+  /**
+   * Returns the end date of the auction as a string.
+   *
+   * @return the end date of the auction as a string
+   */
+  public String getEndDateString() {
+    return endDateString;
+  }
+
+  /**
+   * Sets the end date of the auction as a string.
+   *
+   * @param endDateString the end date of the auction as a string
+   */
+  public void setEndDateString(String endDateString) {
+    this.endDateString = endDateString;
   }
 }
