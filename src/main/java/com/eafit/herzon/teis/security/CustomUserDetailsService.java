@@ -1,6 +1,6 @@
 package com.eafit.herzon.teis.security;
 
-import com.eafit.herzon.teis.models.User;
+import com.eafit.herzon.teis.models.CustomUser;
 import com.eafit.herzon.teis.repositories.UserRepository;
 import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +34,17 @@ public class CustomUserDetailsService implements UserDetailsService {
       throw new UsernameNotFoundException("Username cannot be null or empty");
     }
 
-    User user = userRepository.findByUsername(username)
+    CustomUser customUser = userRepository.findByUsername(username)
         .orElseThrow(() -> new UsernameNotFoundException(
             "User not found with username: " + username));
 
-    System.out.println("🔍 Usuario encontrado: " + user.getUsername());
-    System.out.println("🔍 Contraseña en BD: " + user.getPassword());
-    System.out.println("🔍 Rol en BD: " + user.getRole());
+    System.out.println("🔍 Usuario encontrado: " + customUser.getUsername());
+    System.out.println("🔍 Contraseña en BD: " + customUser.getPassword());
+    System.out.println("🔍 Rol en BD: " + customUser.getRole());
 
     return new org.springframework.security.core.userdetails.User(
-        user.getUsername(),
-        user.getPassword(),
-        Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
+        customUser.getUsername(),
+        customUser.getPassword(),
+        Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + customUser.getRole().name())));
   }
 }

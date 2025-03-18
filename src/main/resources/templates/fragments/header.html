@@ -54,7 +54,7 @@
           class="nav-link"
           th:classappend="${currentPage == 'register' ? 'text-gold fw-bold' : 'text-white'}"
         >
-          <i class="fas fa-user-plus"></i> Registrarse
+          <i class="fas fa-customUser-plus"></i> Registrarse
         </a>
 
         <!-- Autenticado -->
@@ -67,7 +67,7 @@
           <i class="fas fa-sign-out-alt"></i> Ordenes
         </a>
         <span sec:authorize="isAuthenticated()" class="nav-link text-white">
-          <i class="fas fa-user"></i>
+          <i class="fas fa-customUser"></i>
           <span sec:authentication="name"></span>
         </span>
         <a

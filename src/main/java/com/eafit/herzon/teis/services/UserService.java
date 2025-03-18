@@ -1,7 +1,7 @@
 package com.eafit.herzon.teis.services;
 
 import com.eafit.herzon.teis.exceptions.UserNotFoundException;
-import com.eafit.herzon.teis.models.User;
+import com.eafit.herzon.teis.models.CustomUser;
 import com.eafit.herzon.teis.repositories.UserRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +34,17 @@ public class UserService {
   /**
    * Saves a new user after encrypting the password.
    *
-   * @param user the user to save
+   * @param customUser the user to save
    * @return the saved user
    * @throws IllegalArgumentException if the user is null
    */
   @Transactional
-  public User save(User user) {
-    if (user == null) {
+  public CustomUser save(CustomUser customUser) {
+    if (customUser == null) {
       throw new IllegalArgumentException("User cannot be null");
     }
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
-    return userRepository.save(user);
+    customUser.setPassword(passwordEncoder.encode(customUser.getPassword()));
+    return userRepository.save(customUser);
   }
 
   /**
@@ -56,7 +56,7 @@ public class UserService {
    * @throws UserNotFoundException if no user is found with the given username
    */
   @Transactional(readOnly = true)
-  public User findByUsername(String username) {
+  public CustomUser findByUsername(String username) {
     validateString(username, "Username");
     return userRepository.findByUsername(username)
         .orElseThrow(() -> new UserNotFoundException(
@@ -72,7 +72,7 @@ public class UserService {
    * @throws UserNotFoundException if no user is found with the given email
    */
   @Transactional(readOnly = true)
-  public User findByEmail(String email) {
+  public CustomUser findByEmail(String email) {
     validateString(email, "Email");
     return userRepository.findByEmail(email)
         .orElseThrow(() -> new UserNotFoundException(
@@ -99,26 +99,26 @@ public class UserService {
   /**
    * Registers a new user in the system.
    *
-   * @param user the user to register
+   * @param customUser the user to register
    * @return the registered user
    * @throws IllegalArgumentException if the user is null, or if email/username is already taken
    */
   @Transactional
-  public User register(User user) {
-    if (user == null) {
+  public CustomUser register(CustomUser customUser) {
+    if (customUser == null) {
       throw new IllegalArgumentException("User cannot be null");
     }
     // Check for existing email or username
-    if (userRepository.existsByEmail(user.getEmail()) 
-        || userRepository.existsByUsername(user.getUsername())) {
+    if (userRepository.existsByEmail(customUser.getEmail())
+        || userRepository.existsByUsername(customUser.getUsername())) {
       throw new IllegalArgumentException(
           "Ya existe un usuario registrado con estos datos");
     }
     // Ensure role is not null, assign USER by default if not provided
-    if (user.getRole() == null) {
-      user.setRole(User.Role.USER);
+    if (customUser.getRole() == null) {
+      customUser.setRole(CustomUser.Role.USER);
     }
-    return save(user);
+    return save(customUser);
   }
 
   /**
@@ -127,7 +127,7 @@ public class UserService {
    * @return a list of all users
    */
   @Transactional(readOnly = true)
-  public List<User> getAllUsers() {
+  public List<CustomUser> getAllUsers() {
     return userRepository.findAll();
   }
 

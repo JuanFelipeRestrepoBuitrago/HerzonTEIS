@@ -1,6 +1,6 @@
 package com.eafit.herzon.teis.controllers;
 
-import com.eafit.herzon.teis.models.User;
+import com.eafit.herzon.teis.models.CustomUser;
 import com.eafit.herzon.teis.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,22 +27,22 @@ public class UserController {
    */
   @GetMapping("/register")
   public String getRegisterPage(Model model) {
-    model.addAttribute("user", new User());
+    model.addAttribute("user", new CustomUser());
     return "users/register"; // Coincide con templates/users/register.html
   }
 
   /**
    * Handles user registration requests from the form.
    *
-   * @param user the user data from the form
+   * @param customUser the user data from the form
    * @param redirectAttributes attributes for passing flash messages
    * @return a redirect to the login page on success, or back to register on failure
    */
   @PostMapping("/api/users/register")
-  public String registerUser(@ModelAttribute User user,
+  public String registerUser(@ModelAttribute CustomUser customUser,
       RedirectAttributes redirectAttributes) {
     try {
-      userService.register(user);
+      userService.register(customUser);
       redirectAttributes.addFlashAttribute("success",
           "¡Usuario registrado correctamente! Inicia sesión.");
       return "redirect:/login";

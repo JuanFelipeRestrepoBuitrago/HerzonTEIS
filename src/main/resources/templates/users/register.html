@@ -18,7 +18,7 @@
                 <p>Únete a nuestra comunidad exclusiva</p>
             </div>
 
-            <form th:action="@{/api/users/register}" method="post" th:object="${user}">
+            <form th:action="@{/api/users/register}" method="post" th:object="${customUser}">
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
                         <label for="username" class="text-gold">Usuario</label>

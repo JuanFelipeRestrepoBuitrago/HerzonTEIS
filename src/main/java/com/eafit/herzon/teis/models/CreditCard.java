@@ -35,7 +35,7 @@ public class CreditCard {
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "user_id", nullable = false)
-  private User user;
+  private CustomUser customUser;
 
   @CreationTimestamp
   @Column(name = "created_at", nullable = false, updatable = false)
@@ -58,13 +58,13 @@ public class CreditCard {
    * @param cardNumber the credit card number (must be unique and non-null)
    * @param name the cardholder's name (must be non-null)
    * @param expirationDate the expiration date of the card (must be non-null)
-   * @param user the user who owns this credit card (must be non-null)
+   * @param customUser the user who owns this credit card (must be non-null)
    */
-  public CreditCard(String cardNumber, String name, String expirationDate, User user) {
+  public CreditCard(String cardNumber, String name, String expirationDate, CustomUser customUser) {
     this.cardNumber = cardNumber;
     this.name = name;
     this.expirationDate = expirationDate;
-    this.user = user;
+    this.customUser = customUser;
   }
 
   /**
@@ -144,17 +144,17 @@ public class CreditCard {
    *
    * @return the user who owns the credit card
    */
-  public User getUser() {
-    return user;
+  public CustomUser getUser() {
+    return customUser;
   }
 
   /**
    * Sets the user associated with this credit card.
    *
-   * @param user the user to set as the owner (must be non-null)
+   * @param customUser the user to set as the owner (must be non-null)
    */
-  public void setUser(User user) {
-    this.user = user;
+  public void setUser(CustomUser customUser) {
+    this.customUser = customUser;
   }
 
   /**

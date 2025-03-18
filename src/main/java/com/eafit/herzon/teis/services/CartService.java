@@ -2,8 +2,8 @@ package com.eafit.herzon.teis.services;
 
 import com.eafit.herzon.teis.models.Cart;
 import com.eafit.herzon.teis.models.CartItem;
+import com.eafit.herzon.teis.models.CustomUser;
 import com.eafit.herzon.teis.models.Jewel;
-import com.eafit.herzon.teis.models.User;
 import com.eafit.herzon.teis.repositories.CartItemRepository;
 import com.eafit.herzon.teis.repositories.CartRepository;
 import com.eafit.herzon.teis.repositories.JewelRepository;
@@ -52,17 +52,17 @@ public class CartService {
    */
   @Transactional
   public void addItem(long userId, Long jewelId, long id, int quantity) {
-    User user = userRepository.findById(userId)
+    CustomUser customUser = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
     Jewel jewel = jewelRepository.findById(jewelId)
             .orElseThrow(() -> new RuntimeException("Joya no encontrada"));
 
-    Cart cart = user.getCart();
+    Cart cart = customUser.getCart();
     CartItem cartItem = new CartItem(jewel, quantity);
     if (cart == null) {
       cart = new Cart();
-      cart.setUser(user);
+      cart.setUser(customUser);
     }
 
     cart.addItem(cartItem);
@@ -77,12 +77,12 @@ public class CartService {
    * @throws RuntimeException if the user or cart item is not found
    */
   public void removeItem(long userId, long cartItemId) {
-    User user = userRepository.findById(userId)
+    CustomUser customUser = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     CartItem item = cartItemRepository.findById(cartItemId)
             .orElseThrow(() -> new RuntimeException("Joya no encontrada"));
 
-    Cart cart = user.getCart();
+    Cart cart = customUser.getCart();
     cart.removeItem(item);
   }
 
@@ -94,9 +94,9 @@ public class CartService {
    */
   @Transactional
   public void emptyCart(long userId) {
-    User user = userRepository.findById(userId)
+    CustomUser customUser = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-    Cart cart = user.getCart();
+    Cart cart = customUser.getCart();
 
     cart.getItems().clear();
   }
@@ -112,7 +112,7 @@ public class CartService {
    */
   @Transactional
   public Page<CartItem> getAllitems(Long userId, int page, int size) {
-    User user = userRepository.findById(userId)
+    CustomUser customUser = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     Pageable pageable = PageRequest.of(page, size);
     return cartItemRepository.findByUserId(userId, pageable);
