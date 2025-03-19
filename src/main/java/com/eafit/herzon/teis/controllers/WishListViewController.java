@@ -60,7 +60,7 @@ public class WishListViewController {
     } else {
       model.addAttribute("jewels", wishList.getJewels());
     }
-    return "wishlist/items";
+    return "wishlist/show";
   }
 
   /**

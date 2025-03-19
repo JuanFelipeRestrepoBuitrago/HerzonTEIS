@@ -12,31 +12,6 @@
 <main class="container my-5 py-4">
   <h1 class="text-gold text-center mb-4" style="font-size: 2.5rem; font-weight: 700;">Lista de Joyas</h1>
 
-  <form action="/jewels/filter" method="get" class="filter-panel">
-    <div class="row mb-3 align-items-center">
-      <div class="col-md-4 mb-3 mb-md-0">
-        <input type="text" name="search" id="search" class="form-control jewel-input" placeholder="Buscar por nombre..." />
-      </div>
-      <div class="col-md-3 mb-3 mb-md-0">
-        <select name="category" id="categoryFilter" class="form-control custom-select">
-          <option value="">Filtrar por categoría</option>
-          <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
-        </select>
-      </div>
-      <div class="col-md-3 mb-3 mb-md-0">
-        <select name="price" id="priceFilter" class="form-control custom-select">
-          <option value="">Filtrar por precio</option>
-          <option value="low">Menor a Mayor</option>
-          <option value="high">Mayor a Menor</option>
-        </select>
-      </div>
-      <div class="col-md-2 d-flex gap-2">
-        <button type="submit" class="btn btn-gold2">Aplicar Filtros</button>
-        <button type="button" id="clearFilter" class="btn btn-secondary">Limpiar Filtros</button>
-      </div>
-    </div>
-  </form>
-
   <!-- 🎯 Visualización de las Joyas -->
   <div id="jewels-container" class="row g-4">
     <div class="col" th:each="jewel : ${jewels}">
@@ -47,11 +22,33 @@
           <p class="card-text text-muted" th:text="${jewel.category}"></p>
           <p class="card-text fw-bold" th:text="'$' + ${#numbers.formatDecimal(jewel.price, 0, 2)}"></p>
           <a th:href="@{/jewels/details/{id}(id=${jewel.id})}" class="btn btn-gold mt-3">Ver Detalles</a>
+
+          <!-- Botón para agregar al carrito -->
           <form th:action="@{/cart/add/{id}(id=${jewel.id})}" method="post" class="mt-2">
+            <!-- Campo para ingresar la cantidad (por defecto 1) -->
+            <div class="mb-2">
+              <label for="quantity_${jewel.id}" class="form-label">Cantidad</label>
+              <input type="number"
+                     id="quantity_${jewel.id}"
+                     name="quantity"
+                     class="form-control"
+                     value="1"
+                     min="1"
+                     step="1"
+                     style="width: 100px; display: inline-block;">
+            </div>
             <button type="submit" class="btn btn-success">
               <i class="fas fa-cart-plus"></i> Agregar al carrito
             </button>
           </form>
+
+          <!-- Botón para agregar a la wishlist -->
+          <form th:action="@{/wishlist/add/{id}(id=${jewel.id})}" method="post" class="mt-2">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-heart"></i> Agregar a WishList
+            </button>
+          </form>
+
         </div>
       </div>
     </div>
@@ -60,7 +57,7 @@
   <div class="text-center py-5" id="no-results" th:if="${#lists.isEmpty(jewels)}">
     <i class="fas fa-gem fa-3x text-gold mb-3"></i>
     <h3 class="text-white">No se encontraron joyas</h3>
-    <p class="text-muted">Prueba con otro filtro o búsqueda.</p>
+    <p class="text-muted">Prueba con otra búsqueda.</p>
   </div>
 </main>
 

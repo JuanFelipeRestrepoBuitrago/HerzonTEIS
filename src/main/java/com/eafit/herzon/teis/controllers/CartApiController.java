@@ -71,14 +71,27 @@ public class CartApiController {
   /**
   * Empties the user's cart by removing all items.
   *
-  * @param userId the ID of the user who owns the cart
   * @return a response entity with a success message
   */
-  @PostMapping("cart/empty")
-  public ResponseEntity<String> emptyCart(@RequestBody long userId) {
+  @PostMapping("/cart/empty")
+  public String emptyCart() {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    CustomUser user = userService.getUserByUsername(username);
+    cartService.emptyCart(user.getId());
+    return "redirect:/cart";
+  }
 
-    cartService.emptyCart(userId);
-    return ResponseEntity.ok("OK");
+  /**
+   * Processes the checkout of the user's cart.
+   *
+   * @return a redirection to the orders page after a successful checkout.
+   */
+  @PostMapping("/cart/checkout")
+  public String checkoutCart() {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    CustomUser user = userService.getUserByUsername(username);
+    cartService.checkout(user.getId());
+    return "redirect:/orders";
   }
 
 }
