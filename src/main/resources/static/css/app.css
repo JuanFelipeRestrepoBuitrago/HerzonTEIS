@@ -129,7 +129,7 @@ footer {
     border-radius: 15px;
     max-width: 600px;
     width: 100%;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 3px rgba(255, 255, Neilson255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 3px rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(212, 175, 55, 0.5);
     position: relative;
     overflow: hidden;
@@ -180,7 +180,7 @@ footer {
 .auth-container select {
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(212, 175, 55, 0.4);
-    color: var(--blanco);
+    color: var(--blanco) !important; /* Changed to white */
     padding: 12px;
     border-radius: 8px;
     font-size: 15px;
@@ -427,7 +427,7 @@ main .btn-gold {
 
 .custom-select option {
     background: var(--verde-muy-oscuro);
-    color: var(--blanco);
+    color: #000000 !important; /* Changed to black for category */
     padding: 10px;
 }
 
@@ -448,9 +448,9 @@ main .btn-gold {
     overflow: hidden;
     background-color: var(--blanco);
     border: 1px solid rgba(212, 175, 55, 0.2);
-    height: 100%; /* Asegura que las tarjetas sean consistentes en altura */
-    width: 100%; /* Asegura que la tarjeta ocupe el ancho disponible dentro de su celda */
-    max-width: 350px; /* Limita el ancho máximo de la tarjeta para que coincida con el diseño */
+    height: 100%;
+    width: 100%;
+    max-width: 350px;
 }
 
 /* Centrar la tarjeta cuando es el único resultado */
@@ -474,7 +474,7 @@ main .btn-gold {
 /* Style the jewel images */
 .card-img-top {
     width: 100%;
-    height: 200px; /* Altura fija para coincidir con la captura */
+    height: 200px;
     object-fit: cover;
     border-radius: 10px 10px 0 0;
 }
@@ -487,48 +487,48 @@ main .btn-gold {
 
 /* Eliminar .jewel-card si no se usa en otro lugar */
 .jewel-card {
-    display: none; /* O elimina esta clase si no la necesitas */
+    display: none;
 }
 
 /* Style the jewels container as a CSS Grid */
 #jewels-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Grid de 3 columnas por defecto */
-    gap: 1.5rem; /* Espaciado consistente con g-4 de Bootstrap */
-    justify-items: center; /* Centra las tarjetas horizontalmente */
-    padding: 0 15px; /* Añade un pequeño padding lateral */
-    max-width: 1200px; /* Limita el ancho máximo del grid */
-    margin: 0 auto; /* Centra el contenedor */
-    width: 100%; /* Asegura que ocupe el ancho completo del contenedor */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    justify-items: center;
+    padding: 0 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 /* Clase para un solo resultado */
 #jewels-container.single-result {
-    grid-template-columns: 1fr; /* Una sola columna */
-    justify-items: center; /* Centra la tarjeta */
+    grid-template-columns: 1fr;
+    justify-items: center;
 }
 
 /* Clase para dos resultados */
 #jewels-container.two-results {
-    grid-template-columns: repeat(2, 1fr); /* Dos columnas */
-    justify-items: center; /* Centra las tarjetas */
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
 }
 
 /* Ajustes responsivos para pantallas pequeñas */
 @media (max-width: 767px) {
     #jewels-container {
-        grid-template-columns: 1fr; /* 1 columna en pantallas pequeñas */
+        grid-template-columns: 1fr;
     }
     #jewels-container.single-result,
     #jewels-container.two-results {
-        grid-template-columns: 1fr; /* Una sola columna en pantallas pequeñas */
+        grid-template-columns: 1fr;
     }
 }
 
 /* Estilo para pantallas medianas y grandes */
 @media (min-width: 768px) {
     #jewels-container {
-        grid-template-columns: repeat(3, 1fr); /* 3 columnas por defecto */
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -814,8 +814,8 @@ main .btn-gold {
 }
 
 .btn-close-white {
-  filter: invert(1); /* Makes the close button white */
-  opacity: 1;
+    filter: invert(1);
+    opacity: 1;
 }
 
 /* ==========================================================================
@@ -906,7 +906,7 @@ main .btn-gold {
 }
 
 .text-dark {
-    color: #343a40 !important;
+    color: metatarsus343a40 !important;
 }
 
 .text-muted {
@@ -918,37 +918,37 @@ main .btn-gold {
    ========================================================================== */
 /* Admin Auction Form classes for text colors */
 select.form-control.jewel-select {
-  color: black !important;
+    color: black !important;
 }
 
 select.form-control.jewel-select option {
-  color: black !important;
-  background-color: white;
+    color: black !important;
+    background-color: white;
 }
 
 .custom-switch {
-  background-color: #aaa;
-  border-radius: 25px;
-  transition: background-color 0.3s ease-in-out;
+    background-color: #aaa;
+    border-radius: 25px;
+    transition: background-color 0.3s ease-in-out;
 }
 
 .custom-switch:checked {
-  background-color: #fbc02d; /* Gold color */
-  border-color: #fbc02d;
+    background-color: #fbc02d;
+    border-color: #fbc02d;
 }
 
 .custom-switch:focus {
-  box-shadow: 0 0 5px rgba(252, 197, 37, 0.8);
+    box-shadow: 0 0 5px rgba(252, 197, 37, 0.8);
 }
 
 .big-switch {
-  width: 3rem !important;  /* Increase width */
-  height: 1.5rem;  /* Increase height */
-}
-.big-switch:checked {
-  background-color: #ffcc00 !important; /* Gold color */
+    width: 3rem !important;
+    height: 1.5rem;
 }
 
+.big-switch:checked {
+    background-color: #ffcc00 !important;
+}
 
 /* ==========================================================================
    Responsive Adjustments
@@ -1048,7 +1048,7 @@ select.form-control.jewel-select option {
         overflow-x: auto;
     }
     .card-img-top {
-        height: 150px; /* Ajuste para pantallas más pequeñas */
+        height: 150px;
     }
 }
 
@@ -1080,6 +1080,6 @@ select.form-control.jewel-select option {
         padding: 6px;
     }
     .card-img-top {
-        height: 120px; /* Ajuste adicional para pantallas muy pequeñas */
+        height: 120px;
     }
 }
