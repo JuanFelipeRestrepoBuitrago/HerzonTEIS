@@ -87,6 +87,7 @@ public class DataLoader implements CommandLineRunner {
       admin.setAddress("Calle 10 #45-67, Chapinero, Bogotá");
       admin.setPassword(passwordEncoder.encode("123"));
       admin.setRole(CustomUser.Role.ADMIN);
+      admin.createCart();
       userRepository.save(admin);
 
       // Create 9 Normal Users with Colombian names and addresses
@@ -100,6 +101,7 @@ public class DataLoader implements CommandLineRunner {
         user.setUsername(faker.name().username());
         user.setName(faker.name().fullName());
         user.setEmail(faker.internet().emailAddress());
+        user.createCart();
         String city = colombianCities.get(random.nextInt(colombianCities.size()));
         String neighborhood = colombianNeighborhoods.get(
             random.nextInt(colombianNeighborhoods.size()));
