@@ -4,6 +4,7 @@ import com.eafit.herzon.teis.exceptions.InvalidAuctionException;
 import com.eafit.herzon.teis.models.Auction;
 import com.eafit.herzon.teis.services.AuctionService;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -98,9 +99,9 @@ public class AuctionController {
       model.addAttribute(
           "available",
           auction.getStatus()
-              && (LocalDateTime.now().isEqual(auction.getStartDate())
-                  || LocalDateTime.now().isAfter(auction.getStartDate()))
-              && LocalDateTime.now().isBefore(auction.getEndDate()));
+              && (LocalDateTime.now(ZoneId.of("America/Bogota")).isEqual(auction.getStartDate())
+                  || LocalDateTime.now(ZoneId.of("America/Bogota")).isAfter(auction.getStartDate()))
+              && LocalDateTime.now(ZoneId.of("America/Bogota")).isBefore(auction.getEndDate()));
 
       return "auctions/show";
     } catch (InvalidAuctionException e) {

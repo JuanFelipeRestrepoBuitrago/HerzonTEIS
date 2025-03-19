@@ -13,6 +13,7 @@ import com.eafit.herzon.teis.repositories.OrderRepository;
 import com.eafit.herzon.teis.repositories.UserRepository;
 import com.github.javafaker.Faker;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -153,7 +154,7 @@ public class DataLoader implements CommandLineRunner {
       // Active auctions (future dates)
       for (int i = 0; i < 3; i++) {
         double startPrice = Double.parseDouble(faker.commerce().price(50, 1000));
-        LocalDateTime startDate = LocalDateTime.now().plusDays(1);
+        LocalDateTime startDate = LocalDateTime.now(ZoneId.of("America/Bogota")).plusDays(1);
         LocalDateTime endDate = startDate.plusDays(7);
 
         Auction auction = new Auction();
@@ -199,7 +200,7 @@ public class DataLoader implements CommandLineRunner {
       // Ended auctions (past dates)
       for (int i = 0; i < 3; i++) {
         double startPrice = Double.parseDouble(faker.commerce().price(50, 1000));
-        LocalDateTime startDate = LocalDateTime.now().minusDays(7);
+        LocalDateTime startDate = LocalDateTime.now(ZoneId.of("America/Bogota")).minusDays(7);
         LocalDateTime endDate = startDate.plusDays(1);
 
         Auction auction = new Auction();
@@ -247,7 +248,7 @@ public class DataLoader implements CommandLineRunner {
       for (int i = 0; i < 3; i++) {
         // Create auction
         double startPrice = Double.parseDouble(faker.commerce().price(50, 1000));
-        LocalDateTime startDate = LocalDateTime.now();
+        LocalDateTime startDate = LocalDateTime.now(ZoneId.of("America/Bogota"));
         LocalDateTime endDate = startDate.plusMinutes(5 * i + 5);
 
         Auction auction = new Auction();
