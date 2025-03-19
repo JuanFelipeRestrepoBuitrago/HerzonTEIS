@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service class for managing jewel entities.
+ * Service layer for managing jewel-related operations.
  */
 @Service
 public class JewelService {
@@ -20,10 +20,11 @@ public class JewelService {
   private final JewelRepository jewelRepository;
 
   /**
-   * Constructs a new JewelService with the specified JewelRepository.
+   * Constructs a new JewelService with the specified repository.
    *
-   * @param jewelRepository the repository to manage jewel data
+   * @param jewelRepository the repository for jewel data access
    */
+  @Autowired
   public JewelService(JewelRepository jewelRepository) {
     this.jewelRepository = jewelRepository;
   }
@@ -33,22 +34,18 @@ public class JewelService {
    *
    * @param page the page number (zero-based)
    * @param size the number of items per page
-   * @return a page of jewels
-   * @throws IllegalArgumentException if page or size is invalid
+   * @return a page of {@link Jewel} entities
    */
   @Transactional(readOnly = true)
   public Page<Jewel> getAllJewels(int page, int size) {
-    if (page < 0 || size <= 0) {
-      throw new IllegalArgumentException("Page must be non-negative and size must be positive");
-    }
     Pageable pageable = PageRequest.of(page, size);
     return jewelRepository.findAll(pageable);
   }
 
   /**
-   * Gets all jewels in the database.
+   * Retrieves all jewels without pagination.
    *
-   * @return a list of all jewels
+   * @return a list of all {@link Jewel} entities
    */
   @Transactional(readOnly = true)
   public List<Jewel> getAllJewels() {
@@ -56,7 +53,7 @@ public class JewelService {
   }
 
   /**
-   * Retrieves all distinct categories.
+   * Retrieves all distinct categories of jewels.
    *
    * @return a list of distinct category names
    */
@@ -66,16 +63,15 @@ public class JewelService {
   }
 
   /**
-   * Filters jewels based on search, category, price, and sorting criteria.
+   * Filters jewels based on search criteria and pagination.
    *
-   * @param search   the search term for jewel names (can be null)
-   * @param category the category to filter by (can be null)
-   * @param price    the price filter ("high" or "low", can be null)
-   * @param sort     the sorting criteria ("name" or "price", can be null)
+   * @param search   the search term for jewel names (can be null or trimmed if empty)
+   * @param category the category to filter by (can be null or trimmed if empty)
+   * @param price    the price sorting criteria ("high" or "low", can be null or trimmed if empty)
+   * @param sort     the sorting criteria ("name" or "price", can be null or trimmed if empty)
    * @param page     the page number (zero-based)
    * @param size     the number of items per page
-   * @return a page of filtered jewels
-   * @throws IllegalArgumentException if page or size is invalid
+   * @return a page of {@link Jewel} entities matching the filter criteria
    */
   @Transactional(readOnly = true)
   public Page<Jewel> filterJewels(
@@ -85,24 +81,12 @@ public class JewelService {
       String sort,
       int page,
       int size) {
-    if (page < 0 || size <= 0) {
-      throw new IllegalArgumentException("Page must be non-negative and size must be positive");
-    }
 
-    // Normalizar los parámetros: convertir a mayúsculas y manejar valores vacíos
-    search = search != null && !search.trim().isEmpty()
-        ? "%" + search.trim().toUpperCase() + "%"
-        : null;
-    category = category != null && !category.trim().isEmpty()
-        ? category.trim().toUpperCase()
-        : null;
-    price = price != null && !price.trim().isEmpty()
-        ? price.trim().toLowerCase()
-        : null;
-    sort = sort != null && !sort.trim().isEmpty()
-        ? sort.trim().toLowerCase()
-        : null;
-
+    search = (search != null && !search.trim().isEmpty()) ? search.trim() : null;
+    category = (category != null && !category.trim().isEmpty()) ? category.trim() : null;
+    price = (price != null && !price.trim().isEmpty()) ? price.trim().toLowerCase() : null;
+    sort = (sort != null && !sort.trim().isEmpty()) ? sort.trim().toLowerCase() : null;
+    
     Pageable pageable = PageRequest.of(page, size);
     return jewelRepository.findFilteredJewels(search, category, price, sort, pageable);
   }
@@ -111,32 +95,23 @@ public class JewelService {
    * Retrieves a jewel by its ID.
    *
    * @param id the ID of the jewel to retrieve
-   * @return the jewel if found
-   * @throws IllegalArgumentException if the ID is null or invalid
-   * @throws EntityNotFoundException  if the jewel is not found
+   * @return the {@link Jewel} entity if found
+   * @throws EntityNotFoundException if no jewel is found with the given ID
    */
   @Transactional(readOnly = true)
   public Jewel getJewelById(Long id) {
-    if (id == null || id <= 0) {
-      throw new IllegalArgumentException("Jewel ID must be a positive non-null value");
-    }
     return jewelRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException("Jewel not found with ID: " + id));
   }
 
   /**
-   * Saves a jewel entity.
+   * Saves a new or updates an existing jewel.
    *
-   * @param jewel the jewel to save
-   * @return the saved jewel
-   * @throws IllegalArgumentException if the jewel is null
+   * @param jewel the {@link Jewel} entity to save
+   * @return the saved {@link Jewel} entity
    */
   @Transactional
   public Jewel saveJewel(Jewel jewel) {
-    if (jewel == null) {
-      throw new IllegalArgumentException("Jewel cannot be null");
-    }
-    // Asegurarse de que la categoría y el nombre se guarden en mayúsculas
     if (jewel.getCategory() != null) {
       jewel.setCategory(jewel.getCategory().toUpperCase());
     }
@@ -150,13 +125,9 @@ public class JewelService {
    * Deletes a jewel by its ID.
    *
    * @param id the ID of the jewel to delete
-   * @throws IllegalArgumentException if the ID is null or invalid
    */
   @Transactional
   public void deleteJewel(Long id) {
-    if (id == null || id <= 0) {
-      throw new IllegalArgumentException("Jewel ID must be a positive non-null value");
-    }
     jewelRepository.deleteById(id);
   }
 }

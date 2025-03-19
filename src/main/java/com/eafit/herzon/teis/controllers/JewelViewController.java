@@ -11,18 +11,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * Controller for handling views related to jewels (public access).
+ * Controller for handling jewel-related views.
  */
 @Controller
 public class JewelViewController {
 
-  @Autowired
   private final JewelService jewelService;
 
   /**
-   * Constructs a new JewelViewController with the specified JewelService.
+   * Constructs a new JewelViewController with the specified service.
    *
-   * @param jewelService the service to manage jewel operations
+   * @param jewelService the service for jewel operations
    */
   @Autowired
   public JewelViewController(JewelService jewelService) {
@@ -30,12 +29,12 @@ public class JewelViewController {
   }
 
   /**
-   * Displays the list of jewels with pagination.
+   * Displays a paginated list of all jewels.
    *
-   * @param page the page number (default 0)
-   * @param size the number of items per page (default 9)
-   * @param model the model to pass attributes to the view
-   * @return the name of the view template ("jewels/jewels")
+   * @param page  the page number (default is 0)
+   * @param size  the number of items per page (default is 9)
+   * @param model the model to add attributes for the view
+   * @return the view name "jewels/jewels"
    */
   @GetMapping("/jewels")
   public String listJewels(
@@ -43,11 +42,6 @@ public class JewelViewController {
       @RequestParam(defaultValue = "9") int size,
       Model model) {
     Page<Jewel> jewelPage = jewelService.getAllJewels(page, size);
-    System.out.println("Total jewels found: " + jewelPage.getTotalElements());
-    jewelPage.getContent().forEach(jewel -> {
-      String message = "Jewel: " + jewel.getName() + ", Category: " + jewel.getCategory();
-      System.out.println(message);
-    });
     model.addAttribute("jewels", jewelPage.getContent());
     model.addAttribute("currentPage", page);
     model.addAttribute("totalPages", jewelPage.getTotalPages());
@@ -56,16 +50,16 @@ public class JewelViewController {
   }
 
   /**
-   * Handles filtering and searching of jewels via page reload.
+   * Displays a paginated list of filtered jewels.
    *
-   * @param search the search term for jewel names (optional)
-   * @param category the category to filter by (optional)
-   * @param price the price filter ("high" or "low", optional)
-   * @param sort the sorting criteria ("name" or "price", optional)
-   * @param page the page number (default 0)
-   * @param size the number of items per page (default 9)
-   * @param model the model to pass attributes to the view
-   * @return the name of the view template ("jewels/jewels")
+   * @param search    the search term for jewel names (optional)
+   * @param category  the category to filter by (optional)
+   * @param price     the price sorting criteria ("high" or "low", optional)
+   * @param sort      the sorting criteria ("name" or "price", optional)
+   * @param page      the page number (default is 0)
+   * @param size      the number of items per page (default is 9)
+   * @param model     the model to add attributes for the view
+   * @return the view name "jewels/jewels"
    */
   @GetMapping("/jewels/filter")
   public String filterJewels(
@@ -76,45 +70,22 @@ public class JewelViewController {
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "9") int size,
       Model model) {
-    System.out.println("Filtering with search: " + search + ", category: " + category);
-    System.out.println("price: " + price + ", sort: " + sort);
-
-    search = search != null && !search.trim().isEmpty()
-        ? search.trim().toUpperCase()
-        : null;
-    category = category != null && !category.trim().isEmpty()
-        ? category.trim().toUpperCase()
-        : null;
-    price = price != null && !price.trim().isEmpty()
-        ? price.trim().toLowerCase()
-        : null;
-    sort = sort != null && !sort.trim().isEmpty()
-        ? sort.trim().toLowerCase()
-        : null;
 
     Page<Jewel> filteredJewels = jewelService.filterJewels(
         search, category, price, sort, page, size);
-    System.out.println("Filtered jewels found: " + filteredJewels.getTotalElements());
-    filteredJewels.getContent().forEach(jewel -> {
-      String part1 = "Filtered Jewel: " + jewel.getName();
-      String part2 = ", Category: " + jewel.getCategory();
-      System.out.println(part1 + part2);
-    });
-
     model.addAttribute("jewels", filteredJewels.getContent());
     model.addAttribute("currentPage", page);
     model.addAttribute("totalPages", filteredJewels.getTotalPages());
     model.addAttribute("categories", jewelService.getAllCategories());
-    return "jewels/jewels"; 
+    return "jewels/jewels";
   }
 
   /**
-   * Displays the details page for a specific jewel.
+   * Displays details of a specific jewel.
    *
-   * @param id the ID of the jewel to display
-   * @param model the model to pass attributes to the view
-   * @return the name of the view template ("jewels/details")
-   * @throws IllegalArgumentException if the ID is invalid
+   * @param id    the ID of the jewel to display
+   * @param model the model to add attributes for the view
+   * @return the view name "jewels/details"
    */
   @GetMapping("/jewels/details/{id}")
   public String showJewelDetails(@PathVariable Long id, Model model) {
