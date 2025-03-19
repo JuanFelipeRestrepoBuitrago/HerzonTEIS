@@ -162,6 +162,14 @@ CREATE TRIGGER update_cart_items_modified_at
 -- Create the wishlists table
 -- Nota: La entidad WishList originalmente se mapea a "cartItems", pero se recomienda usar una tabla separada.
 CREATE TABLE wishlists (
-                           id BIGSERIAL PRIMARY KEY
-    -- Se pueden agregar más columnas según las necesidades futuras
+                           id BIGSERIAL PRIMARY KEY,
+                           user_id BIGINT NOT NULL UNIQUE,
+                           created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                           updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                           FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TRIGGER update_wishlists_modified_at
+    BEFORE UPDATE ON wishlists
+    FOR EACH ROW
+    EXECUTE FUNCTION update_modified_at();
