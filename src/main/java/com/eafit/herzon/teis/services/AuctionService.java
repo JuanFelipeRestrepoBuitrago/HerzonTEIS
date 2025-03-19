@@ -124,7 +124,7 @@ public class AuctionService {
         // Create order for winner
         Order order = new Order(offer.getOfferPrice(), offer.getUser());
         //To do
-        //order.getCartItems().add(new CartItem(auction.getJewel(), 1, ));
+        order.getCartItems().add(new CartItem(auction.getJewel(), 1));
         orderRepository.save(order);
       });
 

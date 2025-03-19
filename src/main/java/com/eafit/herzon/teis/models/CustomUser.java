@@ -357,9 +357,14 @@ public class CustomUser {
     return cart;
   }
 
+  /**
+   * creates the user's associated cart.
+   *
+   */
   public void createCart() {
     this.cart = new Cart(this);
   }
+
   /**
    * Sets the user's associated cart.
    *

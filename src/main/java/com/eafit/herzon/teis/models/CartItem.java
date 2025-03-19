@@ -94,11 +94,23 @@ public class CartItem {
    *
    * @param jewel    the jewel to add to the cart
    * @param quantity the quantity of the jewel
+   * @param cart the cart related to the item
    */
   public CartItem(Jewel jewel, int quantity, Cart cart) {
     this.jewel = jewel;
     this.quantity = quantity;
     this.cart = cart;
+  }
+
+  /**
+   * Constructs a new CartItem with the specified jewel and quantity.
+   *
+   * @param jewel    the jewel to add to the cart
+   * @param quantity the quantity of the jewel
+   */
+  public CartItem(Jewel jewel, int quantity) {
+    this.jewel = jewel;
+    this.quantity = quantity;
   }
 
   /**
