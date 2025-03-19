@@ -3,6 +3,8 @@ package com.eafit.herzon.teis.controllers;
 import com.eafit.herzon.teis.exceptions.InvalidAuctionException;
 import com.eafit.herzon.teis.models.Auction;
 import com.eafit.herzon.teis.services.AuctionService;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -25,19 +27,18 @@ public class AuctionController {
   /**
    * Method to get the auctions view.
    *
-   * @param page the page number (0-based).
-   * @param size the number of items per page.
-   * @param view the view type (default 'grid').
+   * @param page  the page number (0-based).
+   * @param size  the number of items per page.
+   * @param view  the view type (default 'grid').
    * @param model the model to add attributes to.
    * @return the auctions view.
    */
-  @GetMapping({"", "/"})
+  @GetMapping({ "", "/" })
   public String getAuctions(
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "9") int size,
-      @RequestParam(defaultValue = "grid") String view, 
-      Model model
-  ) {
+      @RequestParam(defaultValue = "grid") String view,
+      Model model) {
     Page<Auction> auctionPage = auctionService.getAllActiveAuctions(page, size);
 
     model.addAttribute("title", "Subastas - Herzon");
@@ -54,21 +55,20 @@ public class AuctionController {
   /**
    * Method to get the history auctions view.
    *
-   * @param page the page number (0-based).
-   * @param size the number of items per page.
-   * @param view the view type (default 'grid').
+   * @param page  the page number (0-based).
+   * @param size  the number of items per page.
+   * @param view  the view type (default 'grid').
    * @param model the model to add attributes to.
    * @return the auctions view.
    */
-  @GetMapping({"/history", "/history/"})
+  @GetMapping({ "/history", "/history/" })
   public String getHistoryAuctions(
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "9") int size,
-      @RequestParam(defaultValue = "grid") String view, 
-      Model model
-  ) {
+      @RequestParam(defaultValue = "grid") String view,
+      Model model) {
     Page<Auction> auctionPage = auctionService.getAllInactiveAuctions(page, size);
-    
+
     model.addAttribute("title", "Historial de Subastas - Herzon");
     model.addAttribute("auctions", auctionPage.getContent());
     model.addAttribute("currentPage", page);
@@ -81,22 +81,28 @@ public class AuctionController {
   }
 
   /**
-   * This method handles the requests for the auction show page. 
+   * This method handles the requests for the auction show page.
    * It shows the details of a specific auction.
    *
-   * @param id The id of the auction to show
+   * @param id    The id of the auction to show
    * @param model The model object to pass data to the
    * @return The name of the view to render
    */
-  @GetMapping({"/{id}", "/{id}/"})
+  @GetMapping({ "/{id}", "/{id}/" })
   public String show(@PathVariable String id, Model model) {
     long auctionId = Long.parseLong(id);
-    
+
     try {
       Auction auction = auctionService.getAuctionById(auctionId);
       model.addAttribute("title", "Subasta " + auction.getId() + " - Herzone");
       model.addAttribute("auction", auction);
-  
+      model.addAttribute(
+          "available",
+          auction.getStatus()
+              && (LocalDateTime.now(ZoneId.of("America/Bogota")).isEqual(auction.getStartDate())
+                  || LocalDateTime.now(ZoneId.of("America/Bogota")).isAfter(auction.getStartDate()))
+              && LocalDateTime.now(ZoneId.of("America/Bogota")).isBefore(auction.getEndDate()));
+
       return "auctions/show";
     } catch (InvalidAuctionException e) {
       return "redirect:/auctions";

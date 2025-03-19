@@ -98,6 +98,14 @@ public class OrderController {
       @Valid @ModelAttribute("orderForm") OrderForm orderForm, 
       BindingResult result, Model model, RedirectAttributes redirectAttributes
   ) {
+    if (result.hasErrors()) {
+      model.addAttribute("error", true);
+      // Add the binding result errors to the messages just with messages, not field names
+      model.addAttribute("messages", result.getAllErrors().stream()
+          .map(error -> error.getDefaultMessage())
+          .toList());
+      return "redirect:/orders";
+    }
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
     try {

@@ -23,27 +23,28 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
    * Finds all auctions whose end date is greater than the current date and time.
    *
    * @param currentDateTime The current date and time.
-   * @param pageable The pagination information.
+   * @param pageable        The pagination information.
    * @return List of active auctions.
    */
-  @Query("SELECT a FROM Auction AS a WHERE a.endDate > :currentDateTime AND a.status = true")
+  @Query("SELECT a FROM Auction AS a WHERE a.endDate > :currentDateTime AND a.startDate <=" 
+      + " :currentDateTime AND a.status = true")
   Page<Auction> findAllActiveAuctions(
-      @Param("currentDateTime") LocalDateTime currentDateTime, 
+      @Param("currentDateTime") LocalDateTime currentDateTime,
       Pageable pageable);
 
   /**
    * Finds all auctions whose status is the given status and whose end date is
    * before the given end date.
    *
-   * @param status  The status of the auctions to find.
-   * @param endDate The end date to compare.
+   * @param status   The status of the auctions to find.
+   * @param endDate  The end date to compare.
    * @param pageable The pagination information.
    * @return List of auctions with the given status and end date before the given
    *         end date.
    */
   Page<Auction> findAllByStatusAndEndDateBefore(
-      boolean status, 
-      LocalDateTime endDate, 
+      boolean status,
+      LocalDateTime endDate,
       Pageable pageable);
 
   /**

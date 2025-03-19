@@ -53,14 +53,14 @@ public class CustomUser {
   @Column(nullable = false)
   private Role role;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
   private List<CreditCard> creditCards;
 
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "created_at", nullable = false, updatable = false)
   private Date createdAt;
 
-  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
   private Cart cart;
 
   @Temporal(TemporalType.TIMESTAMP)
@@ -71,7 +71,7 @@ public class CustomUser {
    * The list of offers which have been made by the user.
    */
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "user",
-          cascade = CascadeType.ALL, orphanRemoval = true)
+          cascade = CascadeType.REMOVE, orphanRemoval = true)
   @JsonIgnore
   @Fetch(FetchMode.SUBSELECT)
   private List<Offer> offers;
@@ -80,7 +80,7 @@ public class CustomUser {
    * The list of orders which owned by the user.
    */
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", 
-      cascade = CascadeType.ALL, orphanRemoval = true)
+      cascade = CascadeType.REMOVE, orphanRemoval = true)
   @JsonIgnore
   @Fetch(FetchMode.SUBSELECT)
   private List<Order> orders;

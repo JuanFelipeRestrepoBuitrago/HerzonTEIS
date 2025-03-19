@@ -39,21 +39,29 @@
 
     <nav aria-label="Page navigation" th:if="${totalPages > 1}">
       <ul class="pagination justify-content-center mt-4">
-        <!-- Anterior -->
+        <!-- Previous -->
         <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-          <a class="page-link" th:href="@{/auctions(page=${currentPage - 1})}">Anterior</a>
+          <a class="page-link"
+            th:href="@{${currentPageActive == 'auctions' ? '/auctions' : '/auctions/history'}(page=${currentPage - 1})}">
+            Anterior
+          </a>
         </li>
 
-        <!-- Numeración de páginas -->
+        <!-- Page numbers -->
         <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
           th:classappend="${pageNumber == currentPage} ? 'active'">
-          <a class="page-link" th:href="@{/auctions(page=${pageNumber})}" th:text="${pageNumber + 1}"
+          <a class="page-link"
+            th:href="@{${currentPageActive == 'auctions' ? '/auctions' : '/auctions/history'}(page=${pageNumber})}"
+            th:text="${pageNumber + 1}"
             th:style="${pageNumber == currentPage} ? 'background-color: #D4AF37; color: #FFFFFF;' : ''"></a>
         </li>
 
-        <!-- Siguiente -->
+        <!-- Next -->
         <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
-          <a class="page-link" th:href="@{/auctions(page=${currentPage + 1})}">Siguiente</a>
+          <a class="page-link"
+            th:href="@{${currentPageActive == 'auctions' ? '/auctions' : '/auctions/history'}(page=${currentPage + 1})}">
+            Siguiente
+          </a>
         </li>
       </ul>
     </nav>
