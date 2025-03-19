@@ -83,7 +83,7 @@ public class Auction {
    * The list of offers which have been made to the auction.
    */
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "auction", 
-      cascade = CascadeType.REMOVE, orphanRemoval = true)
+      cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore
   @Fetch(FetchMode.SUBSELECT)
   private List<Offer> offers;
