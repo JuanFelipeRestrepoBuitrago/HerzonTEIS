@@ -76,7 +76,10 @@ public class Order {
   @Column(columnDefinition = "ENUM('PENDING', 'PAID', 'CANCELED')")
   private OrderStatus status;
 
-  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+  @ManyToMany(fetch = FetchType.EAGER, cascade = {
+      CascadeType.PERSIST, 
+      CascadeType.MERGE, 
+      CascadeType.REMOVE})
   @JoinTable(
       name = "order_cart_items",
       joinColumns = @JoinColumn(name = "order_id"),
