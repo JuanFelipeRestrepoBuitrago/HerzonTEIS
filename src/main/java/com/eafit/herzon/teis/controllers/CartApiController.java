@@ -1,11 +1,17 @@
 package com.eafit.herzon.teis.controllers;
 
+import com.eafit.herzon.teis.models.CustomUser;
 import com.eafit.herzon.teis.services.CartService;
+import com.eafit.herzon.teis.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 /**
@@ -17,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class CartApiController {
 
   private final CartService cartService;
+  private final UserService userService;
 
   /**
   * Constructs a new CartApiController with the required service.
@@ -24,35 +31,41 @@ public class CartApiController {
   * @param cartService the service for jewel operations
   */
   @Autowired
-  public CartApiController(CartService cartService) {
+  public CartApiController(CartService cartService,  UserService userService) {
     this.cartService = cartService;
+    this.userService = userService;
   }
 
   /**
   * Adds a new item to the user's cart.
   *
-  * @param userId   the ID of the user who owns the cart
   * @param jewelId  the ID of the jewel to add to the cart
-  * @param id       the ID of the cart item (if applicable)
   * @param quantity the quantity of the item to add
   * @return a response entity with a success message
   */
-  @PostMapping
-  public ResponseEntity<String> addCartItem(@RequestBody long userId,
-                                            Long jewelId, long id, int quantity) {
-    cartService.addItem(userId, jewelId, id, quantity);
-    return ResponseEntity.ok("OK");
+  @PostMapping("/cart/add/{jewelId}")
+  public String addCartItem(@PathVariable Long jewelId,
+                                            @RequestParam(defaultValue = "1") int quantity,
+                                            Model model) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    CustomUser user = userService.getUserByUsername(username);
+
+    cartService.addItem(user.getId(), jewelId, quantity);
+    return "redirect:/cart";
   }
 
   /**
   * Removes an item from the user's cart.
   *
-  * @param userId      the ID of the user who owns the cart
-  * @param cartItemId  the ID of the cart item to remove
+  * @param id  the ID of the cart item to remove
   */
-  @PostMapping("delete/{id}")
-  public void  removeCartitem(@RequestBody Long userId, long cartItemId) {
-    cartService.removeItem(userId, cartItemId);
+  @PostMapping("cart/delete/{id}")
+  public String removeCartItem(@PathVariable long id) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    CustomUser user = userService.getUserByUsername(username);
+    cartService.removeItem(user.getId(), id);
+
+    return "redirect:/cart";
   }
 
   /**
@@ -61,7 +74,7 @@ public class CartApiController {
   * @param userId the ID of the user who owns the cart
   * @return a response entity with a success message
   */
-  @PostMapping("empty/{id}")
+  @PostMapping("cart/empty")
   public ResponseEntity<String> emptyCart(@RequestBody long userId) {
 
     cartService.emptyCart(userId);

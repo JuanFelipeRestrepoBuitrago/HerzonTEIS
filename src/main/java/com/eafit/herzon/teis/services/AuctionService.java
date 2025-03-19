@@ -123,6 +123,7 @@ public class AuctionService {
       winningOffer.ifPresent(offer -> {
         // Create order for winner
         Order order = new Order(offer.getOfferPrice(), offer.getUser());
+        //To do
         order.getCartItems().add(new CartItem(auction.getJewel(), 1));
         orderRepository.save(order);
       });

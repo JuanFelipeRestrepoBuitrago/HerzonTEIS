@@ -46,26 +46,29 @@ public class CartService {
    *
    * @param userId   the ID of the user
    * @param jewelId  the ID of the jewel to add
-   * @param id       the ID of the cart (if applicable)
    * @param quantity the quantity of the item to add
    * @throws RuntimeException if the user or jewel is not found
    */
   @Transactional
-  public void addItem(long userId, Long jewelId, long id, int quantity) {
-    CustomUser customUser = userRepository.findById(userId)
+  public void addItem(long userId, Long jewelId, int quantity) {
+    CustomUser user = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
     Jewel jewel = jewelRepository.findById(jewelId)
             .orElseThrow(() -> new RuntimeException("Joya no encontrada"));
 
-    Cart cart = customUser.getCart();
-    CartItem cartItem = new CartItem(jewel, quantity);
-    if (cart == null) {
-      cart = new Cart();
-      cart.setUser(customUser);
+    Cart cart = user.getCart();
+
+    CartItem cartItem = cart.getItems().stream()
+            .filter(item -> item.getJewel().getId().equals(jewelId))
+            .findFirst()
+            .orElse(null);
+
+    if (cartItem == null) {
+      cartItem = new CartItem(jewel, quantity, cart);
+      cart.addItem(cartItem);
     }
 
-    cart.addItem(cartItem);
     cartItemRepository.save(cartItem);
   }
 
