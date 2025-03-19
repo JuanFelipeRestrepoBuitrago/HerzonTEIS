@@ -72,7 +72,7 @@ public class CustomUser {
    * The list of offers made by the user.
    */
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "user",
-          cascade = CascadeType.REMOVE, orphanRemoval = true)
+          cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore
   @Fetch(FetchMode.SUBSELECT)
   private List<Offer> offers;
