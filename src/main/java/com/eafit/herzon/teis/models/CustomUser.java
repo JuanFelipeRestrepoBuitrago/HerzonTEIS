@@ -92,6 +92,7 @@ public class CustomUser {
     this.creditCards = new ArrayList<>();
     this.offers = new ArrayList<>();
     this.orders = new ArrayList<>();
+    this.cart = new Cart(this);
   }
 
   /**
@@ -109,6 +110,7 @@ public class CustomUser {
     this.creditCards = new ArrayList<>();
     this.offers = new ArrayList<>();
     this.orders = new ArrayList<>();
+    this.cart = new Cart(this);
   }
 
   /**
@@ -348,6 +350,9 @@ public class CustomUser {
    * @return the cart
    */
   public Cart getCart() {
+    if (cart == null) {
+      cart = new Cart(this);
+    }
     return cart;
   }
 

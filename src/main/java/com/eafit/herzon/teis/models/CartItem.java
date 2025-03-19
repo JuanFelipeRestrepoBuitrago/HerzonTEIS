@@ -27,6 +27,20 @@ public class CartItem {
   /**
    * The unique identifier for the cart item.
    */
+  public Long getId() {
+    return id;
+  }
+
+  /**
+   * The unique identifier for the cart item.
+   */
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  /**
+   * The unique identifier for the cart item.
+   */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -81,9 +95,10 @@ public class CartItem {
    * @param jewel    the jewel to add to the cart
    * @param quantity the quantity of the jewel
    */
-  public CartItem(Jewel jewel, int quantity) {
+  public CartItem(Jewel jewel, int quantity, Cart cart) {
     this.jewel = jewel;
     this.quantity = quantity;
+    this.cart = cart;
   }
 
   /**

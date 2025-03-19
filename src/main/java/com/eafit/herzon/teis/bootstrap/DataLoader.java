@@ -318,7 +318,7 @@ public class DataLoader implements CommandLineRunner {
         int numItems = random.nextInt(3) + 1;
         for (int j = 0; j < numItems; j++) {
           Jewel jewel = jewels.get(random.nextInt(jewels.size()));
-          CartItem cartItem = new CartItem(jewel, random.nextInt(3) + 1);
+          CartItem cartItem = new CartItem(jewel, random.nextInt(3) + 1, user.getCart());
           order.getCartItems().add(cartItem);
           order.setTotal(order.getTotal() + cartItem.getQuantity() * jewel.getPrice());
         }
