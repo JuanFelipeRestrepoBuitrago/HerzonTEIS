@@ -11,6 +11,7 @@ import com.eafit.herzon.teis.models.Order;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
 import com.eafit.herzon.teis.repositories.JewelRepository;
 import com.eafit.herzon.teis.repositories.OrderRepository;
+import com.eafit.herzon.teis.utils.AuctionFormatter;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Service class for handling auction operations.
  */
 @Service
+@Transactional
 public class AuctionService {
 
   /**
@@ -157,39 +159,53 @@ public class AuctionService {
           "Joya con Id " + auctionDto.getJewelId() + " no encontrada.");
     }
 
-    // Convert date strings to LocalDateTime
-    auctionDto.setStartDate(LocalDateTime.parse(auctionDto.getStartDateString()));
-    auctionDto.setEndDate(LocalDateTime.parse(auctionDto.getEndDateString()));
-
-    if (auctionDto.getStartDate().isAfter(auctionDto.getEndDate())) {
-      throw new InvalidAuctionException("La fecha de inicio debe ser antes de la fecha de fin.");
-    }
-
     Double currentPrice = auctionDto.getCurrentPrice() == null
         ? auctionDto.getStartPrice()
         : auctionDto.getCurrentPrice();
+    auctionDto.setCurrentPrice(currentPrice);
 
     Auction auction;
     if (auctionDto.getAuctionId() == null) {
-      auction = new Auction(
-          auctionDto.getStartDate(),
-          auctionDto.getEndDate(),
-          auctionDto.getStartPrice(),
-          currentPrice,
-          jewel);
+      auction = new Auction();
+      auction = AuctionFormatter.convertToEntity(auctionDto, jewel, auction);
     } else {
       auction = auctionRepository.findById(auctionDto.getAuctionId())
           .orElseThrow(
               () -> new EntityNotFoundException(
                   "Subasta con Id " + auctionDto.getAuctionId() + " no encontrada."));
-      System.out.println(auctionDto.getStartDate().toString());
-      auction.setStartDate(auctionDto.getStartDate());
-      auction.setEndDate(auctionDto.getEndDate());
-      auction.setStartPrice(auctionDto.getStartPrice());
-      auction.setCurrentPrice(currentPrice);
-      auction.setJewel(jewel);
+      auction = AuctionFormatter.convertToEntity(auctionDto, jewel, auction);
+    }
+
+    if (auction.getStartDate().isAfter(auction.getEndDate())) {
+      throw new InvalidAuctionException("La fecha de inicio debe ser antes de la fecha de fin.");
     }
 
     auctionRepository.save(auction);
+  }
+
+  /**
+   * Method transform an auction to a DTO.
+   *
+   * @param auctionId the id of the auction to transform.
+   * @return the auction DTO.
+   */
+  public AuctionDto toDto(Long auctionId) {
+    Auction auction = getAuctionById(auctionId);
+    return AuctionFormatter.convertToDto(auction);
+  }
+
+  /**
+   * Function to Delete an auction.
+   *
+   * @param id the id of the auction to delete
+   * @throws EntityNotFoundException if the auction is not found.
+   */
+  @Transactional
+  public void delete(Long id) throws EntityNotFoundException {
+    Auction auction = auctionRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Subasta con Id " + id + " no encontrada."));
+
+    System.out.println("Deleting auction: " + auction.getId());
+    auctionRepository.delete(auction);
   }
 }

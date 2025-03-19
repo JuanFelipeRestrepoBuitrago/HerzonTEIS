@@ -83,7 +83,7 @@ public class Auction {
    * The list of offers which have been made to the auction.
    */
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "auction", 
-      cascade = CascadeType.ALL, orphanRemoval = true)
+      cascade = CascadeType.REMOVE, orphanRemoval = true)
   @JsonIgnore
   @Fetch(FetchMode.SUBSELECT)
   private List<Offer> offers;
@@ -99,6 +99,7 @@ public class Auction {
    */
   public Auction() {
     this.offers = new ArrayList<>();
+    this.status = true;
   }
 
   /**

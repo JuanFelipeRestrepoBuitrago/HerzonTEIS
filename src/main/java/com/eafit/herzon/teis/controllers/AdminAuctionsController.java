@@ -8,7 +8,6 @@ import com.eafit.herzon.teis.services.AuctionService;
 import com.eafit.herzon.teis.services.JewelService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -95,8 +94,6 @@ public class AdminAuctionsController {
       RedirectAttributes redirectAttributes) {
     if (bindingResult.hasErrors()) {
       model.addAttribute("error", true);
-      // Add the binding result errors to the messages just with messages, not field
-      // names
       model.addAttribute("messages", bindingResult.getAllErrors().stream()
           .map(error -> error.getDefaultMessage())
           .toList());
@@ -114,7 +111,7 @@ public class AdminAuctionsController {
       redirectAttributes.addFlashAttribute("messages",
           Collections.singletonList(e.getMessage()));
       redirectAttributes.addFlashAttribute("error", true);
-      
+
       if (auctionFormDto.getAuctionId() != null) {
         return "redirect:/admin/auctions/edit/" + auctionFormDto.getAuctionId();
       }
@@ -144,7 +141,7 @@ public class AdminAuctionsController {
       redirectAttributes.addFlashAttribute("messages",
           Collections.singletonList("Error al guardar la subasta."));
       redirectAttributes.addFlashAttribute("error", true);
-      
+
       if (auctionFormDto.getAuctionId() != null) {
         return "redirect:/admin/auctions/edit/" + auctionFormDto.getAuctionId();
       }
@@ -165,21 +162,9 @@ public class AdminAuctionsController {
   @GetMapping({ "/edit/{id}", "/edit/{id}/" })
   public String showEditForm(@PathVariable Long id, Model model) {
     try {
-      Auction auction = auctionService.getAuctionById(id);
-
       // Convert Auction entity to AuctionDto (assuming you have a mapping method)
-      AuctionDto auctionDto = new AuctionDto();
-      auctionDto.setAuctionId(auction.getId());
-      auctionDto.setJewelId(auction.getJewel().getId());
-      auctionDto.setStartPrice(auction.getStartPrice());
-      auctionDto.setCurrentPrice(auction.getCurrentPrice());
-      auctionDto.setStartDateString(
-          auction.getStartDate().format(
-              DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")));
-      auctionDto.setEndDateString(
-          auction.getEndDate().format(
-              DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")));
-      
+      AuctionDto auctionDto = auctionService.toDto(id);
+
       model.addAttribute("jewels", jewelService.getAllJewels());
       model.addAttribute("auctionForm", auctionDto);
       model.addAttribute("title", "Editar Subasta - Admin Herzon");
@@ -190,6 +175,31 @@ public class AdminAuctionsController {
     }
 
     return "admin/auctions/form";
+  }
+
+  /**
+   * Deletes an auction.
+   *
+   * @param id the ID of the auction to delete
+   * @param model the model to add attributes to the view
+   * @param redirectAttributes the attributes to add to the redirect
+   * @return redirects to the auctions management page
+   */
+  @GetMapping("/delete/{id}")
+  public String deleteAuction(@PathVariable Long id, Model model,
+      RedirectAttributes redirectAttributes) {
+    try {
+      auctionService.delete(id);
+      redirectAttributes.addFlashAttribute("messages",
+          Collections.singletonList("Subasta eliminada correctamente con id: " + id)); 
+      redirectAttributes.addFlashAttribute("error", false);
+    } catch (EntityNotFoundException e) {
+      redirectAttributes.addFlashAttribute("messages",
+          Collections.singletonList(e.getMessage()));
+      redirectAttributes.addFlashAttribute("error", true);
+    }
+
+    return "redirect:/admin/auctions";
   }
 
 }

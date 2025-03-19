@@ -49,8 +49,9 @@ public class UserController {
       BindingResult bindingResult,
       RedirectAttributes redirectAttributes) {
     if (bindingResult.hasErrors()) {
-      redirectAttributes.addFlashAttribute("error",
-          "Por favor, corrija los errores en el formulario.");
+      // Add all errors as a single flash attribute separated by a space
+      redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors().stream()
+          .map(error -> error.getDefaultMessage()).reduce("Errores: ", (a, b) -> a + " " + b));
       return "redirect:/register";
     }
 

@@ -103,7 +103,7 @@ public class AdminJewelController {
    * @param id the ID of the jewel to delete
    * @return redirects to the jewel management page
    */
-  @PostMapping("/delete/{id}")
+  @GetMapping("/delete/{id}")
   public String deleteJewel(@PathVariable Long id) {
     jewelService.deleteJewel(id);
     return "redirect:/admin/jewels";

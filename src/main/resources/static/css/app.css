@@ -926,6 +926,30 @@ select.form-control.jewel-select option {
   background-color: white;
 }
 
+.custom-switch {
+  background-color: #aaa;
+  border-radius: 25px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.custom-switch:checked {
+  background-color: #fbc02d; /* Gold color */
+  border-color: #fbc02d;
+}
+
+.custom-switch:focus {
+  box-shadow: 0 0 5px rgba(252, 197, 37, 0.8);
+}
+
+.big-switch {
+  width: 3rem !important;  /* Increase width */
+  height: 1.5rem;  /* Increase height */
+}
+.big-switch:checked {
+  background-color: #ffcc00 !important; /* Gold color */
+}
+
+
 /* ==========================================================================
    Responsive Adjustments
    ========================================================================== */

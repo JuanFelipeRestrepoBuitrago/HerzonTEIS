@@ -38,7 +38,7 @@ public class Cart {
   * Comment.
   */
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "cart",
-        cascade = CascadeType.ALL, orphanRemoval = true)
+        cascade = CascadeType.REMOVE, orphanRemoval = true)
   @JsonIgnore
   @Fetch(FetchMode.SUBSELECT)
   private List<CartItem> items;

@@ -32,31 +32,16 @@ public class AuctionDto {
   @NotNull(message = "La fecha de fin es requerida")
   private String endDateString;
 
+  
+  @NotNull(message = "El estado de la subasta es requerido")
+  private boolean status;
+
   /**
    * Constructs a new AuctionDTO with the specified start date, end date, start
    * price, and jewel ID.
    */
   public AuctionDto() {
-  }
-
-  /**
-   * Constructs a new AuctionDTO with the specified start date, end date, start
-   * price, and jewel ID.
-   *
-   * @param startDate  the start date of the auction
-   * @param endDate    the end date of the auction
-   * @param startPrice the start price of the auction
-   * @param jewelId    the ID of the jewel associated with the auction
-   */
-  public AuctionDto(
-      LocalDateTime startDate,
-      LocalDateTime endDate,
-      Double startPrice,
-      Long jewelId) {
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.startPrice = startPrice;
-    this.jewelId = jewelId;
+    status = true;
   }
 
   /**
@@ -201,5 +186,23 @@ public class AuctionDto {
    */
   public void setEndDateString(String endDateString) {
     this.endDateString = endDateString;
+  }
+
+  /**
+   * Returns the status of the auction.
+   *
+   * @return the status of the auction
+   */
+  public boolean getStatus() {
+    return status;
+  }
+
+  /**
+   * Sets the status of the auction.
+   *
+   * @param status the status of the auction
+   */
+  public void setStatus(boolean status) {
+    this.status = status;
   }
 }

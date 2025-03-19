@@ -58,7 +58,7 @@ public class Jewel {
    * The list of auctions which have been made to the jewel.
    */
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "jewel", 
-      cascade = CascadeType.ALL, orphanRemoval = true)
+      cascade = CascadeType.REMOVE, orphanRemoval = true)
   @JsonIgnore
   @Fetch(FetchMode.SUBSELECT)
   private List<Auction> auctions;

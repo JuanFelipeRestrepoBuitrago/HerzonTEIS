@@ -174,11 +174,11 @@ public class SecurityConfig {
       String errorMessage;
       if (exception.getMessage().contains("UserDetailsService returned null")
           || exception.getCause() instanceof UsernameNotFoundException) {
-        errorMessage = "The user does not exist";
+        errorMessage = "Usuario no encontrado";
       } else if (exception.getMessage().contains("Bad credentials")) {
-        errorMessage = "Incorrect username or password";
+        errorMessage = "Usuario o contraseña incorrectos";
       } else {
-        errorMessage = "Authentication error, please try again";
+        errorMessage = "Error al iniciar sesión, intente de nuevo más tarde";
       }
 
       request.getSession().setAttribute("error", errorMessage);
