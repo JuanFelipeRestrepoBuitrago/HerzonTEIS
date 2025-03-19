@@ -148,12 +148,12 @@ CREATE TABLE cart_items (
   jewel_id BIGINT NOT NULL,
   cart_id BIGINT,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (jewel_id) REFERENCES jewels(id) ON DELETE CASCADE,
   FOREIGN KEY (cart_id) REFERENCES carts(id) ON DELETE CASCADE
 );
 
--- Trigger to update updated_at in cart_items
+
 CREATE TRIGGER update_cart_items_modified_at
     BEFORE UPDATE ON cart_items
     FOR EACH ROW

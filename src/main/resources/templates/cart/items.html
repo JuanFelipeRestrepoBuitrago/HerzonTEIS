@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <!-- Fragmento de head (comentar si da problemas) -->
+
   <div th:replace="~{fragments/head :: head}"></div>
   <title>Carrito de Compras</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<!-- Fragmento de header (comentar si da problemas) -->
+
 <header th:replace="~{fragments/header :: header}"></header>
 
 <main class="container my-5 py-4">
@@ -33,6 +33,22 @@
     </div>
   </div>
 
+
+  <div class="text-center mt-4" th:if="${!#lists.isEmpty(items)}">
+    <div class="d-flex justify-content-center gap-3">
+      <form th:action="@{/cart/checkout}" method="post">
+        <button type="submit" class="btn btn-primary btn-lg">
+          <i class="fas fa-credit-card"></i> Checkout
+        </button>
+      </form>
+      <form th:action="@{/cart/empty}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas vaciar el carrito?');">
+        <button type="submit" class="btn btn-warning btn-lg">
+          <i class="fas fa-trash-alt"></i> Vaciar Carrito
+        </button>
+      </form>
+    </div>
+  </div>
+
   <div class="text-center py-5" id="no-results" th:if="${#lists.isEmpty(items)}">
     <i class="fas fa-shopping-cart fa-3x text-gold mb-3"></i>
     <h3 class="text-white">Tu carrito está vacío</h3>
@@ -40,7 +56,6 @@
   </div>
 </main>
 
-<!-- Fragmento de footer (comentar si da problemas) -->
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
 </body>

@@ -77,7 +77,7 @@ public class CartItem {
    * Automatically updated by Hibernate when the entity is modified.
    */
   @UpdateTimestamp
-  @Column(name = "updated_at", nullable = false)
+  @Column(name = "modifed_at", nullable = false)
   private LocalDateTime updatedAt;
 
   @ManyToMany(mappedBy = "cartItems")

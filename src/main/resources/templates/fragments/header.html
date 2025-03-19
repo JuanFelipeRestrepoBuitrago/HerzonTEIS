@@ -1,69 +1,80 @@
 <div th:fragment="header">
   <header class="bg-dark-green py-3 shadow-lg sticky-top">
     <div class="container d-flex justify-content-between align-items-center">
-      <h1 class="m-0">
-        <a th:href="@{/}" class="text-decoration-none text-gold">
-          <i class="fas fa-gem"></i> HERZON
-        </a>
-      </h1>
-      <nav class="d-flex gap-4">
-        <a th:href="@{/}" class="nav-link"
-           th:classappend="${currentPageActive == 'home' ? 'text-gold fw-bold' : 'text-white'}">
-          <i class="fas fa-home"></i> Home
-        </a>
 
-        <a th:href="@{/jewels}" class="nav-link"
-           th:classappend="${currentPageActive == 'jewels' ? 'text-gold fw-bold' : 'text-white'}">
-          <i class="fas fa-ring"></i> Joyas
-        </a>
+      <!-- Sección Izquierda: Logo y navegación primaria -->
+      <div class="d-flex align-items-center">
+        <h1 class="m-0">
+          <a th:href="@{/}" class="text-decoration-none text-gold">
+            <i class="fas fa-gem"></i> HERZON
+          </a>
+        </h1>
+        <nav class="ms-4">
+          <a th:href="@{/}" class="nav-link d-inline-block px-2"
+             th:classappend="${currentPageActive == 'home' ? 'text-gold fw-bold' : 'text-white'}">
+            Home
+          </a>
+          <a th:href="@{/jewels}" class="nav-link d-inline-block px-2"
+             th:classappend="${currentPageActive == 'jewels' ? 'text-gold fw-bold' : 'text-white'}">
+            Joyas
+          </a>
+          <a th:href="@{/auctions}" class="nav-link d-inline-block px-2"
+             th:classappend="${currentPageActive == 'auctions' ? 'text-gold fw-bold' : 'text-white'}">
+            Subastas
+          </a>
+          <a th:href="@{/auctions/history}" class="nav-link d-inline-block px-2"
+             th:classappend="${currentPageActive == 'auctions_history' ? 'text-gold fw-bold' : 'text-white'}">
+            Historial Subastas
+          </a>
+        </nav>
+      </div>
 
-        <a th:href="@{/auctions}" class="nav-link"
-           th:classappend="${currentPageActive == 'auctions' ? 'text-gold fw-bold' : 'text-white'}">
-          <i class="fas fa-ring"></i> Subastas
-        </a>
+      <!-- Sección Derecha: Acciones del usuario -->
+      <div>
+        <!-- Opciones para usuarios NO autenticados -->
+        <div sec:authorize="!isAuthenticated()">
+          <a th:href="@{/login}" class="nav-link d-inline-block px-2 text-white"
+             th:classappend="${currentPageActive == 'login' ? 'text-gold fw-bold' : ''}">
+            <i class="fas fa-sign-in-alt"></i> Ingresar
+          </a>
+          <a th:href="@{/register}" class="nav-link d-inline-block px-2 text-white"
+             th:classappend="${currentPageActive == 'register' ? 'text-gold fw-bold' : ''}">
+            <i class="fas fa-user-plus"></i> Registrarse
+          </a>
+        </div>
+        <!-- Opciones para usuarios autenticados -->
+        <div sec:authorize="isAuthenticated()" class="d-flex align-items-center">
+          <a th:href="@{/orders}" class="nav-link d-inline-block px-2 text-white"
+             th:classappend="${currentPageActive == 'orders' ? 'text-gold fw-bold' : ''}">
+            <i class="fas fa-box"></i> Ordenes
+          </a>
+          <a th:href="@{/wishlist}" class="nav-link d-inline-block px-2 text-white position-relative"
+             th:classappend="${currentPageActive == 'wishlist' ? 'text-gold fw-bold' : ''}">
+            <i class="fas fa-heart"></i> WishList
+            <span th:if="${wishListCount > 0}"
+                  class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+              <span th:text="${wishListCount}"></span>
+            </span>
+          </a>
+          <a th:href="@{/cart}" class="nav-link d-inline-block px-2 text-white position-relative"
+             th:classappend="${currentPageActive == 'cart' ? 'text-gold fw-bold' : ''}">
+            <i class="fas fa-shopping-cart"></i> Carrito
+            <span th:if="${cartItemCount > 0}"
+                  class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+              <span th:text="${cartItemCount}"></span>
+            </span>
+          </a>
+          <!-- Mostrar solo el nombre del usuario sin ícono -->
+          <span class="nav-link d-inline-block px-2 text-white" sec:authentication="name"></span>
+          <form th:action="@{/logout}" method="post" class="d-inline-block px-2">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <button type="submit" class="btn btn-link nav-link text-white p-0">
+              <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </button>
+          </form>
+        </div>
+      </div>
 
-        <a th:href="@{/auctions/history}" class="nav-link"
-           th:classappend="${currentPageActive == 'auctions_history' ? 'text-gold fw-bold' : 'text-white'}">
-          <i class="fas fa-ring"></i> Historial Subastas
-        </a>
-
-        <!-- NO autenticado -->
-        <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="nav-link"
-           th:classappend="${currentPageActive == 'login' ? 'text-gold fw-bold' : 'text-white'}">
-          <i class="fas fa-sign-in-alt"></i> Ingresar
-        </a>
-        <a sec:authorize="!isAuthenticated()" th:href="@{/register}" class="nav-link"
-           th:classappend="${currentPageActive == 'register' ? 'text-gold fw-bold' : 'text-white'}">
-          <i class="fas fa-user-plus"></i> Registrarse
-        </a>
-
-        <!-- Autenticado -->
-        <a sec:authorize="isAuthenticated()" th:href="@{/orders}" class="nav-link text-white"
-           th:classappend="${currentPageActive == 'orders' ? 'text-gold fw-bold' : 'text-white'}">
-          <i class="fas fa-box"></i> Ordenes
-        </a>
-
-        <!-- Carrito de compras -->
-        <a sec:authorize="isAuthenticated()" th:href="@{/cart}" class="nav-link text-white position-relative">
-          <i class="fas fa-shopping-cart"></i> Carrito
-          <span th:if="${cartItemCount > 0}"
-                class="badge bg-danger position-absolute top-0 start-100 translate-middle">
-            <span th:text="${cartItemCount}"></span>
-          </span>
-        </a>
-
-        <span sec:authorize="isAuthenticated()" class="nav-link text-white">
-          <i class="fas fa-user"></i>
-          <span sec:authentication="name"></span>
-        </span>
-
-        <form th:action="@{/logout}" method="post" class="d-inline" sec:authorize="isAuthenticated()">
-          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-          <button type="submit" class="nav-link text-white">
-            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-          </button>
-        </form>
-      </nav>
     </div>
   </header>
 </div>
