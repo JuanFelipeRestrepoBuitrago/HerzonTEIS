@@ -36,6 +36,9 @@ html, body {
 header {
     background: linear-gradient(180deg, var(--verde-muy-oscuro) 0%, var(--verde-super-oscuro) 100%);
     padding: 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 /* Style the main heading in the header */
@@ -44,6 +47,7 @@ header h1 {
     color: var(--dorado);
     letter-spacing: 2px;
     text-shadow: 0 2px 5px rgba(212, 175, 55, 0.2);
+    margin: 0;
 }
 
 /* Style navigation links in the header */
@@ -60,6 +64,16 @@ header nav a {
 header nav a:hover {
     color: var(--dorado);
     background: rgba(212, 175, 55, 0.1);
+}
+
+/* Hamburger menu for mobile */
+.hamburger {
+    display: none;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: var(--dorado);
+    cursor: pointer;
 }
 
 /* ==========================================================================
@@ -180,7 +194,7 @@ footer {
 .auth-container select {
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(212, 175, 55, 0.4);
-    color: var(--blanco) !important; /* Changed to white */
+    color: var(--blanco) !important;
     padding: 12px;
     border-radius: 8px;
     font-size: 15px;
@@ -427,7 +441,7 @@ main .btn-gold {
 
 .custom-select option {
     background: var(--verde-muy-oscuro);
-    color: #000000 !important; /* Changed to black for category */
+    color: #000000 !important;
     padding: 10px;
 }
 
@@ -448,27 +462,16 @@ main .btn-gold {
     overflow: hidden;
     background-color: var(--blanco);
     border: 1px solid rgba(212, 175, 55, 0.2);
-    height: 100%;
     width: 100%;
     max-width: 350px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Centrar la tarjeta cuando es el único resultado */
-#jewels-container.single-result .col {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
 #jewels-container.single-result .card {
     margin: 0 auto;
-}
-
-/* Ajustar el grid para 2 resultados */
-#jewels-container.two-results .col {
-    display: flex;
-    justify-content: center;
-    width: 100%;
 }
 
 /* Style the jewel images */
@@ -483,6 +486,80 @@ main .btn-gold {
 .card-body {
     padding: 1.5rem;
     text-align: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Style the card title */
+.card-body h5 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--verde-muy-oscuro);
+    margin-bottom: 0.5rem;
+}
+
+/* Style the card price */
+.card-body .card-price {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--dorado);
+    margin-bottom: 1rem;
+}
+
+/* Style the quantity input */
+.card-body .quantity-input {
+    width: 60px;
+    margin: 0 auto 1rem;
+    padding: 5px;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 5px;
+    text-align: center;
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--verde-muy-oscuro);
+}
+
+/* Style the buttons in the card */
+.card-body .btn {
+    margin: 0.25rem 0;
+    width: 100%;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+/* Style the "Ver Detalles" button */
+.card-body .btn-gold {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}
+
+/* Style the "Agregar al carrito" button */
+.card-body .btn-cart {
+    background-color: #28a745;
+    color: var(--blanco);
+    border: none;
+}
+
+.card-body .btn-cart:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+/* Style the "Agregar a WishList" button */
+.card-body .btn-wishlist {
+    background-color: #007bff;
+    color: var(--blanco);
+    border: none;
+}
+
+.card-body .btn-wishlist:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
 }
 
 /* Eliminar .jewel-card si no se usa en otro lugar */
@@ -493,11 +570,11 @@ main .btn-gold {
 /* Style the jewels container as a CSS Grid */
 #jewels-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
     justify-items: center;
-    padding: 0 15px;
-    max-width: 1200px;
+    padding: 0 20px;
+    max-width: 1400px;
     margin: 0 auto;
     width: 100%;
 }
@@ -510,54 +587,195 @@ main .btn-gold {
 
 /* Clase para dos resultados */
 #jewels-container.two-results {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    max-width: 700px;
     justify-items: center;
-}
-
-/* Ajustes responsivos para pantallas pequeñas */
-@media (max-width: 767px) {
-    #jewels-container {
-        grid-template-columns: 1fr;
-    }
-    #jewels-container.single-result,
-    #jewels-container.two-results {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Estilo para pantallas medianas y grandes */
-@media (min-width: 768px) {
-    #jewels-container {
-        grid-template-columns: repeat(3, 1fr);
-    }
 }
 
 /* Hover effect for cards */
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-/* Style view toggle buttons (si se usan en otro contexto) */
-.view-toggle .btn {
-    border-radius: 20px;
-    font-size: 14px;
-    padding: 6px 12px;
-    margin: 0 5px;
-    background-color: rgba(212, 175, 55, 0.1);
-    color: var(--blanco);
-    border: 1px solid var(--dorado);
+/* Jewel cards responsive adjustments */
+@media (min-width: 1200px) {
+    #jewels-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    #jewels-container.two-results {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card {
+        max-width: 350px;
+    }
+
+    .card-img-top {
+        height: 220px;
+    }
+
+    .card-body h5 {
+        font-size: 1.25rem;
+    }
+
+    .card-body .card-price {
+        font-size: 1.1rem;
+    }
+
+    .card-body .btn {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
 }
 
-.view-toggle .btn.active {
-    background-color: var(--dorado);
-    color: var(--verde-muy-oscuro);
-    font-weight: 600;
+@media (min-width: 992px) and (max-width: 1199px) {
+    #jewels-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    #jewels-container.two-results {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card {
+        max-width: 320px;
+    }
+
+    .card-img-top {
+        height: 200px;
+    }
+
+    .card-body h5 {
+        font-size: 1.2rem;
+    }
+
+    .card-body .card-price {
+        font-size: 1.05rem;
+    }
+
+    .card-body .btn {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
 }
 
-.view-toggle .btn:hover {
-    background-color: var(--dorado-oscuro);
-    color: var(--blanco);
+@media (min-width: 768px) and (max-width: 991px) {
+    #jewels-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #jewels-container.single-result {
+        grid-template-columns: 1fr;
+    }
+
+    #jewels-container.two-results {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card {
+        max-width: 350px;
+    }
+
+    .card-img-top {
+        height: 180px;
+    }
+
+    .card-body h5 {
+        font-size: 1.15rem;
+    }
+
+    .card-body .card-price {
+        font-size: 1rem;
+    }
+
+    .card-body .btn {
+        font-size: 0.85rem;
+        padding: 8px 10px;
+    }
+}
+
+@media (max-width: 767px) {
+    #jewels-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 0 15px;
+    }
+
+    #jewels-container.single-result,
+    #jewels-container.two-results {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+
+    .card {
+        max-width: 100%;
+        min-width: 300px;
+    }
+
+    .card-img-top {
+        height: 200px;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-body h5 {
+        font-size: 1.1rem;
+    }
+
+    .card-body .card-price {
+        font-size: 1rem;
+    }
+
+    .card-body .quantity-input {
+        width: 50px;
+        font-size: 0.9rem;
+    }
+
+    .card-body .btn {
+        font-size: 0.85rem;
+        padding: 8px 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    #jewels-container {
+        padding: 0 10px;
+    }
+
+    .card {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .card-img-top {
+        height: 180px;
+    }
+
+    .card-body {
+        padding: 0.75rem;
+    }
+
+    .card-body h5 {
+        font-size: 1rem;
+    }
+
+    .card-body .card-price {
+        font-size: 0.95rem;
+    }
+
+    .card-body .quantity-input {
+        width: 45px;
+        font-size: 0.85rem;
+    }
+
+    .card-body .btn {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+    }
 }
 
 /* ==========================================================================
@@ -906,7 +1124,7 @@ main .btn-gold {
 }
 
 .text-dark {
-    color: metatarsus343a40 !important;
+    color: #343a40 !important;
 }
 
 .text-muted {
@@ -951,135 +1169,263 @@ select.form-control.jewel-select option {
 }
 
 /* ==========================================================================
-   Responsive Adjustments
+   Responsive Adjustments (Mobile Only)
    ========================================================================== */
-/* Media query for medium screens and up */
-@media (min-width: 768px) {
-    .filter-btn {
-        width: auto;
+/* Header adjustments for mobile */
+@media (max-width: 768px) {
+    header {
+        padding: 15px 0;
+    }
+
+    header .container {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0 10px;
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+
+    header nav {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        padding: 10px 0;
+    }
+
+    header nav.active {
+        display: flex;
+    }
+
+    header nav a {
+        width: 100%;
+        text-align: left;
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+
+    .hamburger {
+        display: block;
+        position: absolute;
+        right: 15px;
+        top: 20px;
+    }
+
+    header .d-flex {
+        flex-direction: column;
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    header .d-flex a,
+    header .d-flex form {
+        width: 100%;
+        text-align: left;
+        padding: 10px 15px;
     }
 }
 
-/* Media query for screens up to 768px */
+/* Footer adjustments for mobile */
+@media (max-width: 576px) {
+    footer {
+        padding: 20px 0;
+    }
+
+    .footer-brand .logo-text {
+        font-size: 18px;
+    }
+
+    .footer-text p {
+        font-size: 12px;
+    }
+
+    .footer-social a {
+        font-size: 16px;
+    }
+}
+
+/* Authentication forms for mobile */
+@media (max-width: 576px) {
+    .auth-container {
+        padding: 20px;
+        max-width: 90%;
+        margin: 15px auto;
+    }
+
+    .auth-container h2 {
+        font-size: 20px;
+    }
+
+    .auth-container p {
+        font-size: 12px;
+    }
+
+    .auth-container label {
+        font-size: 12px;
+    }
+
+    .auth-container input,
+    .auth-container select {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+/* Buttons for mobile */
+@media (max-width: 576px) {
+    .btn-gold,
+    .btn-gold2,
+    .btn-secondary {
+        padding: 10px 15px;
+        font-size: 14px;
+        width: 100%;
+    }
+
+    .btn-warning,
+    .btn-danger {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+}
+
+/* Homepage for mobile */
 @media (max-width: 768px) {
+    main {
+        padding: 20px 15px;
+    }
+
     main h1 {
         font-size: 36px;
     }
+
     main .lead {
         font-size: 18px;
         max-width: 90%;
     }
+
     main .btn-gold {
         padding: 10px 25px;
-        font-size: 15px;
     }
-    .auth-container {
-        max-width: 90%;
-        padding: 25px;
+}
+
+@media (max-width: 576px) {
+    main h1 {
+        font-size: 28px;
     }
-    .auth-container h2 {
-        font-size: 22px;
+
+    main .lead {
+        font-size: 16px;
     }
-    .auth-container .btn-gold {
-        padding: 10px 0;
-        font-size: 15px;
+}
+
+/* Filter panel for mobile */
+@media (max-width: 768px) {
+    .filter-panel {
+        padding: 15px;
     }
-    .auth-container input,
-    .auth-container select {
-        font-size: 14px;
-    }
-    .jewel-image {
-        width: 80px;
-        height: 80px;
-    }
-    .btn-warning,
-    .btn-danger {
-        padding: 6px 12px;
-        font-size: 14px;
-    }
-    .table th,
-    .table td {
-        font-size: 14px;
-        padding: 8px;
-    }
-    .jewel-form-container {
-        padding: 20px;
-    }
-    .btn-gold,
-    .btn-regresar {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-    .d-flex {
-        flex-direction: column;
-    }
+
     .filter-panel .row > div {
-        margin-bottom: 15px;
-    }
-    .filter-btn {
-        width: 100%;
-    }
-    .jewel-details-card .col-md-6 {
-        padding: 20px;
-    }
-    .jewel-details-card h1 {
-        font-size: 2rem;
-    }
-    .jewel-details-card .lead {
-        font-size: 1rem;
-    }
-    .jewel-details-card h3 {
-        font-size: 1.5rem;
-    }
-    .jewel-details-card .btn-regresar,
-    .jewel-details-card .btn-gold {
-        width: 100%;
         margin-bottom: 10px;
     }
-    .jewel-image-container {
-        border-radius: 15px 15px 0 0;
+
+    .filter-panel .col-md-4,
+    .filter-panel .col-md-3,
+    .filter-panel .col-md-2 {
+        flex: 1 1 100%;
     }
-    .user-table-container .table th,
-    .user-table-container .table td {
-        font-size: 14px;
-        padding: 8px;
+}
+
+/* Jewel cards for mobile */
+@media (max-width: 767px) {
+    #jewels-container {
+        grid-template-columns: 1fr;
     }
-    .user-table-container {
-        overflow-x: auto;
+
+    #jewels-container.single-result,
+    #jewels-container.two-results {
+        grid-template-columns: 1fr;
     }
+
     .card-img-top {
         height: 150px;
     }
 }
 
-/* Media query for screens up to 576px */
+/* Pagination for mobile */
 @media (max-width: 576px) {
-    .btn-regresar {
-        width: 100%;
-        text-align: center;
-        justify-content: center;
-    }
     .pagination .page-link {
         font-size: 14px;
         padding: 8px 12px;
     }
+
     .pagination .page-item:first-child .page-link,
     .pagination .page-item:last-child .page-link {
         font-size: 16px;
         padding: 8px 20px;
     }
+}
+
+/* Jewel details for mobile */
+@media (max-width: 768px) {
+    .jewel-details-card .col-md-6 {
+        padding: 20px;
+    }
+
+    .jewel-details-card h1 {
+        font-size: 2rem;
+    }
+
+    .jewel-details-card .lead {
+        font-size: 1rem;
+    }
+
+    .jewel-details-card h3 {
+        font-size: 1.5rem;
+    }
+
+    .jewel-image-container {
+        border-radius: 15px 15px 0 0;
+    }
+}
+
+@media (max-width: 576px) {
     .jewel-details-card .row {
         flex-direction: column;
     }
+
     .jewel-image-container {
-        height: 300px;
+        height: 250px;
     }
+}
+
+/* User table for mobile */
+@media (max-width: 768px) {
+    .user-table-container {
+        overflow-x: auto;
+    }
+
+    .user-table-container .table th,
+    .user-table-container .table td {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 576px) {
     .user-table-container .table th,
     .user-table-container .table td {
         font-size: 12px;
         padding: 6px;
     }
-    .card-img-top {
-        height: 120px;
+}
+
+/* Back button for mobile */
+@media (max-width: 576px) {
+    .btn-regresar {
+        width: 100%;
+        justify-content: center;
+        font-size: 1rem;
+        padding: 10px 20px;
     }
 }
