@@ -200,7 +200,7 @@ public class DataLoader implements CommandLineRunner {
       for (int i = 0; i < 3; i++) {
         double startPrice = Double.parseDouble(faker.commerce().price(50, 1000));
         LocalDateTime startDate = LocalDateTime.now().minusDays(7);
-        LocalDateTime endDate = startDate.minusDays(1);
+        LocalDateTime endDate = startDate.plusDays(1);
 
         Auction auction = new Auction();
         auction.setStartPrice(startPrice);

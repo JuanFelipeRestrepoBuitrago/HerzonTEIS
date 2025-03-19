@@ -45,14 +45,14 @@
             <a th:href="@{${auction.status ? '/auctions' : '/auctions/history'}}" class="btn-regresar me-3">
               <i class="fas fa-arrow-left me-2"></i>Volver a la Lista
             </a>
-            <div class="mb-5 position-relative" th:if="${auction.status}">
+            <div class="mb-5 position-relative" th:if="${available}">
               <label class="form-label text-gold" for="offerAmount"><i
                   class="fas fa-dollar-sign me-2"></i>Oferta</label>
               <input type="number" step="0.01" class="form-control jewel-input" id="offerAmount" name="offerAmount"
                 required placeholder="0.00" />
               <div class="invalid-feedback">Por favor, ingresa un precio válido.</div>
             </div>
-            <div class="d-flex justify-content-between align-items-center" th:if="${auction.status}">
+            <div class="d-flex justify-content-between align-items-center" th:if="${available}">
               <button type="button" onclick="placeOffer()" id="offerButton" class="btn btn-gold btn-lg px-5"><i
                   class="fas fa-money me-2"></i>Pujar</button>
             </div>
