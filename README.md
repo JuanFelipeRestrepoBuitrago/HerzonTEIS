@@ -4,7 +4,7 @@
 
 HERZON is a high-end jewelry e-commerce platform bridging Colombian craftsmanship with Swiss elegance. Built with Spring Boot 3.4.2.
 
-Visit the live demo at [Herzon](https://herzonteis-1.onrender.com/)
+Visit the live demo at [Herzon](https://herzonteis.onrender.com/)
 
 ## Features
 - User authentication (Admin/Customer)
