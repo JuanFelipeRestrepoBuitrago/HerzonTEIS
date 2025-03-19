@@ -14,6 +14,7 @@ import com.eafit.herzon.teis.repositories.OrderRepository;
 import com.eafit.herzon.teis.utils.AuctionFormatter;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -70,7 +71,9 @@ public class AuctionService {
   @Transactional(readOnly = true)
   public Page<Auction> getAllActiveAuctions(int page, int size) {
     Pageable pageable = PageRequest.of(page, size);
-    return auctionRepository.findAllActiveAuctions(LocalDateTime.now(), pageable);
+    return auctionRepository.findAllActiveAuctions(
+          LocalDateTime.now(
+              ZoneId.of("America/Bogota")), pageable);
   }
 
   /**
@@ -84,7 +87,7 @@ public class AuctionService {
   public Page<Auction> getAllInactiveAuctions(int page, int size) {
     return auctionRepository.findAllByStatusAndEndDateBefore(
         false,
-        LocalDateTime.now(),
+        LocalDateTime.now(ZoneId.of("America/Bogota")),
         PageRequest.of(page, size));
   }
 
@@ -109,7 +112,7 @@ public class AuctionService {
   @Scheduled(cron = "0 * * * * *") // Run every minute
   @Transactional
   public void closeExpiredAuctions() {
-    LocalDateTime now = LocalDateTime.now();
+    LocalDateTime now = LocalDateTime.now(ZoneId.of("America/Bogota"));
     List<Auction> expiredAuctions = auctionRepository.findAllByStatusAndEndDateBefore(true, now);
 
     expiredAuctions.forEach(auction -> {
