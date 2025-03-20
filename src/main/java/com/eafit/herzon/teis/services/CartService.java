@@ -13,6 +13,8 @@ import com.eafit.herzon.teis.repositories.JewelRepository;
 import com.eafit.herzon.teis.repositories.OrderRepository;
 import com.eafit.herzon.teis.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -161,6 +163,16 @@ public class CartService {
     order.setUser(user);
     order.setTotal(total);
     order.setStatus(PENDING);
+
+    List<CartItem> updatedItems = cart.getItems().stream()
+        .map(item -> {
+          CartItem newItem = new CartItem();
+          newItem.setQuantity(item.getQuantity());
+          newItem.setJewel(item.getJewel());
+          newItem.setCart(null); // Set cart to null
+          return newItem;
+        }).collect(Collectors.toList());
+    order.setCartItems(updatedItems);
 
     orderRepository.save(order);
 
