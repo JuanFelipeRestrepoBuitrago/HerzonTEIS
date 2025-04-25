@@ -1,72 +1,76 @@
 <div th:fragment="header">
   <header class="bg-dark-green py-3 shadow-lg sticky-top">
     <div class="container d-flex justify-content-between align-items-center">
-      <!-- Sección Izquierda: Logo y navegación primaria -->
+      <!-- Logo y navegación -->
       <div class="d-flex align-items-center">
         <h1 class="m-0">
-          <a th:href="@{/}" class="text-decoration-none text-gold">
+          <a th:href="@{/}" class="text-decoration-none text-gold notranslate" translate="no">
             <i class="fas fa-gem"></i> HERZON
           </a>
         </h1>
-        <button class="hamburger" aria-label="Toggle navigation">
+        <button class="hamburger d-md-none ms-3 btn btn-outline-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNav">
           <i class="fas fa-bars"></i>
         </button>
-        <nav class="ms-4">
-          <a th:href="@{/}" class="nav-link d-inline-block px-2"
-             th:classappend="${currentPageActive == 'home' ? 'text-gold fw-bold' : 'text-white'}">
-            Home
-          </a>
+        <nav class="ms-4 d-none d-md-flex">
+          <a th:href="@{/}" class="nav-link d-inline-block px-2 notranslate" translate="no"
+             th:classappend="${currentPageActive == 'home' ? 'text-gold fw-bold' : 'text-white'}">Home</a>
           <a th:href="@{/jewels}" class="nav-link d-inline-block px-2"
-             th:classappend="${currentPageActive == 'jewels' ? 'text-gold fw-bold' : 'text-white'}">
-            Joyas
-          </a>
+             th:classappend="${currentPageActive == 'jewels' ? 'text-gold fw-bold' : 'text-white'}">Joyas</a>
           <a th:href="@{/auctions}" class="nav-link d-inline-block px-2"
-             th:classappend="${currentPageActive == 'auctions' ? 'text-gold fw-bold' : 'text-white'}">
-            Subastas
-          </a>
+             th:classappend="${currentPageActive == 'auctions' ? 'text-gold fw-bold' : 'text-white'}">Subastas</a>
           <a th:href="@{/auctions/history}" class="nav-link d-inline-block px-2"
-             th:classappend="${currentPageActive == 'auctions_history' ? 'text-gold fw-bold' : 'text-white'}">
-            Historial Subastas
-          </a>
+             th:classappend="${currentPageActive == 'auctions_history' ? 'text-gold fw-bold' : 'text-white'}">Historial Subastas</a>
         </nav>
       </div>
 
-      <!-- Sección Derecha: Acciones del usuario -->
-      <div>
-        <!-- Opciones para usuarios NO autenticados -->
+      <!-- Usuario e idioma -->
+      <div class="d-flex align-items-center gap-3">
+        <!-- Dropdown idioma -->
+        <div class="dropdown">
+          <button class="btn btn-outline-light dropdown-toggle" id="languageDropdown" data-bs-toggle="dropdown">
+            <i class="fas fa-globe"></i> <span id="selected-lang" class="notranslate" translate="no">ES</span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('es')">ES</a></li>
+            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('en')">EN</a></li>
+            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('fr')">FR</a></li>
+            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('it')">IT</a></li>
+            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('pt')">PT</a></li>
+            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('de')">DE</a></li>
+          </ul>
+        </div>
+
+        <!-- Login/logout -->
         <div sec:authorize="!isAuthenticated()">
-          <a th:href="@{/login}" class="nav-link d-inline-block px-2 text-white"
+          <a th:href="@{/login}" class="nav-link text-white px-2"
              th:classappend="${currentPageActive == 'login' ? 'text-gold fw-bold' : ''}">
             <i class="fas fa-sign-in-alt"></i> Ingresar
           </a>
-          <a th:href="@{/register}" class="nav-link d-inline-block px-2 text-white"
+          <a th:href="@{/register}" class="nav-link text-white px-2"
              th:classappend="${currentPageActive == 'register' ? 'text-gold fw-bold' : ''}">
             <i class="fas fa-user-plus"></i> Registrarse
           </a>
         </div>
-        <!-- Opciones para usuarios autenticados -->
         <div sec:authorize="isAuthenticated()" class="d-flex align-items-center">
-          <a th:href="@{/orders}" class="nav-link d-inline-block px-2 text-white"
+          <a th:href="@{/orders}" class="nav-link text-white px-2"
              th:classappend="${currentPageActive == 'orders' ? 'text-gold fw-bold' : ''}">
-            <i class="fas fa-box"></i> Ordenes
+            <i class="fas fa-box"></i> Órdenes
           </a>
-          <a th:href="@{/wishlist}" class="nav-link d-inline-block px-2 text-white position-relative"
+          <a th:href="@{/wishlist}" class="nav-link text-white px-2 position-relative"
              th:classappend="${currentPageActive == 'wishlist' ? 'text-gold fw-bold' : ''}">
             <i class="fas fa-heart"></i> WishList
-            <span th:if="${wishListCount > 0}"
-                  class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+            <span th:if="${wishListCount > 0}" class="badge bg-danger position-absolute top-0 start-100 translate-middle">
               <span th:text="${wishListCount}"></span>
             </span>
           </a>
-          <a th:href="@{/cart}" class="nav-link d-inline-block px-2 text-white position-relative"
+          <a th:href="@{/cart}" class="nav-link text-white px-2 position-relative"
              th:classappend="${currentPageActive == 'cart' ? 'text-gold fw-bold' : ''}">
             <i class="fas fa-shopping-cart"></i> Carrito
-            <span th:if="${cartItemCount > 0}"
-                  class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+            <span th:if="${cartItemCount > 0}" class="badge bg-danger position-absolute top-0 start-100 translate-middle">
               <span th:text="${cartItemCount}"></span>
             </span>
           </a>
-          <span class="nav-link d-inline-block px-2 text-white" sec:authentication="name"></span>
+          <span class="nav-link text-white px-2" sec:authentication="name"></span>
           <form th:action="@{/logout}" method="post" class="d-inline-block px-2">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <button type="submit" class="btn btn-link nav-link text-white p-0">
@@ -77,5 +81,73 @@
       </div>
     </div>
   </header>
+
+  <!-- Google Translate container -->
+  <div id="google_translate_element" style="display: none;"></div>
+
+  <!-- Modal idioma (móvil) -->
+  <div class="modal fade" id="languageModal" tabindex="-1" aria-labelledby="languageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header">
+          <h5 class="modal-title" id="languageModalLabel">Selecciona un idioma</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body d-flex flex-wrap gap-2 justify-content-center">
+          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('es')" data-bs-dismiss="modal">ES</button>
+          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('en')" data-bs-dismiss="modal">EN</button>
+          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('fr')" data-bs-dismiss="modal">FR</button>
+          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('it')" data-bs-dismiss="modal">IT</button>
+          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('pt')" data-bs-dismiss="modal">PT</button>
+          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('de')" data-bs-dismiss="modal">DE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script traducción -->
+  <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'es,en,fr,it,pt,de',
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+
+    function changeLanguage(lang) {
+      const select = document.querySelector('.goog-te-combo');
+      if (select) {
+        select.value = lang;
+        select.dispatchEvent(new Event('change'));
+      }
+      localStorage.setItem('language', lang.toUpperCase());
+      document.getElementById('selected-lang').textContent = lang.toUpperCase();
+    }
+
+    window.addEventListener('load', () => {
+      if (!document.getElementById('google-translate-script')) {
+        const script = document.createElement('script');
+        script.id = 'google-translate-script';
+        script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+        document.body.appendChild(script);
+      }
+
+      const savedLanguage = localStorage.getItem('language') || 'ES';
+      document.getElementById('selected-lang').textContent = savedLanguage;
+
+      // Esperar a que Google cree el combo y asignar el idioma guardado
+      const observer = new MutationObserver(() => {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+          select.value = savedLanguage.toLowerCase();
+          select.dispatchEvent(new Event('change'));
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    });
+  </script>
+
   <script th:src="@{/js/menu.js}"></script>
 </div>
