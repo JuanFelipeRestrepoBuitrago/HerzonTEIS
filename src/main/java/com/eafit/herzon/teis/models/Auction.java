@@ -276,4 +276,13 @@ public class Auction {
   public void setOffers(List<Offer> offers) {
     this.offers = offers;
   }
+
+  /**
+   * Sets the ID of the jewel.
+   *
+   * @param id the jewel's ID
+   */
+  public void setId(Long id) {
+    this.id = id;
+  }
 }
