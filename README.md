@@ -27,7 +27,7 @@ git clone https://github.com/JuanFelipeRestrepoBuitrago/HerzonTEIS.git
 ```
 2. Run PostgreSQL server with the docker-compose file at the root of the project:
 ```bash
-docker-compose up -d
+docker compose -f ./docker-compose-dev.yml up -d
 ```
 3. Set the following environment variables in your system:
    Linux or MacOS:
@@ -42,7 +42,12 @@ set DATABASE_URL=jdbc:postgresql://localhost:YOUR_DB_PORT/name_of_your_database
 set DATABASE_USER=YOUR_USERNAME
 set DATABASE_PASSWORD=YOUR_PASSWORD
 ```
-Replace `YOUR_DB_PORT`, `YOUR_USERNAME`, and `YOUR_PASSWORD` with your PostgreSQL port, username, and password respectively. The docker-compose file sets the default port to `5432`, the default username to `root`, and the default password to `123`.
+Replace `YOUR_DB_PORT`, `YOUR_USERNAME`, and `YOUR_PASSWORD` with your PostgreSQL port, username, and password respectively. The docker-compose file sets the default port to `5432`, the default username to `root`, and the default password to `123`. If using the docker compose file, you can use the following values:
+```bash
+DATABASE_URL=jdbc:postgresql://localhost:5432/herzon_db
+DATABASE_USERNAME=root
+DATABASE_PASSWORD=123
+```
 
 4. Optionally, you can run the following command to clean and build the project:
 ```bash
@@ -74,9 +79,9 @@ or if you don't have Maven installed:
 ```bash
 http://localhost:8080
 ```
-8. When you're done, exit the spring-boot application with `Ctrl+C` and stop the MySQL server with:
+8. When you're done, exit the spring-boot application with `Ctrl+C` and stop the PostgreSQL server with:
 ```bash
-docker-compose down
+docker compose -f ./docker-compose-dev.yml down
 ```
 
 ## Contributors
