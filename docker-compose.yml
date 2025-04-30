@@ -6,7 +6,11 @@ services:
     container_name: herzon_app
     env_file:
       - .env
-    restart: always
+    deploy:
+      mode: replicated
+      replicas: 2
+      restart_policy:
+        condition: on-failure
     depends_on:
       - postgres
     networks:
@@ -17,7 +21,11 @@ services:
     container_name: herzon_postgres
     env_file:
       - .env
-    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -28,14 +36,22 @@ services:
     container_name: herzon_pgadmin
     env_file:
       - .env
-    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
     networks:
       - app_network
 
   nginx-proxy-manager:
     image: jc21/nginx-proxy-manager:latest
     container_name: nginx-proxy-manager
-    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
     ports:
       - "80:80"
       - "81:81"
@@ -55,7 +71,8 @@ services:
 
 networks:
   app_network:
-    driver: bridge
+    driver: overlay
+    attachable: true
 
 volumes:
   postgres_data:
