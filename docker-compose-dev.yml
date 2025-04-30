@@ -27,6 +27,20 @@ services:
     networks:
       - postgres_network
 
+  app:
+    image: ghcr.io/juanfeliperestrepobuitrago/herzonteis/herzon_ecommerce:latest
+    restart: always
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/herzon_db
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: 123
+    depends_on:
+      - postgres
+    ports:
+      - "8082:8080"
+    networks:
+      - postgres_network
+
 networks:
   postgres_network:
     driver: bridge
