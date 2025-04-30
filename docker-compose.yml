@@ -54,7 +54,7 @@ services:
     networks:
       - app_network
 
-certbot:
+  certbot:
     image: certbot/certbot:latest
     volumes:
       - ./certs:/etc/letsencrypt
