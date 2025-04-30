@@ -38,34 +38,30 @@ services:
     networks:
       - app_network
 
-  # nginx:
-  #   image: nginx:latest
-  #   container_name: herzon_nginx
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
-  #     - ./certs:/etc/nginx/certs:ro
-  #   restart: always
-  #   depends_on:
-  #     - app
-  #     - pgadmin
-  #   networks:
-  #     - app_network
-
-  https-portal:
-    image: steveltn/https-portal:1
+  nginx:
+    image: nginx:latest
+    container_name: herzon_nginx
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
     restart: always
-    environment:
-      DOMAINS: "herzon.com -> http://prestashop:80"
-      STAGE: 'staging' # Don't use production until staging works
-      # FORCE_RENEW: 'true'
+    depends_on:
+      - app
+      - pgadmin
     networks:
-      - frontend-network
+      - app_network
+
+certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certs:/etc/letsencrypt
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["certbot certonly --manual --preferred-challenges dns -d '*.herzon-teis.duckdns.org' -d 'herzon-teis.duckdns.org' --email jfrestrepb@eafit.edu.co --agree-tos"]
+    networks:
+      - app_network
 
 networks:
   app_network:
