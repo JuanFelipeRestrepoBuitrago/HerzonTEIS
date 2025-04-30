@@ -65,8 +65,7 @@ services:
 
 networks:
   app_network:
-    driver: overlay
-    attachable: true
+    driver: bridge
 
 volumes:
   postgres_data:
