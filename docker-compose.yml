@@ -59,7 +59,7 @@ services:
     volumes:
       - ./certs:/etc/letsencrypt
     entrypoint: ["/bin/sh", "-c"]
-    command: ["certbot certonly --manual --preferred-challenges dns -d 'herzon-teis.duckdns.org' --email jfrestrepb@eafit.edu.co --agree-tos"]
+    command: ["certbot certonly --manual --preferred-challenges dns -d '*.herzon-teis.duckdns.org' --email jfrestrepb@eafit.edu.co --agree-tos"]
     networks:
       - app_network
 
