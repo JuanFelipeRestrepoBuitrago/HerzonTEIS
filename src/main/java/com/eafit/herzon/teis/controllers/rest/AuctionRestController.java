@@ -36,7 +36,10 @@ public class AuctionRestController {
       @Valid @RequestBody PaginationRequestDto request
   ) {
     try {
-      Page<Auction> auctions = auctionService.getAllAuctions(request.getPage() - 1, request.getSize());
+      Page<Auction> auctions = auctionService.getAllAuctions(
+          request.getPage() - 1,
+          request.getSize()
+      );
       List<AuctionDto> auctionDtos = auctions.getContent()
           .stream()
           .map(AuctionFormatter::convertToDto)
