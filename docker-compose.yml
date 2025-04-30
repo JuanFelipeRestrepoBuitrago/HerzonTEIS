@@ -3,13 +3,12 @@ version: '3.8'
 services:
   app:
     image: ghcr.io/juanfeliperestrepobuitrago/herzonteis/herzon_ecommerce:latest
-    deploy:
-      mode: replicated
-      replicas: 2
+    container_name: herzon_app
     environment:
       DATABASE_URL: jdbc:postgresql://postgres:5432/herzon_db
       DATABASE_USERNAME: root
       DATABASE_PASSWORD: 123
+    restart: always
     depends_on:
       - postgres
     networks:
@@ -17,14 +16,13 @@ services:
 
   postgres:
     image: postgres:16
-    deploy:
-      mode: replicated
-      replicas: 1
+    container_name: herzon_postgres
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: herzon_db
       TZ: "America/Bogota"
+    restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -32,10 +30,11 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4:latest
-
+    container_name: herzon_pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@herzon.com
       PGADMIN_DEFAULT_PASSWORD: 123
+    restart: always
     networks:
       - app_network
 
