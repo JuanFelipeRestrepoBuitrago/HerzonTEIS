@@ -60,3 +60,13 @@ replay_pid*
 # Environment file
 .env
 .env.production
+
+# Unnecessary files
+docker-compose-dev.yml
+docker-compose.yml
+HELP.md
+LICENSE
+README.md
+.gitignore
+.gitattributes
+.github/
