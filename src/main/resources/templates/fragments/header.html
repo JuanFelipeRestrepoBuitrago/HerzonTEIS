@@ -36,26 +36,58 @@
       <div class="d-flex align-items-center gap-2">
         <!-- Language -->
         <div class="dropdown">
-          <button class="btn btn-sm btn-outline-light dropdown-toggle" id="langDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-globe"></i> <span class="notranslate" translate="no" id="selected-lang">EN</span>
+          <button class="btn btn-language dropdown-toggle" id="langDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-language me-1"></i>
+            <span class="notranslate" translate="no" id="selected-lang">EN</span>
+            <span class="flag-icon flag-icon-us ms-1"></span>
           </button>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
-            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('es')">ES</a></li>
-            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('en')">EN</a></li>
-            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('fr')">FR</a></li>
-            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('it')">IT</a></li>
-            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('pt')">PT</a></li>
-            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('de')">DE</a></li>
+          <ul class="dropdown-menu dropdown-menu-end shadow-lg language-picker" aria-labelledby="langDropdown">
+            <li>
+              <a class="dropdown-item language-option d-flex align-items-center" href="#" onclick="changeLanguage('es')">
+                <span class="flag-icon flag-icon-es me-2"></span>
+                <span class="notranslate" translate="no">Español</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item language-option d-flex align-items-center" href="#" onclick="changeLanguage('en')">
+                <span class="flag-icon flag-icon-us me-2"></span>
+                <span class="notranslate" translate="no">English</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item language-option d-flex align-items-center" href="#" onclick="changeLanguage('fr')">
+                <span class="flag-icon flag-icon-fr me-2"></span>
+                <span class="notranslate" translate="no">Français</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item language-option d-flex align-items-center" href="#" onclick="changeLanguage('it')">
+                <span class="flag-icon flag-icon-it me-2"></span>
+                <span class="notranslate" translate="no">Italiano</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item language-option d-flex align-items-center" href="#" onclick="changeLanguage('pt')">
+                <span class="flag-icon flag-icon-pt me-2"></span>
+                <span class="notranslate" translate="no">Português</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item language-option d-flex align-items-center" href="#" onclick="changeLanguage('de')">
+                <span class="flag-icon flag-icon-de me-2"></span>
+                <span class="notranslate" translate="no">Deutsch</span>
+              </a>
+            </li>
           </ul>
         </div>
 
         <!-- Session -->
         <div sec:authorize="!isAuthenticated()" class="d-flex gap-2">
           <a th:href="@{/login}" class="btn btn-sm btn-light" th:classappend="${currentPageActive == 'login' ? 'fw-bold' : ''}">
-            <i class="fas fa-sign-in-alt me-1"></i> Login
+            <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
           </a>
           <a th:href="@{/register}" class="btn btn-sm btn-outline-light" th:classappend="${currentPageActive == 'register' ? 'fw-bold' : ''}">
-            <i class="fas fa-user-plus me-1"></i> Register
+            <i class="fas fa-user-plus me-1"></i> Registrarse
           </a>
         </div>
 
@@ -116,28 +148,11 @@
   <!-- Google Translate -->
   <div id="google_translate_element" style="display: none;"></div>
 
-  <!-- Language modal -->
-  <div class="modal fade" id="languageModal" tabindex="-1" aria-labelledby="languageModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content bg-dark text-white">
-        <div class="modal-header">
-          <h5 class="modal-title" id="languageModalLabel">Select a Language</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body d-flex flex-wrap gap-2 justify-content-center">
-          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('es')" data-bs-dismiss="modal">ES</button>
-          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('en')" data-bs-dismiss="modal">EN</button>
-          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('fr')" data-bs-dismiss="modal">FR</button>
-          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('it')" data-bs-dismiss="modal">IT</button>
-          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('pt')" data-bs-dismiss="modal">PT</button>
-          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('de')" data-bs-dismiss="modal">DE</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Scripts -->
   <script th:src="@{/js/language.js}"></script>
   <script th:src="@{/js/menu.js}"></script>
   <script th:src="@{/js/metals.js}"></script>
+  
+  <!-- Flag Icons CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
 </div>
