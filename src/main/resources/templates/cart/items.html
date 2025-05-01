@@ -1,62 +1,61 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+  <title>Shopping Cart</title>
+  <th:block th:replace="~{fragments/head :: head}"></th:block>
 
-  <div th:replace="~{fragments/head :: head}"></div>
-  <title>Carrito de Compras</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+
 <body>
+  <header th:replace="~{fragments/header :: header}"></header>
 
+  <main class="container my-5 py-4">
+    <h1 class="text-gold text-center mb-4" style="font-size: 2.5rem; font-weight: 700;">Shopping Cart</h1>
 
-<header th:replace="~{fragments/header :: header}"></header>
-
-<main class="container my-5 py-4">
-  <h1 class="text-gold text-center mb-4" style="font-size: 2.5rem; font-weight: 700;">Carrito de Compras</h1>
-
-  <div id="cart-container" class="row g-4">
-    <div class="col" th:each="item : ${items}">
-      <div class="card h-100 shadow-sm border-0">
-        <img th:src="${item.jewel?.imageUrl}" alt="Jewel Image" class="card-img-top img-fluid" />
-        <div class="card-body text-center">
-          <h5 class="card-title text-gold" th:text="${item.jewel?.name ?: 'Producto desconocido'}"></h5>
-          <p class="card-text text-muted" th:text="${item.jewel?.category ?: 'Sin categoría'}"></p>
-          <p class="card-text fw-bold">Cantidad: <span th:text="${item.quantity ?: 0}"></span></p>
-          <p class="card-text fw-bold">Precio: $<span th:text="${#numbers.formatDecimal((item.jewel?.price ?: 0) * (item.quantity ?: 0), 0, 2)}"></span></p>
-          <form th:action="@{/cart/delete/{id}(id=${item.id})}" method="post">
-            <input type="hidden" name="itemId" th:value="${item.id}" />
-            <button type="submit" class="btn btn-danger mt-3"><i class="fas fa-trash-alt"></i> Eliminar</button>
-          </form>
+    <div id="cart-container" class="row g-4">
+      <div class="col" th:each="item : ${items}">
+        <div class="card h-100 shadow-sm border-0">
+          <img th:src="${item.jewel?.imageUrl}" alt="Jewel Image" class="card-img-top img-fluid" />
+          <div class="card-body text-center">
+            <h5 class="card-title text-gold" th:text="${item.jewel?.name ?: 'Unknown Product'}"></h5>
+            <p class="card-text text-muted" th:text="${item.jewel?.category ?: 'No Category'}"></p>
+            <p class="card-text fw-bold">Quantity: <span th:text="${item.quantity ?: 0}"></span></p>
+            <p class="card-text fw-bold">Price: $<span th:text="${#numbers.formatDecimal((item.jewel?.price ?: 0) * (item.quantity ?: 0), 0, 2)}"></span></p>
+            <form th:action="@{/cart/delete/{id}(id=${item.id})}" method="post">
+              <input type="hidden" name="itemId" th:value="${item.id}" />
+              <button type="submit" class="btn btn-danger mt-3">
+                <i class="fas fa-trash-alt"></i> Remove
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-
-  <div class="text-center mt-4" th:if="${!#lists.isEmpty(items)}">
-    <div class="d-flex justify-content-center gap-3">
-      <form th:action="@{/cart/checkout}" method="post">
-        <button type="submit" class="btn btn-primary btn-lg">
-          <i class="fas fa-credit-card"></i> Checkout
-        </button>
-      </form>
-      <form th:action="@{/cart/empty}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas vaciar el carrito?');">
-        <button type="submit" class="btn btn-warning btn-lg">
-          <i class="fas fa-trash-alt"></i> Vaciar Carrito
-        </button>
-      </form>
+    <div class="text-center mt-4" th:if="${!#lists.isEmpty(items)}">
+      <div class="d-flex justify-content-center gap-3">
+        <form th:action="@{/cart/checkout}" method="post">
+          <button type="submit" class="btn btn-primary btn-lg">
+            <i class="fas fa-credit-card"></i> Checkout
+          </button>
+        </form>
+        <form th:action="@{/cart/empty}" method="post" onsubmit="return confirm('Are you sure you want to empty the cart?');">
+          <button type="submit" class="btn btn-warning btn-lg">
+            <i class="fas fa-trash-alt"></i> Empty Cart
+          </button>
+        </form>
+      </div>
     </div>
-  </div>
 
-  <div class="text-center py-5" id="no-results" th:if="${#lists.isEmpty(items)}">
-    <i class="fas fa-shopping-cart fa-3x text-gold mb-3"></i>
-    <h3 class="text-white">Tu carrito está vacío</h3>
-    <p class="text-muted">Agrega productos para verlos aquí.</p>
-  </div>
-</main>
+    <div class="text-center py-5" id="no-results" th:if="${#lists.isEmpty(items)}">
+      <i class="fas fa-shopping-cart fa-3x text-gold mb-3"></i>
+      <h3 class="text-white">Your cart is empty</h3>
+      <p class="text-muted">Add products to see them here.</p>
+    </div>
+  </main>
 
-<footer th:replace="~{fragments/footer :: footer}"></footer>
-
+  <footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>
