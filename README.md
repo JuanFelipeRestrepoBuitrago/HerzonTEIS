@@ -4,7 +4,7 @@
 
 HERZON is a high-end jewelry e-commerce platform bridging Colombian craftsmanship with Swiss elegance. Built with Spring Boot 3.4.2.
 
-Visit the live demo at [Herzon](https://herzonteis.onrender.com/)
+Visit the live demo at [Herzon](https://herzon-teis.duckdns.org)
 
 ## Table of Contents
 
@@ -102,16 +102,23 @@ docker compose -f ./docker-compose-dev.yml down
 git clone https://github.com/JuanFelipeRestrepoBuitrago/HerzonTEIS.git
 ```
 2. Set the environment variables in your system as described in the `.env.example` file. You can create a `.env` file in the root of the project and copy the contents of the `.env.example` file into it. Then, set the values for each variable according to your production environment.
-3. Run the project with docker compose:
+3. Initialize Docker Swarm:
 ```bash
-docker compose up -d
+docker swarm init
 ```
-4. Access the Nginx Proxy Manager at:
+4. Connect the Docker Swarm Manager to a Docker Swarm Worker:
+```bash
+docker swarm join --token generated_token_by_swarm_init ip_connected_by_swarm_init:2377
+```
+5. Run the project with docker compose:
+```bash
+docker stack deploy -c docker-compose.yml herzon-teis 
+```
+6. Access the Nginx Proxy Manager at:
 ```bash
 http://public_ip_of_vpc:81
 ```
-
-5. Set up the let's encrypt SSL certificate by following the next steps:
+7. Set up the let's encrypt SSL certificate by following the next steps:
     - Go to the Nginx Proxy Manager dashboard.
     - Click on "SSL Certificates" in the left sidebar.
     - Click on "Add SSL Certificate".
@@ -122,7 +129,7 @@ http://public_ip_of_vpc:81
         - Fill the propagation time with 120 seconds, if failed, try increasing this time.
     - Accept the terms of service.
     - Click "Save".
-6. Set up the proxy hosts.
+8. Set up the proxy hosts.
     - Go to the Nginx Proxy Manager dashboard.
     - Click on "Proxy Hosts" in the left sidebar.
     - Click on "Add Proxy Host".
@@ -132,13 +139,17 @@ http://public_ip_of_vpc:81
     - Fill the forward port with the desired port of the application.
     - Enable the Websockets Support option.
     - Enable the SSL option.
-        - Select the SSL certificate you created in step 5.
+        - Select the SSL certificate you created in step 7.
         - Enable the Force SSL option.
         - Enable the HTTP/2 Support option.
     - Click "Save".
-7. Access the application at:
+9. Access the application at:
 ```bash
 https://your_domain_name.com
+```
+10. When you're done, stop the Docker Swarm with:
+```bash
+docker stack rm herzon-teis
 ```
 
 ## Our Deployed Application
@@ -148,6 +159,7 @@ You can access our application at [HERZON](https://herzon-teis.duckdns.org) or w
 - **Instance Type**: t3.medium
 - **CPU**: 2 vCPUs
 - **RAM**: 4 GB
+- **Docker Swarm**: 2 nodes (1 manager and 1 worker)
 
 ## Contributors
 
