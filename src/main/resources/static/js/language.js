@@ -1,4 +1,8 @@
 // language.js
+
+/**
+ * Initializes Google Translate widget with custom configuration.
+ */
 function googleTranslateElementInit() {
    new google.translate.TranslateElement({
      pageLanguage: 'es',
@@ -7,19 +11,27 @@ function googleTranslateElementInit() {
    }, 'google_translate_element');
  }
  
+ /**
+  * Changes the active language in Google Translate and updates UI.
+  * @param {string} lang - Language code to switch to.
+  */
  function changeLanguage(lang) {
    const select = document.querySelector('.goog-te-combo');
    if (select) {
      select.value = lang;
      select.dispatchEvent(new Event('change'));
    }
+ 
    localStorage.setItem('language', lang.toUpperCase());
    document.getElementById('selected-lang').textContent = lang.toUpperCase();
-   
-   // Actualizar la bandera
+ 
    updateFlag(lang);
  }
  
+ /**
+  * Updates the flag icon next to the language selector.
+  * @param {string} lang - Language code.
+  */
  function updateFlag(lang) {
    const flagMap = {
      'es': 'es',
@@ -29,13 +41,14 @@ function googleTranslateElementInit() {
      'pt': 'pt',
      'de': 'de'
    };
-   
+ 
    const flagElement = document.querySelector('#langDropdown .flag-icon');
    if (flagElement && flagMap[lang]) {
-     flagElement.className = 'flag-icon flag-icon-' + flagMap[lang] + ' ms-1';
+     flagElement.className = `flag-icon flag-icon-${flagMap[lang]} ms-1`;
    }
  }
  
+ // Load translation script and apply saved preferences
  window.addEventListener('load', () => {
    if (!document.getElementById('google-translate-script')) {
      const script = document.createElement('script');
@@ -56,5 +69,7 @@ function googleTranslateElementInit() {
        observer.disconnect();
      }
    });
+ 
    observer.observe(document.body, { childList: true, subtree: true });
  });
+ 
