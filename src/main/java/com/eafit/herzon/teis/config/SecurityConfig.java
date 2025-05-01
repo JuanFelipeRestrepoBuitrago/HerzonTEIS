@@ -96,10 +96,10 @@ public class SecurityConfig {
             .requestMatchers("/auctions", "/auctions/**").permitAll()
             .requestMatchers("/ws/**", "/ws/auction/websocket/**").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
-            .requestMatchers("/", "/home", "/regis  ter", "/api/users/register",
-                "/api/users/login", "/login", "/error")
-            .permitAll()
-            .requestMatchers("/api/auctions", "/api/auctions/**").permitAll() 
+            .requestMatchers("/", "/home", "/register", "/api/users/register",
+                "/api/users/login", "/login", "/error").permitAll()
+            .requestMatchers("/api/auctions", "/api/auctions/**").permitAll()
+            .requestMatchers("/api/metals/**").permitAll()
             .anyRequest().authenticated())
         .formLogin(form -> form
             .loginPage("/login")
