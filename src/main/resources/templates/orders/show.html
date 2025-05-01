@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Detalle de Orden</title>
+  <title>Order Details</title>
   <th:block th:replace="~{fragments/head :: head}"></th:block>
 </head>
 
@@ -20,35 +20,35 @@
 
     <div class="jewel-details-card p-4">
       <div class="row">
-        <!-- Order Details -->
+        <!-- Order Info -->
         <div class="col-12">
           <h1 class="text-gold fw-bold mb-3 text-center">
-            Orden #<span th:text="${order.id}" id="auctionId"></span>
+            Order #<span th:text="${order.id}" id="auctionId"></span>
           </h1>
           <p class="text-muted mb-2 text-center">
-            Estado: <span th:text="#{'order.status.' + ${order.status}}"></span>
+            Status: <span th:text="#{'order.status.' + ${order.status}}"></span>
           </p>
           <p class="text-muted mb-2 text-center">
-            Fecha: <span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+            Date: <span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
           </p>
           <p class="lead text-white mb-3 text-center">
-            Precio Total: 
+            Total Price:
             <span th:text="${'$' + #numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT')}" class="text-white"></span>
           </p>
         </div>
       </div>
 
-      <!-- Cart Items Section -->
+      <!-- Cart Items -->
       <div class="row mt-4">
         <div class="col-12">
-          <h3 class="text-gold mb-4">Artículos en la Orden</h3>
+          <h3 class="text-gold mb-4">Items in the Order</h3>
           <div class="table-responsive">
             <table class="table table-dark table-hover">
               <thead>
                 <tr>
-                  <th class="text-gold">Producto</th>
-                  <th class="text-gold text-center">Cantidad</th>
-                  <th class="text-gold text-end">Precio Unitario</th>
+                  <th class="text-gold">Product</th>
+                  <th class="text-gold text-center">Quantity</th>
+                  <th class="text-gold text-end">Unit Price</th>
                   <th class="text-gold text-end">Total</th>
                 </tr>
               </thead>
@@ -80,12 +80,12 @@
         </div>
       </div>
 
-      <!-- Buttons Section -->
+      <!-- Navigation and Actions -->
       <div class="row mt-4">
         <div class="col-12 d-flex justify-content-between gap-3">
           <!-- Back Button -->
           <a th:href="@{/orders}" class="btn-regresar">
-            <i class="fas fa-arrow-left me-2"></i> Volver a la Lista
+            <i class="fas fa-arrow-left me-2"></i> Back to List
           </a>
         </div>
       </div>
@@ -96,7 +96,7 @@
           <form th:action="@{/orders/order/pay}" method="post" th:object="${orderForm}" th:if="${order.status.name() == 'PENDING'}">
             <input type="hidden" name="id" th:value="${order.id}" />
             <button type="submit" class="btn btn-gold btn-lg px-5">
-              <i class="fas fa-credit-card-alt me-2"></i> Pagar
+              <i class="fas fa-credit-card-alt me-2"></i> Pay
             </button>
           </form>
 
@@ -104,7 +104,7 @@
           <form th:action="@{/orders/order/cancel}" method="post" th:object="${orderForm}" th:if="${order.status.name() == 'PENDING'}">
             <input type="hidden" name="id" th:value="${order.id}" />
             <button type="submit" class="btn btn-danger btn-lg px-5">
-              <i class="fas fa-ban me-2"></i> Cancelar
+              <i class="fas fa-ban me-2"></i> Cancel
             </button>
           </form>
         </div>
