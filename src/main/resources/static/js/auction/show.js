@@ -1,53 +1,42 @@
 /**
- * @file Manages real-time bidding functionality for auction updates using WebSocket.
+ * @file Handles real-time bidding for auctions using WebSocket and STOMP.
  * @module auctionLive
  */
 
-// Importing Stomp and SockJS libraries for WebSocket communication
+// Initialize SockJS and STOMP client for WebSocket communication
 const socket = new SockJS('/ws/auction/websocket');
 const stompClient = Stomp.over(socket);
 
-// Necessary DOM elements5
+// DOM elements
 const auctionId = document.getElementById('auctionId').textContent;
 const offerInput = document.getElementById('offerAmount');
 const offerButton = document.getElementById('offerButton');
 
 /**
- * Initializes WebSocket connection and subscribes to auction updates
- * @function
- * @listens Stomp#connect
+ * Establishes WebSocket connection and subscribes to live auction updates.
  */
 stompClient.connect({}, function (frame) {
-  console.log('Connected: ' + frame);
+  console.log('Connected:', frame);
 
-  /**
-   * Subscribes to auction updates channel
-   * @function
-   * @param {Message} response - STOMP message containing auction data
-   */
+  // Subscribe to auction updates
   stompClient.subscribe(`/topic/auction/updates/${auctionId}`, (response) => {
-    const auctionUpdatedResponse = JSON.parse(response.body);
-    updateAuctionUI(auctionUpdatedResponse);
+    const auctionUpdate = JSON.parse(response.body);
+    updateAuctionUI(auctionUpdate);
   });
 }, (error) => {
-  console.error('Connection to live auction service failed:', error);
+  console.error('Failed to connect to live auction service:', error);
 });
 
 /**
- * Handles browser close/tab refresh to clean up WebSocket connection
- * @listens window:beforeunload
+ * Gracefully disconnects from WebSocket when the user leaves the page.
  */
 window.addEventListener('beforeunload', () => {
   if (stompClient) stompClient.disconnect();
 });
 
 /**
- * Submits a new offer for the current auction
- * @async
- * @function
- * @throws {Error} When offer submission fails
- * @example
- * placeOffer(); // Called when user clicks bid button
+ * Sends a new offer for the current auction.
+ * Disables the bid button during the request and handles CSRF protection.
  */
 async function placeOffer() {
   const offerAmount = parseFloat(offerInput.value);
@@ -56,9 +45,8 @@ async function placeOffer() {
   const csrfToken = document.querySelector("meta[name='_csrf']").content;
   const csrfHeader = document.querySelector("meta[name='_csrf_header']").content;
 
-  // Make a POST request to place the offer for the auction
   try {
-    const response = await fetch(`/auction/offer/place`, {
+    const response = await fetch('/auction/offer/place', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -75,37 +63,33 @@ async function placeOffer() {
       return;
     }
 
-    const responseData = await response.json();
+    const data = await response.json();
 
     if (!response.ok) {
-      // Display error messages if any
-      if (responseData.error) {
-        displayMessages(responseData.messages, responseData.error);
+      if (data.error) {
+        displayMessages(data.messages, data.error);
       } else {
-        throw new Error('Oferta fallida');
+        throw new Error('Bid failed');
       }
     } else {
       offerInput.value = '';
-      displayMessages(responseData.messages, responseData.error);
+      displayMessages(data.messages, data.error);
     }
   } catch (error) {
     console.error('Error:', error);
-    displayMessages(["La puja de tu oferta falló"], true);
+    displayMessages(['Your bid could not be placed'], true);
   } finally {
     offerButton.disabled = false;
   }
 }
 
 /**
- * Updates UI with latest auction data
- * @function
- * @param {Object} offerAuctionResponse - Auction update payload
- * @param {number} offerAuctionResponse.currentPrice - Current auction price
- * @example
- * updateAuctionUI({ currentPrice: 1500.00 });
+ * Updates the auction UI with the latest data.
+ * @param {Object} offerAuctionResponse - Auction data received from WebSocket.
+ * @param {number} offerAuctionResponse.currentPrice - The current price of the auction.
  */
 function updateAuctionUI(offerAuctionResponse) {
-  console.log(offerAuctionResponse);
+  console.log('Auction updated:', offerAuctionResponse);
   document.getElementById('current-price').innerText =
     offerAuctionResponse.currentPrice.toLocaleString('en-US', {
       style: 'currency',

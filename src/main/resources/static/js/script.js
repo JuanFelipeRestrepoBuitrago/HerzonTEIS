@@ -1,14 +1,15 @@
 /**
- * Handles the mobile menu toggle functionality.
- * Toggles the 'active' class on the nav menu when the menu toggle button is clicked.
+ * Toggles the visibility of the mobile navigation menu.
+ * Adds or removes the 'active' class from the menu when the toggle button is clicked.
  */
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.querySelector('.menu-toggle');
     const navMenu = document.querySelector('.nav-menu');
-
+  
     if (menuToggle && navMenu) {
-        menuToggle.addEventListener('click', function () {
-            navMenu.classList.toggle('active');
-        });
+      menuToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+      });
     }
-});
+  });
+  

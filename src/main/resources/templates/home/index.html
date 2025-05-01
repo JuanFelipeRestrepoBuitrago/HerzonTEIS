@@ -1,26 +1,29 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Herzon</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <div th:replace="~{fragments/head :: head}"></div>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Herzon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <th:block th:replace="~{fragments/head :: head}"></th:block>
 </head>
+
 <body class="bg-primary-color text-white">
-    <!-- Navbar -->
-    <header th:replace="~{fragments/header :: header}"></header>
+  <!-- Navbar -->
+  <header th:replace="~{fragments/header :: header}"></header>
 
-    <main class="d-flex flex-column align-items-center justify-content-center text-center">
-        <h1 class="text-gold">Joyería Suiza de Excelencia</h1>
-        <p class="lead">Descubra piezas exclusivas, elaboradas por artesanos colombianos con oro y esmeraldas de primera calidad, bajo los estándares suizos de perfección.</p>
-        <a th:href="@{/jewels}" class="btn btn-gold">Explore Nuestra Colección Exclusiva</a>
-      </main>
+  <main class="d-flex flex-column align-items-center justify-content-center text-center">
+    <h1 class="text-gold">Swiss Jewelry of Excellence</h1>
+    <p class="lead">
+      Discover exclusive pieces handcrafted by Colombian artisans using high-quality gold and emeralds, under Swiss standards of perfection.
+    </p>
+    <a th:href="@{/jewels}" class="btn btn-gold">Explore Our Exclusive Collection</a>
+  </main>
 
-    <!-- Footer -->
-    <footer th:replace="~{fragments/footer :: footer}"></footer>
+  <!-- Footer -->
+  <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

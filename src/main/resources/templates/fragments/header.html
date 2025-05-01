@@ -2,7 +2,7 @@
 <div th:fragment="header">
   <header class="bg-dark-green py-3 shadow-sm sticky-top">
     <div class="container d-flex justify-content-between align-items-center">
-      <!-- Logo y botón de menú móvil -->
+      <!-- Logo and mobile menu button -->
       <div class="d-flex align-items-center">
         <a th:href="@{/}" class="navbar-brand text-gold fs-3 fw-bold notranslate" translate="no">
           <i class="fas fa-gem me-1"></i> HERZON
@@ -12,44 +12,76 @@
         </button>
       </div>
 
-      <!-- Navegación en desktop -->
+      <!-- Desktop navigation -->
       <nav class="d-none d-md-flex gap-3 align-items-center">
         <a th:href="@{/}" class="nav-link notranslate" translate="no" th:classappend="${currentPageActive == 'home' ? 'text-gold fw-bold' : 'text-white'}">Home</a>
-        <a th:href="@{/jewels}" class="nav-link" th:classappend="${currentPageActive == 'jewels' ? 'text-gold fw-bold' : 'text-white'}">Joyas</a>
-        <a th:href="@{/auctions}" class="nav-link" th:classappend="${currentPageActive == 'auctions' ? 'text-gold fw-bold' : 'text-white'}">Subastas</a>
-        <a th:href="@{/auctions/history}" class="nav-link" th:classappend="${currentPageActive == 'auctions_history' ? 'text-gold fw-bold' : 'text-white'}">Historial</a>
+        <a th:href="@{/jewels}" class="nav-link" th:classappend="${currentPageActive == 'jewels' ? 'text-gold fw-bold' : 'text-white'}">Jewels</a>
+        <a th:href="@{/auctions}" class="nav-link" th:classappend="${currentPageActive == 'auctions' ? 'text-gold fw-bold' : 'text-white'}">Auctions</a>
+        <a th:href="@{/auctions/history}" class="nav-link" th:classappend="${currentPageActive == 'auctions_history' ? 'text-gold fw-bold' : 'text-white'}">History</a>
       </nav>
 
-      <!-- Precios de metales preciosos -->
+      <!-- Precious metals prices -->
       <div class="d-none d-md-flex align-items-center gap-3 me-3">
         <div class="d-flex align-items-center bg-black bg-opacity-25 rounded-pill px-3 py-1 text-white gap-2 shadow-sm">
           <i class="fas fa-coins text-warning"></i>
-          <span class="notranslate" translate="no" id="gold-price">Oro: Cargando...</span>
+          <span class="notranslate" translate="no" id="gold-price">Gold: Loading...</span>
         </div>
         <div class="d-flex align-items-center bg-black bg-opacity-25 rounded-pill px-3 py-1 text-white gap-2 shadow-sm">
           <i class="fas fa-circle text-light"></i>
-          <span class="notranslate" translate="no" id="silver-price">Plata: Cargando...</span>
+          <span class="notranslate" translate="no" id="silver-price">Silver: Loading...</span>
         </div>
       </div>
 
-      <!-- Usuario e idioma -->
+      <!-- User and language -->
       <div class="d-flex align-items-center gap-2">
-        <!-- Idioma -->
+        <!-- Language -->
         <div class="dropdown">
-          <button class="btn btn-sm btn-outline-light dropdown-toggle" id="langDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-globe"></i> <span class="notranslate" translate="no" id="selected-lang">ES</span>
+          <button class="btn btn-language dropdown-toggle" id="langDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-language me-1"></i>
+            <span class="notranslate" translate="no" id="selected-lang">EN</span>
+            <span class="flag-icon flag-icon-us ms-1"></span>
           </button>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
-            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('es')">ES</a></li>
-            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('en')">EN</a></li>
-            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('fr')">FR</a></li>
-            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('it')">IT</a></li>
-            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('pt')">PT</a></li>
-            <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('de')">DE</a></li>
+          <ul class="dropdown-menu dropdown-menu-end shadow-lg language-picker" aria-labelledby="langDropdown">
+            <li>
+              <a class="dropdown-item language-option d-flex align-items-center" href="#" onclick="changeLanguage('es')">
+                <span class="flag-icon flag-icon-es me-2"></span>
+                <span class="notranslate" translate="no">Español</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item language-option d-flex align-items-center" href="#" onclick="changeLanguage('en')">
+                <span class="flag-icon flag-icon-us me-2"></span>
+                <span class="notranslate" translate="no">English</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item language-option d-flex align-items-center" href="#" onclick="changeLanguage('fr')">
+                <span class="flag-icon flag-icon-fr me-2"></span>
+                <span class="notranslate" translate="no">Français</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item language-option d-flex align-items-center" href="#" onclick="changeLanguage('it')">
+                <span class="flag-icon flag-icon-it me-2"></span>
+                <span class="notranslate" translate="no">Italiano</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item language-option d-flex align-items-center" href="#" onclick="changeLanguage('pt')">
+                <span class="flag-icon flag-icon-pt me-2"></span>
+                <span class="notranslate" translate="no">Português</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item language-option d-flex align-items-center" href="#" onclick="changeLanguage('de')">
+                <span class="flag-icon flag-icon-de me-2"></span>
+                <span class="notranslate" translate="no">Deutsch</span>
+              </a>
+            </li>
           </ul>
         </div>
 
-        <!-- Sesión -->
+        <!-- Session -->
         <div sec:authorize="!isAuthenticated()" class="d-flex gap-2">
           <a th:href="@{/login}" class="btn btn-sm btn-light" th:classappend="${currentPageActive == 'login' ? 'fw-bold' : ''}">
             <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
@@ -87,7 +119,7 @@
     </div>
   </header>
 
-  <!-- Menú móvil -->
+  <!-- Mobile menu -->
   <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasNav" aria-labelledby="offcanvasNavLabel">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title text-gold fw-bold" id="offcanvasNavLabel">HERZON</h5>
@@ -95,19 +127,19 @@
     </div>
     <div class="offcanvas-body d-flex flex-column gap-3">
       <a th:href="@{/}" class="nav-link text-white" th:classappend="${currentPageActive == 'home' ? 'text-gold fw-bold' : ''}">Home</a>
-      <a th:href="@{/jewels}" class="nav-link text-white" th:classappend="${currentPageActive == 'jewels' ? 'text-gold fw-bold' : ''}">Joyas</a>
-      <a th:href="@{/auctions}" class="nav-link text-white" th:classappend="${currentPageActive == 'auctions' ? 'text-gold fw-bold' : ''}">Subastas</a>
-      <a th:href="@{/auctions/history}" class="nav-link text-white" th:classappend="${currentPageActive == 'auctions_history' ? 'text-gold fw-bold' : ''}">Historial</a>
+      <a th:href="@{/jewels}" class="nav-link text-white" th:classappend="${currentPageActive == 'jewels' ? 'text-gold fw-bold' : ''}">Jewels</a>
+      <a th:href="@{/auctions}" class="nav-link text-white" th:classappend="${currentPageActive == 'auctions' ? 'text-gold fw-bold' : ''}">Auctions</a>
+      <a th:href="@{/auctions/history}" class="nav-link text-white" th:classappend="${currentPageActive == 'auctions_history' ? 'text-gold fw-bold' : ''}">History</a>
       
-      <!-- Precios metales en móvil -->
+      <!-- Mobile metals prices -->
       <div class="mt-3 d-flex flex-column gap-2">
         <div class="d-flex align-items-center bg-black bg-opacity-25 rounded-pill px-3 py-1 text-white gap-2 shadow-sm">
           <i class="fas fa-coins text-warning"></i>
-          <span class="notranslate" translate="no" id="mobile-gold-price">Oro: Cargando...</span>
+          <span class="notranslate" translate="no" id="mobile-gold-price">Gold: Loading...</span>
         </div>
         <div class="d-flex align-items-center bg-black bg-opacity-25 rounded-pill px-3 py-1 text-white gap-2 shadow-sm">
           <i class="fas fa-circle text-light"></i>
-          <span class="notranslate" translate="no" id="mobile-silver-price">Plata: Cargando...</span>
+          <span class="notranslate" translate="no" id="mobile-silver-price">Silver: Loading...</span>
         </div>
       </div>
     </div>
@@ -116,28 +148,11 @@
   <!-- Google Translate -->
   <div id="google_translate_element" style="display: none;"></div>
 
-  <!-- Modal idioma -->
-  <div class="modal fade" id="languageModal" tabindex="-1" aria-labelledby="languageModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content bg-dark text-white">
-        <div class="modal-header">
-          <h5 class="modal-title" id="languageModalLabel">Selecciona un idioma</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <div class="modal-body d-flex flex-wrap gap-2 justify-content-center">
-          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('es')" data-bs-dismiss="modal">ES</button>
-          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('en')" data-bs-dismiss="modal">EN</button>
-          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('fr')" data-bs-dismiss="modal">FR</button>
-          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('it')" data-bs-dismiss="modal">IT</button>
-          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('pt')" data-bs-dismiss="modal">PT</button>
-          <button class="btn btn-outline-light notranslate" translate="no" onclick="changeLanguage('de')" data-bs-dismiss="modal">DE</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Scripts -->
   <script th:src="@{/js/language.js}"></script>
   <script th:src="@{/js/menu.js}"></script>
   <script th:src="@{/js/metals.js}"></script>
+  
+  <!-- Flag Icons CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
 </div>
