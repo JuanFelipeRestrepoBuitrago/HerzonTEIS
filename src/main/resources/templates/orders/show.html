@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-  <div th:replace="~{fragments/head :: head}"></div>
+  <title>Detalle de Orden</title>
+  <th:block th:replace="~{fragments/head :: head}"></th:block>
 </head>
 
 <body>
@@ -11,8 +11,10 @@
   <main class="container my-5 py-4">
     <!-- Alert Messages -->
     <div class="row w-100 g-0">
-      <div id="messagesAlert" class="d-none py-2" th:data-messages="${#strings.listJoin(messages, '||')}" th:data-error="${error != null ? error : 'false'}">
-        <!-- Individual error alerts will be dynamically inserted here -->
+      <div id="messagesAlert" class="d-none py-2"
+           th:data-messages="${#strings.listJoin(messages, '||')}"
+           th:data-error="${error != null ? error : 'false'}">
+        <!-- Alerts will be handled via JavaScript -->
       </div>
     </div>
 
@@ -30,8 +32,8 @@
             Fecha: <span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
           </p>
           <p class="lead text-white mb-3 text-center">
-            Precio Total: <span th:text="${'$' + #numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT')}"
-              class="text-white"></span>
+            Precio Total: 
+            <span th:text="${'$' + #numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT')}" class="text-white"></span>
           </p>
         </div>
       </div>
@@ -54,9 +56,9 @@
                 <tr th:each="cartItem : ${order.cartItems}">
                   <td>
                     <div class="d-flex align-items-center">
-                      <img th:src="${cartItem.jewel.imageUrl}" 
-                           alt="Jewel image" 
-                           class="img-thumbnail me-3" 
+                      <img th:src="${cartItem.jewel.imageUrl}"
+                           alt="Jewel image"
+                           class="img-thumbnail me-3"
                            style="width: 80px; height: 80px; object-fit: cover;">
                       <div>
                         <h6 class="text-white mb-0" th:text="${cartItem.jewel.name}"></h6>
@@ -87,6 +89,7 @@
           </a>
         </div>
       </div>
+
       <div class="row mt-4">
         <div class="col-12 d-flex justify-content-between gap-3">
           <!-- Pay Button -->
@@ -114,5 +117,4 @@
   <script th:src="@{/js/messages.js}"></script>
   <script th:src="@{/js/order/show.js}"></script>
 </body>
-
 </html>
