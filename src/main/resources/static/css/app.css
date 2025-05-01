@@ -30,7 +30,10 @@ html, body {
 }
 
 /* ==========================================================================
-   Header (Navbar) Styles
+   Layout Components
+   ========================================================================== */
+
+/* Header (Navbar) Styles
    ========================================================================== */
 /* Style the header section */
 header {
@@ -76,8 +79,7 @@ header nav a:hover {
     cursor: pointer;
 }
 
-/* ==========================================================================
-   Footer Styles
+/* Footer Styles
    ========================================================================== */
 /* Style the footer section */
 footer {
@@ -133,8 +135,48 @@ footer {
     transform: scale(1.2);
 }
 
+/* Main Content Styles
+   ========================================================================== */
+/* Style the main content area */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+/* Style the main heading */
+main h1 {
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 15px;
+    text-shadow: 0 2px 5px rgba(212, 175, 55, 0.2);
+}
+
+/* Style the lead paragraph */
+main .lead {
+    font-size: 20px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 600px;
+    margin: 0 auto 20px;
+}
+
+/* Style the button in the homepage */
+main .btn-gold {
+    padding: 12px 30px;
+    width: auto;
+}
+
 /* ==========================================================================
-   Authentication Forms Styles
+   UI Components
+   ========================================================================== */
+
+/* Authentication Forms Styles
    ========================================================================== */
 /* Style the authentication container (login/register) */
 .auth-container {
@@ -236,8 +278,7 @@ footer {
     text-decoration: underline;
 }
 
-/* ==========================================================================
-   Button Styles
+/* Button Styles
    ========================================================================== */
 /* Style the primary gold button */
 .btn-gold {
@@ -316,68 +357,7 @@ footer {
     background-color: #e63946;
 }
 
-/* Style the alert danger message */
-.alert-danger {
-    background: rgba(255, 0, 0, 0.15);
-    border: 1px solid rgba(255, 0, 0, 0.4);
-    color: #ffcccc;
-    border-radius: 8px;
-    font-size: 14px;
-    padding: 10px;
-    margin-top: 15px;
-    text-align: center;
-}
-
-/* ==========================================================================
-   Homepage Styles
-   ========================================================================== */
-/* Style the main content area */
-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 40px 20px;
-}
-
-/* Style the main heading */
-main h1 {
-    font-size: 48px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    margin-bottom: 15px;
-    text-shadow: 0 2px 5px rgba(212, 175, 55, 0.2);
-}
-
-/* Style the lead paragraph */
-main .lead {
-    font-size: 20px;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.8);
-    max-width: 600px;
-    margin: 0 auto 20px;
-}
-
-/* Style the button in the homepage */
-main .btn-gold {
-    padding: 12px 30px;
-    width: auto;
-}
-
-/* ==========================================================================
-   Filter Panel Styles
-   ========================================================================== */
-/* Style the filter panel container */
-.filter-panel {
-    background: transparent;
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 30px;
-}
-
-/* Estilo para un botón secundario (opcional) */
+/* Style the secondary button */
 .btn-secondary {
     background: linear-gradient(145deg, #6c757d, #5a6268);
     color: var(--blanco);
@@ -402,8 +382,58 @@ main .btn-gold {
     box-shadow: 0 8px 20px rgba(108, 117, 125, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.3);
 }
 
-/* ==========================================================================
-   Input and Select Styles
+/* Style the back button */
+.btn-regresar {
+    background: transparent !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 12px 25px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-regresar i {
+    font-size: 16px;
+    margin-right: 8px;
+    transition: transform 0.3s ease;
+}
+
+.btn-regresar:hover i {
+    transform: translateX(-5px);
+}
+
+.btn-regresar:hover {
+    color: #D4AF37 !important;
+}
+
+.btn-regresar::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+    z-index: -1;
+}
+
+.btn-regresar:hover::before {
+    width: 200px;
+    height: 200px;
+}
+
+/* Input and Select Styles
    ========================================================================== */
 /* Style inputs and selects */
 .jewel-input,
@@ -452,8 +482,31 @@ main .btn-gold {
     cursor: not-allowed;
 }
 
-/* ==========================================================================
-   Jewel-Specific Styles
+/* Alert Styles
+   ========================================================================== */
+/* Style the alert danger message */
+.alert-danger {
+    background: rgba(255, 0, 0, 0.15);
+    border: 1px solid rgba(255, 0, 0, 0.4);
+    color: #ffcccc;
+    border-radius: 8px;
+    font-size: 14px;
+    padding: 10px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+/* Filter Panel Styles
+   ========================================================================== */
+/* Style the filter panel container */
+.filter-panel {
+    background: transparent;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+/* Jewel-Specific Styles
    ========================================================================== */
 /* Style individual jewel cards */
 .card {
@@ -598,369 +651,7 @@ main .btn-gold {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-/* Jewel cards responsive adjustments */
-@media (min-width: 1200px) {
-    #jewels-container {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    #jewels-container.two-results {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .card {
-        max-width: 350px;
-    }
-
-    .card-img-top {
-        height: 220px;
-    }
-
-    .card-body h5 {
-        font-size: 1.25rem;
-    }
-
-    .card-body .card-price {
-        font-size: 1.1rem;
-    }
-
-    .card-body .btn {
-        font-size: 0.9rem;
-        padding: 8px 12px;
-    }
-}
-
-@media (min-width: 992px) and (max-width: 1199px) {
-    #jewels-container {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    #jewels-container.two-results {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .card {
-        max-width: 320px;
-    }
-
-    .card-img-top {
-        height: 200px;
-    }
-
-    .card-body h5 {
-        font-size: 1.2rem;
-    }
-
-    .card-body .card-price {
-        font-size: 1.05rem;
-    }
-
-    .card-body .btn {
-        font-size: 0.9rem;
-        padding: 8px 12px;
-    }
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-    #jewels-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    #jewels-container.single-result {
-        grid-template-columns: 1fr;
-    }
-
-    #jewels-container.two-results {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .card {
-        max-width: 350px;
-    }
-
-    .card-img-top {
-        height: 180px;
-    }
-
-    .card-body h5 {
-        font-size: 1.15rem;
-    }
-
-    .card-body .card-price {
-        font-size: 1rem;
-    }
-
-    .card-body .btn {
-        font-size: 0.85rem;
-        padding: 8px 10px;
-    }
-}
-
-@media (max-width: 767px) {
-    #jewels-container {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-        padding: 0 15px;
-    }
-
-    #jewels-container.single-result,
-    #jewels-container.two-results {
-        grid-template-columns: 1fr;
-        max-width: 400px;
-    }
-
-    .card {
-        max-width: 100%;
-        min-width: 300px;
-    }
-
-    .card-img-top {
-        height: 200px;
-    }
-
-    .card-body {
-        padding: 1rem;
-    }
-
-    .card-body h5 {
-        font-size: 1.1rem;
-    }
-
-    .card-body .card-price {
-        font-size: 1rem;
-    }
-
-    .card-body .quantity-input {
-        width: 50px;
-        font-size: 0.9rem;
-    }
-
-    .card-body .btn {
-        font-size: 0.85rem;
-        padding: 8px 10px;
-    }
-}
-
-@media (max-width: 576px) {
-    #jewels-container {
-        padding: 0 10px;
-    }
-
-    .card {
-        max-width: 100%;
-        min-width: 0;
-    }
-
-    .card-img-top {
-        height: 180px;
-    }
-
-    .card-body {
-        padding: 0.75rem;
-    }
-
-    .card-body h5 {
-        font-size: 1rem;
-    }
-
-    .card-body .card-price {
-        font-size: 0.95rem;
-    }
-
-    .card-body .quantity-input {
-        width: 45px;
-        font-size: 0.85rem;
-    }
-
-    .card-body .btn {
-        font-size: 0.8rem;
-        padding: 6px 8px;
-    }
-}
-
-/* ==========================================================================
-   Pagination Styles
-   ========================================================================== */
-/* Style the pagination container */
-.pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 2rem;
-}
-
-.pagination .page-item {
-    margin: 0 5px;
-}
-
-.pagination .page-link {
-    font-family: var(--font-family);
-    font-weight: 500;
-    font-size: 16px;
-    padding: 10px 15px;
-    border-radius: 8px;
-    border: 1px solid var(--dorado);
-    color: var(--dorado);
-    background-color: rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-}
-
-.pagination .page-link:hover {
-    background-color: var(--dorado);
-    color: var(--verde-muy-oscuro);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
-}
-
-.pagination .page-item.active .page-link {
-    background-color: var(--dorado);
-    color: var(--verde-muy-oscuro);
-    border-color: var(--dorado);
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.5);
-}
-
-.pagination .page-item.disabled .page-link {
-    color: rgba(255, 255, 255, 0.4);
-    background-color: rgba(255, 255, 255, 0.05);
-    border-color: rgba(212, 175, 55, 0.3);
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-.pagination .page-item:first-child .page-link,
-.pagination .page-item:last-child .page-link {
-    padding: 10px 25px;
-    font-size: 18px;
-    font-weight: 600;
-    background-color: rgba(255, 255, 255, 0.15);
-    border-radius: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.pagination .page-item:first-child .page-link:hover,
-.pagination .page-item:last-child .page-link:hover {
-    background-color: var(--dorado);
-    color: var(--verde-muy-oscuro);
-    transform: translateY(-2px);
-}
-
-/* ==========================================================================
-   Table Styles
-   ========================================================================== */
-/* Style the jewel table container */
-.jewel-table-container {
-    background: var(--blanco);
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.jewels-table-small .jewel-row {
-    height: 80px;
-}
-
-.jewels-table-small .jewel-image {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto;
-}
-
-.jewels-table-small .table th,
-.jewels-table-small .table td {
-    padding: 5px;
-    font-size: 14px;
-}
-
-.jewels-table-small .btn-sm {
-    padding: 4px 8px;
-    font-size: 12px;
-}
-
-.table-hover tbody tr:hover {
-    background-color: rgba(212, 175, 55, 0.1);
-    transition: background-color 0.3s ease;
-}
-
-.jewel-row {
-    transition: transform 0.3s ease;
-}
-
-.jewel-row:hover {
-    transform: translateY(-2px);
-}
-
-/* ==========================================================================
-   Jewel Form Styles
-   ========================================================================== */
-/* Style the jewel form container */
-.jewel-form-container {
-    max-width: 700px;
-    margin: 0 auto;
-    background: linear-gradient(145deg, var(--verde-muy-oscuro), var(--verde-super-oscuro));
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 3px rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(212, 175, 55, 0.7);
-    padding: 30px;
-}
-
-/* ==========================================================================
-   Back Button Styles
-   ========================================================================== */
-/* Style the back button */
-.btn-regresar {
-    background: transparent !important;
-    border: none !important;
-    color: #ffffff !important;
-    font-weight: 600;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 12px 25px;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.btn-regresar i {
-    font-size: 16px;
-    margin-right: 8px;
-    transition: transform 0.3s ease;
-}
-
-.btn-regresar:hover i {
-    transform: translateX(-5px);
-}
-
-.btn-regresar:hover {
-    color: #D4AF37 !important;
-}
-
-.btn-regresar::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.6s ease, height 0.6s ease;
-    z-index: -1;
-}
-
-.btn-regresar:hover::before {
-    width: 200px;
-    height: 200px;
-}
-
-/* ==========================================================================
-   Jewel Details Page Styles
+/* Jewel Details Page Styles
    ========================================================================== */
 /* Style the jewel details card */
 .jewel-details-card {
@@ -1036,8 +727,118 @@ main .btn-gold {
     opacity: 1;
 }
 
-/* ==========================================================================
-   User Table Styles
+/* Pagination Styles
+   ========================================================================== */
+/* Style the pagination container */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.pagination .page-item {
+    margin: 0 5px;
+}
+
+.pagination .page-link {
+    font-family: var(--font-family);
+    font-weight: 500;
+    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--dorado);
+    color: var(--dorado);
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.pagination .page-link:hover {
+    background-color: var(--dorado);
+    color: var(--verde-muy-oscuro);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--dorado);
+    color: var(--verde-muy-oscuro);
+    border-color: var(--dorado);
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.5);
+}
+
+.pagination .page-item.disabled .page-link {
+    color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(212, 175, 55, 0.3);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.pagination .page-item:first-child .page-link,
+.pagination .page-item:last-child .page-link {
+    padding: 10px 25px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.pagination .page-item:first-child .page-link:hover,
+.pagination .page-item:last-child .page-link:hover {
+    background-color: var(--dorado);
+    color: var(--verde-muy-oscuro);
+    transform: translateY(-2px);
+}
+
+/* Table Styles
+   ========================================================================== */
+/* Style the jewel table container */
+.jewel-table-container {
+    background: var(--blanco);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.jewels-table-small .jewel-row {
+    height: 80px;
+}
+
+.jewels-table-small .jewel-image {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+}
+
+.jewels-table-small .table th,
+.jewels-table-small .table td {
+    padding: 5px;
+    font-size: 14px;
+}
+
+.jewels-table-small .btn-sm {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(212, 175, 55, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.jewel-row {
+    transition: transform 0.3s ease;
+}
+
+.jewel-row:hover {
+    transform: translateY(-2px);
+}
+
+/* User Table Styles
    ========================================================================== */
 /* Style the user table container */
 .user-table-container {
@@ -1069,8 +870,20 @@ main .btn-gold {
     transition: background-color 0.3s ease;
 }
 
-/* ==========================================================================
-   Dashboard Card Styles
+/* Jewel Form Styles
+   ========================================================================== */
+/* Style the jewel form container */
+.jewel-form-container {
+    max-width: 700px;
+    margin: 0 auto;
+    background: linear-gradient(145deg, var(--verde-muy-oscuro), var(--verde-super-oscuro));
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 3px rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(212, 175, 55, 0.7);
+    padding: 30px;
+}
+
+/* Dashboard Card Styles
    ========================================================================== */
 /* Style the dashboard cards */
 .dashboard-card {
@@ -1107,32 +920,71 @@ main .btn-gold {
     max-width: 150px;
 }
 
-/* ==========================================================================
-   Utility Classes
+/* Language Selector Styles
    ========================================================================== */
-/* Utility classes for text colors */
-.text-gold {
-    color: var(--dorado) !important;
+/* CSS para el selector de idioma */
+.btn-language {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 20px;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
 }
 
-.bg-dark-green {
-    background-color: var(--verde-oscuro) !important;
+.btn-language:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
 }
 
-.text-success {
-    color: #28a745 !important;
+.btn-language:active {
+    transform: translateY(0);
 }
 
-.text-dark {
-    color: #343a40 !important;
+/* Dropdown Menu */
+.language-picker {
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    min-width: 180px;
 }
 
-.text-muted {
-    color: rgba(255, 255, 255, 0.7) !important;
+.language-option {
+    color: #e0e0e0;
+    padding: 8px 16px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
 }
 
-/* ==========================================================================
-   Admin Auction Form Classes
+.language-option:hover {
+    background-color: rgba(255, 215, 0, 0.1);
+    color: #ffd700;
+    padding-left: 20px;
+}
+
+.language-option .flag-icon {
+    width: 20px;
+    height: 15px;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.flag-icon {
+    background-size: cover;
+    background-position: center;
+    display: inline-block;
+    width: 16px;
+    height: 12px;
+}
+
+/* Admin Auction Form Classes
    ========================================================================== */
 /* Admin Auction Form classes for text colors */
 select.form-control.jewel-select {
@@ -1174,34 +1026,58 @@ select.form-control.jewel-select option {
     font-weight: 500;
     text-align: center;
     border: none;
-  }
-  
-  .lang-btn:hover,
-  .lang-btn:focus {
+}
+
+.lang-btn:hover,
+.lang-btn:focus {
     background-color: #f0f0f0;
     color: #00381F;
     box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.3); /* dorado tenue */
     transform: translateY(-1px);
-  }
-  
-  .dropdown-menu .lang-btn {
+}
+
+.dropdown-menu .lang-btn {
     width: 100%;
     text-align: center;
     border-radius: 999px;
     background-color: transparent;
-  }
-  
-  .modal .lang-btn {
+}
+
+.modal .lang-btn {
     min-width: 60px;
     border: 1px solid #ccc;
     background-color: white;
     color: #00381F;
-  }
-  
+}
 
 /* ==========================================================================
-   Responsive Adjustments (Mobile Only)
+   Utility Classes
    ========================================================================== */
+/* Utility classes for text colors */
+.text-gold {
+    color: var(--dorado) !important;
+}
+
+.bg-dark-green {
+    background-color: var(--verde-oscuro) !important;
+}
+
+.text-success {
+    color: #28a745 !important;
+}
+
+.text-dark {
+    color: #343a40 !important;
+}
+
+.text-muted {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+
 /* Header adjustments for mobile */
 @media (max-width: 768px) {
     header {
@@ -1303,80 +1179,6 @@ select.form-control.jewel-select option {
     }
 }
 
-/* CSS para el selector de idioma */
-.btn-language {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    border-radius: 20px;
-    padding: 6px 12px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-  }
-  
-  .btn-language:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.3);
-    transform: translateY(-1px);
-  }
-  
-  .btn-language:active {
-    transform: translateY(0);
-  }
-  
-  /* Dropdown Menu */
-  .language-picker {
-    background-color: #1a1a1a;
-    border: 1px solid rgba(255, 215, 0, 0.2);
-    border-radius: 8px;
-    overflow: hidden;
-    min-width: 180px;
-  }
-  
-  .language-option {
-    color: #e0e0e0;
-    padding: 8px 16px;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-  }
-  
-  .language-option:hover {
-    background-color: rgba(255, 215, 0, 0.1);
-    color: #ffd700;
-    padding-left: 20px;
-  }
-  
-  .language-option .flag-icon {
-    width: 20px;
-    height: 15px;
-    border-radius: 2px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-  }
-  
-  .flag-icon {
-    background-size: cover;
-    background-position: center;
-    display: inline-block;
-    width: 16px;
-    height: 12px;
-  }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 576px) {
-    .language-picker {
-      max-height: 40vh;
-    }
-  
-    .language-option {
-      font-size: 18px;
-      padding: 12px 20px;
-    }
-  }
-
 /* Buttons for mobile */
 @media (max-width: 576px) {
     .btn-gold,
@@ -1445,15 +1247,82 @@ select.form-control.jewel-select option {
 @media (max-width: 767px) {
     #jewels-container {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 0 15px;
     }
 
     #jewels-container.single-result,
     #jewels-container.two-results {
         grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+
+    .card {
+        max-width: 100%;
+        min-width: 300px;
     }
 
     .card-img-top {
-        height: 150px;
+        height: 200px;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-body h5 {
+        font-size: 1.1rem;
+    }
+
+    .card-body .card-price {
+        font-size: 1rem;
+    }
+
+    .card-body .quantity-input {
+        width: 50px;
+        font-size: 0.9rem;
+    }
+
+    .card-body .btn {
+        font-size: 0.85rem;
+        padding: 8px 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    #jewels-container {
+        padding: 0 10px;
+    }
+
+    .card {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .card-img-top {
+        height: 180px;
+    }
+
+    .card-body {
+        padding: 0.75rem;
+    }
+
+    .card-body h5 {
+        font-size: 1rem;
+    }
+
+    .card-body .card-price {
+        font-size: 0.95rem;
+    }
+
+    .card-body .quantity-input {
+        width: 45px;
+        font-size: 0.85rem;
+    }
+
+    .card-body .btn {
+        font-size: 0.8rem;
+        padding: 6px 8px;
     }
 }
 
@@ -1532,5 +1401,115 @@ select.form-control.jewel-select option {
         justify-content: center;
         font-size: 1rem;
         padding: 10px 20px;
+    }
+}
+
+/* Language selector for mobile */
+@media (max-width: 576px) {
+    .language-picker {
+        max-height: 40vh;
+    }
+
+    .language-option {
+        font-size: 18px;
+        padding: 12px 20px;
+    }
+}
+
+/* Jewel cards responsive adjustments */
+@media (min-width: 1200px) {
+    #jewels-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    #jewels-container.two-results {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card {
+        max-width: 350px;
+    }
+
+    .card-img-top {
+        height: 220px;
+    }
+
+    .card-body h5 {
+        font-size: 1.25rem;
+    }
+
+    .card-body .card-price {
+        font-size: 1.1rem;
+    }
+
+    .card-body .btn {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    #jewels-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    #jewels-container.two-results {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card {
+        max-width: 320px;
+    }
+
+    .card-img-top {
+        height: 200px;
+    }
+
+    .card-body h5 {
+        font-size: 1.2rem;
+    }
+
+    .card-body .card-price {
+        font-size: 1.05rem;
+    }
+
+    .card-body .btn {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    #jewels-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #jewels-container.single-result {
+        grid-template-columns: 1fr;
+    }
+
+    #jewels-container.two-results {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card {
+        max-width: 350px;
+    }
+
+    .card-img-top {
+        height: 180px;
+    }
+
+    .card-body h5 {
+        font-size: 1.15rem;
+    }
+
+    .card-body .card-price {
+        font-size: 1rem;
+    }
+
+    .card-body .btn {
+        font-size: 0.85rem;
+        padding: 8px 10px;
     }
 }
