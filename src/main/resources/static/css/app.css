@@ -1168,6 +1168,37 @@ select.form-control.jewel-select option {
     background-color: #ffcc00 !important;
 }
 
+.lang-btn {
+    transition: all 0.25s ease;
+    padding: 0.4rem 1rem;
+    font-weight: 500;
+    text-align: center;
+    border: none;
+  }
+  
+  .lang-btn:hover,
+  .lang-btn:focus {
+    background-color: #f0f0f0;
+    color: #00381F;
+    box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.3); /* dorado tenue */
+    transform: translateY(-1px);
+  }
+  
+  .dropdown-menu .lang-btn {
+    width: 100%;
+    text-align: center;
+    border-radius: 999px;
+    background-color: transparent;
+  }
+  
+  .modal .lang-btn {
+    min-width: 60px;
+    border: 1px solid #ccc;
+    background-color: white;
+    color: #00381F;
+  }
+  
+
 /* ==========================================================================
    Responsive Adjustments (Mobile Only)
    ========================================================================== */

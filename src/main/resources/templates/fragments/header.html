@@ -1,36 +1,32 @@
 <div th:fragment="header">
-  <header class="bg-dark-green py-3 shadow-lg sticky-top">
+  <header class="bg-dark-green py-3 shadow-sm sticky-top">
     <div class="container d-flex justify-content-between align-items-center">
-      <!-- Logo y navegación -->
+      <!-- Logo y botón de menú móvil -->
       <div class="d-flex align-items-center">
-        <h1 class="m-0">
-          <a th:href="@{/}" class="text-decoration-none text-gold notranslate" translate="no">
-            <i class="fas fa-gem"></i> HERZON
-          </a>
-        </h1>
-        <button class="hamburger d-md-none ms-3 btn btn-outline-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNav">
+        <a th:href="@{/}" class="navbar-brand text-gold fs-3 fw-bold notranslate" translate="no">
+          <i class="fas fa-gem me-1"></i> HERZON
+        </a>
+        <button class="btn btn-outline-light d-md-none ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNav" aria-controls="offcanvasNav">
           <i class="fas fa-bars"></i>
         </button>
-        <nav class="ms-4 d-none d-md-flex">
-          <a th:href="@{/}" class="nav-link d-inline-block px-2 notranslate" translate="no"
-             th:classappend="${currentPageActive == 'home' ? 'text-gold fw-bold' : 'text-white'}">Home</a>
-          <a th:href="@{/jewels}" class="nav-link d-inline-block px-2"
-             th:classappend="${currentPageActive == 'jewels' ? 'text-gold fw-bold' : 'text-white'}">Joyas</a>
-          <a th:href="@{/auctions}" class="nav-link d-inline-block px-2"
-             th:classappend="${currentPageActive == 'auctions' ? 'text-gold fw-bold' : 'text-white'}">Subastas</a>
-          <a th:href="@{/auctions/history}" class="nav-link d-inline-block px-2"
-             th:classappend="${currentPageActive == 'auctions_history' ? 'text-gold fw-bold' : 'text-white'}">Historial Subastas</a>
-        </nav>
       </div>
 
+      <!-- Navegación en desktop -->
+      <nav class="d-none d-md-flex gap-3 align-items-center">
+        <a th:href="@{/}" class="nav-link notranslate" translate="no" th:classappend="${currentPageActive == 'home' ? 'text-gold fw-bold' : 'text-white'}">Home</a>
+        <a th:href="@{/jewels}" class="nav-link" th:classappend="${currentPageActive == 'jewels' ? 'text-gold fw-bold' : 'text-white'}">Joyas</a>
+        <a th:href="@{/auctions}" class="nav-link" th:classappend="${currentPageActive == 'auctions' ? 'text-gold fw-bold' : 'text-white'}">Subastas</a>
+        <a th:href="@{/auctions/history}" class="nav-link" th:classappend="${currentPageActive == 'auctions_history' ? 'text-gold fw-bold' : 'text-white'}">Historial</a>
+      </nav>
+
       <!-- Usuario e idioma -->
-      <div class="d-flex align-items-center gap-3">
-        <!-- Dropdown idioma -->
+      <div class="d-flex align-items-center gap-2">
+        <!-- Idioma -->
         <div class="dropdown">
-          <button class="btn btn-outline-light dropdown-toggle" id="languageDropdown" data-bs-toggle="dropdown">
-            <i class="fas fa-globe"></i> <span id="selected-lang" class="notranslate" translate="no">ES</span>
+          <button class="btn btn-sm btn-outline-light dropdown-toggle" id="langDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-globe"></i> <span class="notranslate" translate="no" id="selected-lang">ES</span>
           </button>
-          <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
             <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('es')">ES</a></li>
             <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('en')">EN</a></li>
             <li><a class="dropdown-item notranslate" translate="no" href="#" onclick="changeLanguage('fr')">FR</a></li>
@@ -40,47 +36,57 @@
           </ul>
         </div>
 
-        <!-- Login/logout -->
-        <div sec:authorize="!isAuthenticated()">
-          <a th:href="@{/login}" class="nav-link text-white px-2"
-             th:classappend="${currentPageActive == 'login' ? 'text-gold fw-bold' : ''}">
-            <i class="fas fa-sign-in-alt"></i> Ingresar
+        <!-- Sesión -->
+        <div sec:authorize="!isAuthenticated()" class="d-flex gap-2">
+          <a th:href="@{/login}" class="btn btn-sm btn-light" th:classappend="${currentPageActive == 'login' ? 'fw-bold' : ''}">
+            <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
           </a>
-          <a th:href="@{/register}" class="nav-link text-white px-2"
-             th:classappend="${currentPageActive == 'register' ? 'text-gold fw-bold' : ''}">
-            <i class="fas fa-user-plus"></i> Registrarse
+          <a th:href="@{/register}" class="btn btn-sm btn-outline-light" th:classappend="${currentPageActive == 'register' ? 'fw-bold' : ''}">
+            <i class="fas fa-user-plus me-1"></i> Registrarse
           </a>
         </div>
-        <div sec:authorize="isAuthenticated()" class="d-flex align-items-center">
-          <a th:href="@{/orders}" class="nav-link text-white px-2"
-             th:classappend="${currentPageActive == 'orders' ? 'text-gold fw-bold' : ''}">
-            <i class="fas fa-box"></i> Órdenes
+
+        <div sec:authorize="isAuthenticated()" class="d-flex align-items-center gap-2">
+          <a th:href="@{/orders}" class="nav-link text-white px-2" th:classappend="${currentPageActive == 'orders' ? 'text-gold fw-bold' : ''}">
+            <i class="fas fa-box"></i>
           </a>
-          <a th:href="@{/wishlist}" class="nav-link text-white px-2 position-relative"
-             th:classappend="${currentPageActive == 'wishlist' ? 'text-gold fw-bold' : ''}">
-            <i class="fas fa-heart"></i> WishList
+          <a th:href="@{/wishlist}" class="nav-link text-white px-2 position-relative" th:classappend="${currentPageActive == 'wishlist' ? 'text-gold fw-bold' : ''}">
+            <i class="fas fa-heart"></i>
             <span th:if="${wishListCount > 0}" class="badge bg-danger position-absolute top-0 start-100 translate-middle">
               <span th:text="${wishListCount}"></span>
             </span>
           </a>
-          <a th:href="@{/cart}" class="nav-link text-white px-2 position-relative"
-             th:classappend="${currentPageActive == 'cart' ? 'text-gold fw-bold' : ''}">
-            <i class="fas fa-shopping-cart"></i> Carrito
+          <a th:href="@{/cart}" class="nav-link text-white px-2 position-relative" th:classappend="${currentPageActive == 'cart' ? 'text-gold fw-bold' : ''}">
+            <i class="fas fa-shopping-cart"></i>
             <span th:if="${cartItemCount > 0}" class="badge bg-danger position-absolute top-0 start-100 translate-middle">
               <span th:text="${cartItemCount}"></span>
             </span>
           </a>
           <span class="nav-link text-white px-2" sec:authentication="name"></span>
-          <form th:action="@{/logout}" method="post" class="d-inline-block px-2">
+          <form th:action="@{/logout}" method="post" class="d-inline-block">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <button type="submit" class="btn btn-link nav-link text-white p-0">
-              <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+              <i class="fas fa-sign-out-alt"></i>
             </button>
           </form>
         </div>
       </div>
     </div>
   </header>
+
+  <!-- Menú móvil tipo Apple UX -->
+  <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasNav" aria-labelledby="offcanvasNavLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title text-gold fw-bold" id="offcanvasNavLabel">HERZON</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column gap-3">
+      <a th:href="@{/}" class="nav-link text-white" th:classappend="${currentPageActive == 'home' ? 'text-gold fw-bold' : ''}">Home</a>
+      <a th:href="@{/jewels}" class="nav-link text-white" th:classappend="${currentPageActive == 'jewels' ? 'text-gold fw-bold' : ''}">Joyas</a>
+      <a th:href="@{/auctions}" class="nav-link text-white" th:classappend="${currentPageActive == 'auctions' ? 'text-gold fw-bold' : ''}">Subastas</a>
+      <a th:href="@{/auctions/history}" class="nav-link text-white" th:classappend="${currentPageActive == 'auctions_history' ? 'text-gold fw-bold' : ''}">Historial</a>
+    </div>
+  </div>
 
   <!-- Google Translate container -->
   <div id="google_translate_element" style="display: none;"></div>
@@ -105,6 +111,7 @@
     </div>
   </div>
 
+  <!-- Scripts -->
   <script th:src="@{/js/language.js}"></script>
   <script th:src="@{/js/menu.js}"></script>
 </div>
