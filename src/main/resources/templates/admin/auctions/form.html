@@ -1,112 +1,120 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <div th:replace="~{fragments/head :: head}"></div>
+  <title>Manage Auction</title>
+  <th:block th:replace="~{fragments/head :: head}"></th:block>
   <link rel="stylesheet" href="/css/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
 
 <body>
-  <!-- Incluir el header -->
+  <!-- Header -->
   <header th:replace="~{fragments/header :: header}"></header>
 
   <main class="container mt-5">
     <div class="text-center mb-5 animate__animated animate__fadeIn">
-      <h1 class="text-gold display-5 fw-bold"><i class="fas fa-gem me-2"></i>Gestionar Subasta</h1>
-      <p class="text-muted lead">Administra los detalles de la subasta con facilidad</p>
+      <h1 class="text-gold display-5 fw-bold">
+        <i class="fas fa-gem me-2"></i>Manage Auction
+      </h1>
+      <p class="text-muted lead">Easily manage auction details</p>
     </div>
 
     <!-- Alert Messages -->
     <div class="row w-100 g-0">
-      <div id="messagesAlert" class="d-none py-2" th:data-messages="${#strings.listJoin(messages, '||')}"
-        th:data-error="${error != null ? error : 'false'}">
-        <!-- Individual error alerts will be dynamically inserted here -->
+      <div id="messagesAlert" class="d-none py-2"
+           th:data-messages="${#strings.listJoin(messages, '||')}"
+           th:data-error="${error != null ? error : 'false'}">
+        <!-- Alerts inserted via JS -->
       </div>
     </div>
 
     <div class="jewel-form-container animate__animated animate__fadeInUp">
       <form th:action="@{/admin/auctions/save}" method="post" th:object="${auctionForm}"
-        class="p-5 rounded-lg shadow-lg bg-dark-green border-gold">
-        <!-- Auction ID (Only visible when editing) -->
+            class="p-5 rounded-lg shadow-lg bg-dark-green border-gold">
+
+        <!-- Auction ID (Edit only) -->
         <div class="mb-5 position-relative" th:if="${auctionForm.auctionId != null}">
           <label class="form-label text-gold" for="auctionId">
-            <i class="fas fa-hashtag me-2"></i>ID de Subasta
+            <i class="fas fa-hashtag me-2"></i>Auction ID
           </label>
-          <input type="number" class="form-control jewel-input" id="auctionId" th:field="*{auctionId}" readonly
-            required>
-          <div class="invalid-feedback">Id de subasta requerido</div>
+          <input type="number" class="form-control jewel-input" id="auctionId" th:field="*{auctionId}" readonly required />
+          <div class="invalid-feedback">Auction ID is required</div>
         </div>
 
         <!-- Jewel Selection -->
         <div class="mb-5 position-relative">
           <label class="form-label text-gold" for="jewelId">
-            <i class="fas fa-gem me-2"></i>Seleccionar Joya
+            <i class="fas fa-gem me-2"></i>Select Jewel
           </label>
           <select class="form-control jewel-select" id="jewelId" th:field="*{jewelId}" required>
-            <option value="" disabled selected>Selecciona una joya</option>
+            <option value="" disabled selected>Select a jewel</option>
             <option th:each="jewel : ${jewels}" th:value="${jewel.id}"
-              th:text="${jewel.name + ' (' + jewel.category + ') - $' + #numbers.formatDecimal(jewel.price, 1, 'COMMA', 2, 'POINT')}"
-              th:selected="${auctionForm.jewelId != null && jewel.id == auctionForm.jewelId}">
+                    th:text="${jewel.name + ' (' + jewel.category + ') - $' + #numbers.formatDecimal(jewel.price, 1, 'COMMA', 2, 'POINT')}"
+                    th:selected="${auctionForm.jewelId != null && jewel.id == auctionForm.jewelId}">
             </option>
           </select>
-          <div class="invalid-feedback">Por favor, selecciona una joya</div>
+          <div class="invalid-feedback">Please select a jewel</div>
         </div>
 
         <!-- Start Date -->
         <div class="mb-5 position-relative">
           <label class="form-label text-gold" for="startDate">
-            <i class="fas fa-clock me-2"></i>Fecha de Inicio
+            <i class="fas fa-clock me-2"></i>Start Date
           </label>
-          <input type="datetime-local" class="form-control jewel-input" id="startDate" min="2023-01-01T00:00"
-            max="2030-12-31T23:59" th:field="*{startDateString}" required>
-
-          <div class="invalid-feedback">Por favor, ingresa una fecha válida</div>
+          <input type="datetime-local" class="form-control jewel-input" id="startDate"
+                 min="2023-01-01T00:00" max="2030-12-31T23:59"
+                 th:field="*{startDateString}" required />
+          <div class="invalid-feedback">Please enter a valid date</div>
         </div>
+
         <!-- End Date -->
         <div class="mb-5 position-relative">
           <label class="form-label text-gold" for="endDate">
-            <i class="fas fa-clock me-2"></i>Fecha de Finalización
+            <i class="fas fa-clock me-2"></i>End Date
           </label>
-          <input type="datetime-local" class="form-control jewel-input" id="endDate" th:field="*{endDateString}"
-            min="2023-01-01T00:00" max="2030-12-31T23:59" required>
-          <div class="invalid-feedback">Por favor, ingresa una fecha válida</div>
+          <input type="datetime-local" class="form-control jewel-input" id="endDate"
+                 min="2023-01-01T00:00" max="2030-12-31T23:59"
+                 th:field="*{endDateString}" required />
+          <div class="invalid-feedback">Please enter a valid date</div>
         </div>
+
         <!-- Start Price -->
         <div class="mb-5 position-relative">
           <label class="form-label text-gold" for="startPrice">
-            <i class="fas fa-dollar-sign me-2"></i>Precio Inicial
+            <i class="fas fa-dollar-sign me-2"></i>Starting Price
           </label>
-          <input type="number" step="0.01" class="form-control jewel-input" id="startPrice" th:field="*{startPrice}"
-            required min="0.01" placeholder="Ej. 500.00">
-          <div class="invalid-feedback">Por favor, ingresa un precio válido</div>
+          <input type="number" step="0.01" class="form-control jewel-input" id="startPrice"
+                 th:field="*{startPrice}" min="0.01" placeholder="e.g. 500.00" required />
+          <div class="invalid-feedback">Please enter a valid price</div>
         </div>
 
-        <!-- Current Price (Only visible when editing) -->
+        <!-- Current Price (Edit only) -->
         <div class="mb-5 position-relative" th:if="${auctionForm.currentPrice != null}">
           <label class="form-label text-gold" for="currentPrice">
-            <i class="fas fa-chart-line me-2"></i>Precio Actual
+            <i class="fas fa-chart-line me-2"></i>Current Price
           </label>
-          <input type="number" step="0.01" class="form-control jewel-input" id="currentPrice" th:field="*{currentPrice}"
-            required>
+          <input type="number" step="0.01" class="form-control jewel-input" id="currentPrice"
+                 th:field="*{currentPrice}" required />
         </div>
 
-        <!-- Status -->
+        <!-- Status Switch -->
         <div class="mb-5 d-flex align-items-center justify-content-between">
           <label class="form-label text-gold fs-5 me-3" for="status">
-            <i class="fas fa-check-square me-2"></i>Estado de la Subasta
+            <i class="fas fa-check-square me-2"></i>Auction Status
           </label>
           <div class="form-check form-switch">
-            <input class="form-check-input custom-switch big-switch" type="checkbox" role="switch" id="status" th:field="*{status}">
+            <input class="form-check-input custom-switch big-switch" type="checkbox"
+                   role="switch" id="status" th:field="*{status}" />
           </div>
         </div>
 
+        <!-- Action Buttons -->
         <div class="d-flex justify-content-between align-items-center">
           <button type="submit" class="btn btn-gold btn-lg px-5">
-            <i class="fas fa-floppy-o me-2"></i>Guardar
+            <i class="fas fa-save me-2"></i>Save
           </button>
           <a th:href="@{/admin/auctions}" class="btn-regresar btn-lg px-5">
-            <i class="fas fa-arrow-left me-2"></i>Regresar
+            <i class="fas fa-arrow-left me-2"></i>Back
           </a>
         </div>
       </form>
@@ -117,5 +125,4 @@
   <script th:src="@{/js/messages.js}"></script>
   <script th:src="@{/js/order/show.js}"></script>
 </body>
-
 </html>

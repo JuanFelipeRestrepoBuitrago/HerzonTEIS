@@ -1,64 +1,83 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <div th:replace="~{fragments/head :: head}"></div>
-  <title>Gestionar Joya</title>
+  <title>Manage Jewel</title>
+  <th:block th:replace="~{fragments/head :: head}"></th:block>
   <link rel="stylesheet" href="/css/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
+
 <body>
-  <!-- Incluir el header -->
+  <!-- Header -->
   <header th:replace="~{fragments/header :: header}"></header>
 
   <main class="container mt-5">
     <div class="text-center mb-5 animate__animated animate__fadeIn">
-      <h1 class="text-gold display-5 fw-bold"><i class="fas fa-gem me-2"></i>Gestionar Joya</h1>
-      <p class="text-muted lead">Administra los detalles de la joya con facilidad</p>
+      <h1 class="text-gold display-5 fw-bold">
+        <i class="fas fa-gem me-2"></i>Manage Jewel
+      </h1>
+      <p class="text-muted lead">Easily manage the jewel's details</p>
     </div>
 
     <div class="jewel-form-container animate__animated animate__fadeInUp">
       <form th:action="@{/admin/jewels/save}" method="post" th:object="${jewel}" class="p-5 rounded-lg shadow-lg bg-dark-green border-gold">
         <input type="hidden" th:field="*{id}" />
 
+        <!-- Name -->
         <div class="mb-5 position-relative">
-          <label class="form-label text-gold" for="name"><i class="fas fa-signature me-2"></i>Nombre</label>
-          <input type="text" class="form-control jewel-input" id="name" th:field="*{name}" required placeholder="Escribe el nombre de la joya" />
-          <div class="invalid-feedback">Por favor, ingresa un nombre válido.</div>
+          <label class="form-label text-gold" for="name">
+            <i class="fas fa-signature me-2"></i>Name
+          </label>
+          <input type="text" class="form-control jewel-input" id="name" th:field="*{name}" required placeholder="Enter the jewel's name" />
+          <div class="invalid-feedback">Please enter a valid name.</div>
         </div>
 
+        <!-- Category -->
         <div class="mb-5 position-relative">
-          <label class="form-label text-gold" for="category"><i class="fas fa-layer-group me-2"></i>Categoría</label>
+          <label class="form-label text-gold" for="category">
+            <i class="fas fa-layer-group me-2"></i>Category
+          </label>
           <select class="form-control jewel-input" id="category" th:field="*{category}" required>
-            <option value="" disabled selected>Selecciona una categoría</option>
-            <option value="Anillo">Anillo</option>
-            <option value="Collar">Collar</option>
-            <option value="Pulsera">Pulsera</option>
-            <option value="Pendientes">Pendientes</option>
+            <option value="" disabled selected>Select a category</option>
+            <option value="Ring">Ring</option>
+            <option value="Necklace">Necklace</option>
+            <option value="Bracelet">Bracelet</option>
+            <option value="Earrings">Earrings</option>
           </select>
         </div>
 
+        <!-- Details -->
         <div class="mb-5 position-relative">
-          <label class="form-label text-gold" for="details"><i class="fas fa-info-circle me-2"></i>Detalles</label>
-          <textarea class="form-control jewel-input" id="details" th:field="*{details}" required rows="5" placeholder="Describe los detalles de la joya"></textarea>
-          <div class="invalid-feedback">Por favor, ingresa los detalles.</div>
+          <label class="form-label text-gold" for="details">
+            <i class="fas fa-info-circle me-2"></i>Details
+          </label>
+          <textarea class="form-control jewel-input" id="details" th:field="*{details}" required rows="5" placeholder="Describe the jewel's details"></textarea>
+          <div class="invalid-feedback">Please enter the details.</div>
         </div>
 
+        <!-- Price -->
         <div class="mb-5 position-relative">
-          <label class="form-label text-gold" for="price"><i class="fas fa-dollar-sign me-2"></i>Precio</label>
+          <label class="form-label text-gold" for="price">
+            <i class="fas fa-dollar-sign me-2"></i>Price
+          </label>
           <input type="number" step="0.01" class="form-control jewel-input" id="price" th:field="*{price}" required placeholder="0.00" />
-          <div class="invalid-feedback">Por favor, ingresa un precio válido.</div>
+          <div class="invalid-feedback">Please enter a valid price.</div>
         </div>
 
+        <!-- Buttons -->
         <div class="d-flex justify-content-between align-items-center">
-          <button type="submit" class="btn btn-gold btn-lg px-5"><i class="fas fa-save me-2"></i>Guardar</button>
+          <button type="submit" class="btn btn-gold btn-lg px-5">
+            <i class="fas fa-save me-2"></i>Save
+          </button>
           <a th:href="@{/admin/jewels}" class="btn-regresar btn-lg px-5">
-            <i class="fas fa-arrow-left me-2"></i>Regresar
+            <i class="fas fa-arrow-left me-2"></i>Back
           </a>
         </div>
       </form>
     </div>
   </main>
 
+  <!-- Footer -->
   <footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>
