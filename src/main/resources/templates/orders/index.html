@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <div th:replace="~{fragments/head :: head}"></div>
+  <title>Lista de Órdenes</title>
+  <th:block th:replace="~{fragments/head :: head}"></th:block>
 </head>
 <body>
   <header th:replace="~{fragments/header :: header}"></header>
@@ -16,14 +17,16 @@
             <div class="card-body text-center">
               <h5 class="card-title text-gold" th:text="${'Orden: ' + order.id}"></h5>
               <p class="card-text fw-bold" th:text="${'$' + #numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT')}"></p>
-              <p class="card-text"><strong>Fecha: </strong><span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></span></p>
+              <p class="card-text">
+                <strong>Fecha: </strong>
+                <span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+              </p>
               <a th:href="@{/orders/{id}(id=${order.id})}" class="btn btn-gold mt-3">Ver Detalles</a>
             </div>
           </div>
         </div>
       </div>
     </div>
-    
 
     <div th:unless="${orders}" class="text-center py-5">
       <div class="empty-state">
@@ -36,19 +39,19 @@
 
     <nav aria-label="Page navigation" th:if="${totalPages > 1}">
       <ul class="pagination justify-content-center mt-4">
-        <!-- Anterior -->
+        <!-- Previous -->
         <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
           <a class="page-link" th:href="@{/orders(page=${currentPage - 1})}">Anterior</a>
         </li>
-    
-        <!-- Numeración de páginas -->
+
+        <!-- Page numbers -->
         <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
             th:classappend="${pageNumber == currentPage} ? 'active'">
           <a class="page-link" th:href="@{/orders(page=${pageNumber})}" th:text="${pageNumber + 1}"
              th:style="${pageNumber == currentPage} ? 'background-color: #D4AF37; color: #FFFFFF;' : ''"></a>
         </li>
-    
-        <!-- Siguiente -->
+
+        <!-- Next -->
         <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
           <a class="page-link" th:href="@{/orders(page=${currentPage + 1})}">Siguiente</a>
         </li>
@@ -57,7 +60,6 @@
   </main>
 
   <footer th:replace="~{fragments/footer :: footer}"></footer>
-
-  <div th:replace="~{fragments/scripts :: scripts}"></div>
+  <th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 </body>
 </html>
