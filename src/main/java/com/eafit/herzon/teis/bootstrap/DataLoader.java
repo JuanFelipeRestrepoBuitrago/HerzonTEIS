@@ -7,7 +7,6 @@ import com.eafit.herzon.teis.models.Jewel;
 import com.eafit.herzon.teis.models.Offer;
 import com.eafit.herzon.teis.models.Order;
 import com.eafit.herzon.teis.repositories.AuctionRepository;
-import com.eafit.herzon.teis.repositories.CartItemRepository;
 import com.eafit.herzon.teis.repositories.JewelRepository;
 import com.eafit.herzon.teis.repositories.OrderRepository;
 import com.eafit.herzon.teis.repositories.UserRepository;
@@ -36,7 +35,6 @@ public class DataLoader implements CommandLineRunner {
   private final JewelRepository jewelRepository;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
-  private final CartItemRepository cartItemRepository;
 
   /**
    * Constructs a new DataLoader with the required dependencies.
@@ -46,21 +44,18 @@ public class DataLoader implements CommandLineRunner {
    * @param jewelRepository   the repository for managing jewels
    * @param userRepository    the repository for managing users
    * @param passwordEncoder   the encoder for hashing passwords
-   * @param cartItemRepository the repository for managing cart items
    */
   public DataLoader(
       AuctionRepository auctionRepository,
       OrderRepository orderRepository,
       JewelRepository jewelRepository,
       UserRepository userRepository,
-      PasswordEncoder passwordEncoder,
-      CartItemRepository cartItemRepository) {
+      PasswordEncoder passwordEncoder) {
     this.auctionRepository = auctionRepository;
     this.orderRepository = orderRepository;
     this.jewelRepository = jewelRepository;
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
-    this.cartItemRepository = cartItemRepository;
   }
 
   /**

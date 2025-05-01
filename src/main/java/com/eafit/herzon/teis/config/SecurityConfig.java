@@ -24,6 +24,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 /**
  * Configures security settings and beans for the application, including
@@ -80,9 +82,13 @@ public class SecurityConfig {
    */
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    // Define request matcher for endpoints where CSRF is disabled
+    RequestMatcher csrfDisabledMatcher = new AntPathRequestMatcher("/api/auctions/**");
+
     http.csrf(csrf -> csrf
         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
+        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
+        .ignoringRequestMatchers(csrfDisabledMatcher))
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
             .requestMatchers("/jewels", "/jewels/**").permitAll()
@@ -90,9 +96,10 @@ public class SecurityConfig {
             .requestMatchers("/auctions", "/auctions/**").permitAll()
             .requestMatchers("/ws/**", "/ws/auction/websocket/**").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
-            .requestMatchers("/", "/home", "/register", "/api/users/register",
+            .requestMatchers("/", "/home", "/regis  ter", "/api/users/register",
                 "/api/users/login", "/login", "/error")
             .permitAll()
+            .requestMatchers("/api/auctions", "/api/auctions/**").permitAll() 
             .anyRequest().authenticated())
         .formLogin(form -> form
             .loginPage("/login")
