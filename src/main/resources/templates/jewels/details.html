@@ -1,61 +1,61 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="~{fragments/head :: head}"></div>
-    <title th:text="${jewel.name} + ' - Detalles'"></title>
+    <title th:text="${jewel.name} + ' - Detalles'">Jewel Details</title>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
 </head>
 <body>
-<header th:replace="~{fragments/header :: header}"></header>
+    <header th:replace="~{fragments/header :: header}"></header>
 
-<main class="container my-5 py-4">
-    <div class="jewel-details-card">
-        <div class="row g-0">
-            <div class="col-md-6">
-                <div class="jewel-image-container">
-                    <img th:src="${jewel.imageUrl}" alt="Imagen de la joya: ${jewel.name}" class="img-fluid rounded shadow-lg jewel-image" aria-label="Vista ampliada de la joya">
-                    <div class="image-overlay" aria-hidden="true"></div>
+    <main class="container my-5 py-4">
+        <div class="jewel-details-card">
+            <div class="row g-0">
+                <div class="col-md-6">
+                    <div class="jewel-image-container">
+                        <img th:src="${jewel.imageUrl}" alt="Image of the jewel: ${jewel.name}" class="img-fluid rounded shadow-lg jewel-image" aria-label="Enlarged view of the jewel">
+                        <div class="image-overlay" aria-hidden="true"></div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-md-6 d-flex flex-column justify-content-center p-4">
-                <h1 class="text-gold fw-bold mb-3" th:text="${jewel.name}"></h1>
-                <p class="text-muted mb-2">Categoría: <span th:text="${jewel.category}" class="text-white"></span></p>
-                <p class="lead text-white mb-3">Detalles: <span th:text="${jewel.details}"></span></p>
-                <h3 class="text-gold fw-bold mb-4" th:text="'$' + ${#numbers.formatDecimal(jewel.price, 0, 2)}"></h3>
+                <div class="col-md-6 d-flex flex-column justify-content-center p-4">
+                    <h1 class="text-gold fw-bold mb-3" th:text="${jewel.name}"></h1>
+                    <p class="text-muted mb-2">Category: <span th:text="${jewel.category}" class="text-white"></span></p>
+                    <p class="lead text-white mb-3">Details: <span th:text="${jewel.details}"></span></p>
+                    <h3 class="text-gold fw-bold mb-4" th:text="'$' + ${#numbers.formatDecimal(jewel.price, 0, 2)}"></h3>
 
-                <!-- Sección de botones para agregar al carrito y a la wishlist -->
-                <div class="mb-3">
-                    <!-- Formulario para agregar al carrito con cantidad -->
-                    <form th:action="@{/cart/add/{id}(id=${jewel.id})}" method="post" class="d-inline-block">
-                        <div class="input-group">
-                            <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 80px;">
-                            <button type="submit" class="btn btn-success">
-                                <i class="fas fa-cart-plus me-2"></i>Agregar al carrito
+                    <!-- Buttons section for adding to cart and wishlist -->
+                    <div class="mb-3">
+                        <!-- Form to add to cart with quantity -->
+                        <form th:action="@{/cart/add/{id}(id=${jewel.id})}" method="post" class="d-inline-block">
+                            <div class="input-group">
+                                <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 80px;">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Form to add to wishlist -->
+                        <form th:action="@{/wishlist/add/{id}(id=${jewel.id})}" method="post" class="d-inline-block ms-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-heart me-2"></i>Add to Wishlist
                             </button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
 
-                    <!-- Formulario para agregar a la wishlist -->
-                    <form th:action="@{/wishlist/add/{id}(id=${jewel.id})}" method="post" class="d-inline-block ms-3">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-heart me-2"></i>Agregar a WishList
-                        </button>
-                    </form>
-                </div>
-
-                <div class="mt-auto">
-                    <a th:href="@{/jewels}" class="btn-regresar me-3">
-                        <i class="fas fa-arrow-left me-2"></i>Volver a la Lista
-                    </a>
-                    <a href="#" class="btn-gold">
-                        <i class="fas fa-shopping-cart me-2"></i>Comprar Ahora
-                    </a>
+                    <div class="mt-auto">
+                        <a th:href="@{/jewels}" class="btn-regresar me-3">
+                            <i class="fas fa-arrow-left me-2"></i>Back to List
+                        </a>
+                        <a href="#" class="btn-gold">
+                            <i class="fas fa-shopping-cart me-2"></i>Buy Now
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
 
-<footer th:replace="~{fragments/footer :: footer}"></footer>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>
