@@ -19,6 +19,12 @@
         <a th:href="@{/auctions/history}" class="nav-link" th:classappend="${currentPageActive == 'auctions_history' ? 'text-gold fw-bold' : 'text-white'}">Historial</a>
       </nav>
 
+      <!-- Precios de metales preciosos -->
+      <div class="d-none d-md-flex text-white align-items-center gap-2 me-3">
+        <span class="notranslate" id="gold-price">Oro: Cargando...</span>
+        <span class="notranslate" id="silver-price">Plata: Cargando...</span>
+      </div>
+
       <!-- Usuario e idioma -->
       <div class="d-flex align-items-center gap-2">
         <!-- Idioma -->
@@ -85,6 +91,11 @@
       <a th:href="@{/jewels}" class="nav-link text-white" th:classappend="${currentPageActive == 'jewels' ? 'text-gold fw-bold' : ''}">Joyas</a>
       <a th:href="@{/auctions}" class="nav-link text-white" th:classappend="${currentPageActive == 'auctions' ? 'text-gold fw-bold' : ''}">Subastas</a>
       <a th:href="@{/auctions/history}" class="nav-link text-white" th:classappend="${currentPageActive == 'auctions_history' ? 'text-gold fw-bold' : ''}">Historial</a>
+      <!-- Precios de metales preciosos en móvil -->
+      <div class="text-white">
+        <span class="notranslate" id="mobile-gold-price">Oro: Cargando...</span><br/>
+        <span class="notranslate" id="mobile-silver-price">Plata: Cargando...</span>
+      </div>
     </div>
   </div>
 
@@ -114,4 +125,36 @@
   <!-- Scripts -->
   <script th:src="@{/js/language.js}"></script>
   <script th:src="@{/js/menu.js}"></script>
+  <script>
+    async function fetchMetalPrices() {
+      try {
+        const response = await fetch('https://www.goldapi.io/api/XAU,XAG/USD', {
+          headers: {
+            'x-access-token': 'goldapi-2c7qesma4q03is-io' // Tu API key real
+          }
+        });
+        const data = await response.json();
+        
+        // Actualizar precios en desktop
+        document.getElementById('gold-price').textContent = `Oro: $${data.XAU.price.toFixed(2)}/oz`;
+        document.getElementById('silver-price').textContent = `Plata: $${data.XAG.price.toFixed(2)}/oz`;
+        
+        // Actualizar precios en móvil
+        document.getElementById('mobile-gold-price').textContent = `Oro: $${data.XAU.price.toFixed(2)}/oz`;
+        document.getElementById('mobile-silver-price').textContent = `Plata: $${data.XAG.price.toFixed(2)}/oz`;
+      } catch (error) {
+        console.error('Error fetching metal prices:', error);
+        document.getElementById('gold-price').textContent = 'Oro: No disponible';
+        document.getElementById('silver-price').textContent = 'Plata: No disponible';
+        document.getElementById('mobile-gold-price').textContent = 'Oro: No disponible';
+        document.getElementById('mobile-silver-price').textContent = 'Plata: No disponible';
+      }
+    }
+
+    // Cargar precios al iniciar
+    document.addEventListener('DOMContentLoaded', fetchMetalPrices);
+
+    // Actualizar precios cada 5 minutos
+    setInterval(fetchMetalPrices, 300000);
+  </script>
 </div>
