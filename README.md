@@ -24,6 +24,8 @@ Visit the live demo at [Herzon](https://herzon-teis.duckdns.org)
 - Shopping cart & wishlist
 - Product reviews
 - Admin CRUD for products
+- Generate authenticity certificate as PDF for selected jewels
+- Generate order receipt as downloadable PDF
 
 ## Prerequisites
 - Java 21

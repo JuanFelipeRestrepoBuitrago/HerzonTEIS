@@ -6,8 +6,8 @@ import com.eafit.herzon.teis.models.Order;
 import com.eafit.herzon.teis.repositories.JewelRepository;
 import com.eafit.herzon.teis.repositories.OrderRepository;
 import com.eafit.herzon.teis.repositories.UserRepository;
-import com.eafit.herzon.teis.services.AuthGeneratorService;
-import com.eafit.herzon.teis.services.RecipeGeneratorService;
+import com.eafit.herzon.teis.services.IdocumentGenerator;
+import com.eafit.herzon.teis.services.IrecipeGenerator;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -19,7 +19,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,8 +34,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/documents")
 public class DocumentController {
 
-  private final RecipeGeneratorService recipeGeneratorService;
-  private final AuthGeneratorService authGeneratorService;
+  private final IdocumentGenerator documentGenerator;
+  private final IrecipeGenerator recipeGenerator;
   private final JewelRepository jewelRepository;
   private final UserRepository userRepository;
   private final OrderRepository orderRepository;
@@ -44,19 +43,19 @@ public class DocumentController {
   /**
      * Constructor que inicializa los servicios y repositorios necesarios.
      *
-     * @param recipeGeneratorService servicio para generar recibos
-     * @param authGeneratorService   servicio para generar certificados
+     * @param documentGenerator interface para generar recibos
+     * @param recipeGenerator   interface para generar certificados
      * @param jewelRepository        repositorio de joyas
      * @param userRepository         repositorio de usuarios
   */
   public DocumentController(
-            RecipeGeneratorService recipeGeneratorService,
-            AuthGeneratorService authGeneratorService,
+            IdocumentGenerator documentGenerator,
+            IrecipeGenerator recipeGenerator,
             JewelRepository jewelRepository,
             UserRepository userRepository,
             OrderRepository orderRepository) {
-    this.recipeGeneratorService = recipeGeneratorService;
-    this.authGeneratorService = authGeneratorService;
+    this.documentGenerator = documentGenerator;
+    this.recipeGenerator = recipeGenerator;
     this.jewelRepository = jewelRepository;
     this.userRepository = userRepository;
     this.orderRepository = orderRepository;
@@ -87,7 +86,7 @@ public class DocumentController {
       Jewel jewel = jewelRepository.findById(joyaId).orElseThrow();
 
       // Usa el método existente que genera el certificado
-      byte[] pdfBytes = authGeneratorService.generateDocument(jewel, user).toByteArray();
+      byte[] pdfBytes = documentGenerator.generateDocument(jewel, user).toByteArray();
 
       // Agrega el archivo al ZIP con un nombre único
       ZipEntry entry = new ZipEntry("certificado_" + joyaId + ".pdf");
@@ -128,7 +127,7 @@ public class DocumentController {
     return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE)
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=recibo.pdf")
-            .body(recipeGeneratorService
+            .body(recipeGenerator
             .generateDocument(order.getCartItems(), user).toByteArray());
   }
 }
