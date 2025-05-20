@@ -161,6 +161,10 @@ You can access our application at [HERZON](https://herzon-teis.duckdns.org) or w
 - **RAM**: 4 GB
 - **Docker Swarm**: 2 nodes (1 manager and 1 worker)
 
+**Note**: if you want to log in as an admin, use the following credentials: 
+- **Username**: admin
+- **Password**: 123
+
 ## Contributors
 
 - [Juan Felipe Restrepo Buitrago](https://github.com/JuanFelipeRestrepoBuitrago)

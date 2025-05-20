@@ -1,32 +1,76 @@
-version: '3.8'
-
 services:
+  app:
+    image: ghcr.io/juanfeliperestrepobuitrago/herzonteis/herzon_ecommerce:latest
+    container_name: herzon_app
+    env_file:
+      - .env
+    deploy:
+      mode: replicated
+      replicas: 4
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - postgres
+    networks:
+      - app_network
+
   postgres:
     image: postgres:16
-    container_name: postgres
-    restart: always
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: 123
-      POSTGRES_DB: herzon_db
-      TZ: "America/Bogota"
-    ports:
-      - "5432:5432"
+    container_name: herzon_postgres
+    env_file:
+      - .env
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     networks:
-      - postgres_network
+      - app_network
 
   pgadmin:
     image: dpage/pgadmin4:latest
-    container_name: pgadmin
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@herzon.com
-      PGADMIN_DEFAULT_PASSWORD: 123
-    ports:
-      - "8081:80"
+    container_name: herzon_pgadmin
+    env_file:
+      - .env
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
     networks:
-      - postgres_network
+      - app_network
+
+  nginx-proxy-manager:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: nginx-proxy-manager
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "80:80"
+      - "81:81"
+      - "443:443"
+    environment:
+      DB_SQLITE_FILE: "/data/database.sqlite"
+    volumes:
+      - ./.nginx-proxy-manager/data:/data
+      - ./.nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:81"]
+      interval: 1m
+      timeout: 10s
+      retries: 5
 
 networks:
-  postgres_network:
-    driver: bridge
+  app_network:
+    driver: overlay
+    attachable: true
+
+volumes:
+  postgres_data:
