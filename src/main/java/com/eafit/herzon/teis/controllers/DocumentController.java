@@ -2,10 +2,13 @@ package com.eafit.herzon.teis.controllers;
 
 import com.eafit.herzon.teis.models.CustomUser;
 import com.eafit.herzon.teis.models.Jewel;
+import com.eafit.herzon.teis.models.Order;
 import com.eafit.herzon.teis.repositories.JewelRepository;
+import com.eafit.herzon.teis.repositories.OrderRepository;
 import com.eafit.herzon.teis.repositories.UserRepository;
 import com.eafit.herzon.teis.services.AuthGeneratorService;
 import com.eafit.herzon.teis.services.RecipeGeneratorService;
+import jakarta.persistence.EntityNotFoundException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -16,9 +19,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +39,7 @@ public class DocumentController {
   private final AuthGeneratorService authGeneratorService;
   private final JewelRepository jewelRepository;
   private final UserRepository userRepository;
+  private final OrderRepository orderRepository;
 
   /**
      * Constructor que inicializa los servicios y repositorios necesarios.
@@ -49,11 +53,13 @@ public class DocumentController {
             RecipeGeneratorService recipeGeneratorService,
             AuthGeneratorService authGeneratorService,
             JewelRepository jewelRepository,
-            UserRepository userRepository) {
+            UserRepository userRepository,
+            OrderRepository orderRepository) {
     this.recipeGeneratorService = recipeGeneratorService;
     this.authGeneratorService = authGeneratorService;
     this.jewelRepository = jewelRepository;
     this.userRepository = userRepository;
+    this.orderRepository = orderRepository;
   }
 
   /**
@@ -65,9 +71,12 @@ public class DocumentController {
   @PostMapping("/certify")
   public ResponseEntity<byte[]> generarCertificadosZip(
           @RequestParam String jewelIds) throws IOException {
-
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    CustomUser user = (CustomUser) authentication.getPrincipal();
+    String username = authentication.getName();
+
+    // Buscar el CustomUser en tu repositorio
+    CustomUser user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
     List<Long> jewelIdList = Arrays.stream(jewelIds.split(","))
             .map(Long::parseLong)
             .toList();
@@ -96,27 +105,30 @@ public class DocumentController {
   }
 
 
-
   /**
-     * Genera un recibo en formato PDF para una joya específica.
-     *
-     * @param joyaId identificador de la joya
-     * @param userId identificador del usuario que solicita el recibo
-     * @return PDF en formato de arreglo de bytes
+   * Genera un certificado de autenticidad en formato PDF para una joya específica.
+   * joyaId identificador de la joyas
+   *
+   * @return PDF en formato de arreglo de bytes
   */
-  @GetMapping("/recipe/{joyaId}")
-  public ResponseEntity<byte[]> generarRecibo(
-            @PathVariable Long joyaId,
-            @RequestParam Long userId) {
+  @PostMapping("/recipe")
+  public ResponseEntity<byte[]> generateReceipt(
+          @RequestParam Long orderId) {
 
-    Jewel joya = jewelRepository.findById(joyaId).orElseThrow();
-    CustomUser user = userRepository.findById(userId).orElseThrow();
+    Order order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new EntityNotFoundException("Pedido no encontrado"));
 
-    byte[] pdf = recipeGeneratorService.generarDocumento(joya, user).toByteArray();
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String username = authentication.getName();
 
+    CustomUser user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+    // Pasa directamente los items del carrito
     return ResponseEntity.ok()
-    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE)
-    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=recibo.pdf")
-    .body(pdf);
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE)
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=recibo.pdf")
+            .body(recipeGeneratorService
+            .generateDocument(order.getCartItems(), user).toByteArray());
   }
 }

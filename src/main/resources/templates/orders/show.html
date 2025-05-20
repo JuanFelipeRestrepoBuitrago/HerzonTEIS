@@ -135,9 +135,6 @@
           <form th:if="${order != null and order.cartItems != null}"
                 th:action="@{/api/documents/recipe}" method="post" th:object="${order}">
             <input type="hidden" name="orderId" th:value="${order.id}" />
-            <input type="hidden"
-                   name="jewelIds"
-                   th:value="${#strings.listJoin(order.cartItems.?[jewel != null].![jewel.id], ',')}">
             <button type="submit"
                     class="text-decoration-none"
                     style="width: 220px; height: 180px; border-radius: 12px; display: flex; align-items: center; justify-content: center; text-align: center; transition: all 0.3s ease; border: 2px solid transparent; padding: 1.5rem; background: linear-gradient(135deg, #C0C0C0 0%, #F0F0F0 100%); box-shadow: 0 4px 15px rgba(192, 192, 192, 0.4);">
