@@ -24,6 +24,8 @@ Visit the live demo at [Herzon](https://herzon-teis.duckdns.org)
 - Shopping cart & wishlist
 - Product reviews
 - Admin CRUD for products
+- Generate authenticity certificate as PDF for selected jewels
+- Generate order receipt as downloadable PDF
 
 ## Prerequisites
 - Java 21
@@ -197,6 +199,10 @@ You can access our application at [HERZON](https://herzon-teis.duckdns.org) or w
 - **CPU**: 2 vCPUs
 - **RAM**: 4 GB
 - **Docker Swarm**: 2 nodes (1 manager and 1 worker)
+
+**Note**: if you want to log in as an admin, use the following credentials: 
+- **Username**: admin
+- **Password**: 123
 
 ## Contributors
 
