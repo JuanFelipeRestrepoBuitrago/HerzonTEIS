@@ -97,6 +97,43 @@ docker compose -f ./docker-compose-dev.yml down
 
 ## Setup for Production
 
+### Installing Docker and Docker Compose in all instances
+
+1. Update the package list and install dependencies:
+```bash
+sudo apt update
+sudo apt upgrade -y
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+```
+
+2. Add Docker's official GPG key:
+```bash
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/docker-archive-keyring.gpg
+```
+3. Set up the stable repository:
+```bash
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+```
+
+4. Install Docker Engine:
+```bash
+sudo apt update && sudo apt install -y docker-ce docker-ce-cli containerd.io
+```
+5. Start and enable Docker:
+```bash
+sudo usermod -aG docker $USER && logout && sudo systemctl restart docker
+```
+6. Verify Docker installation:
+```bash
+docker --version
+```
+7. Verify Docker Compose installation:
+```bash
+docker compose --version
+```
+
+### Execution
+
 1. Clone repository:
 ```bash
 git clone https://github.com/JuanFelipeRestrepoBuitrago/HerzonTEIS.git
