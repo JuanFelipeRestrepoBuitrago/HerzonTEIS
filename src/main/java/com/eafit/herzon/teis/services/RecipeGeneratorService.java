@@ -79,7 +79,7 @@ public class RecipeGeneratorService  implements IrecipeGenerator {
         content.newLineAtOffset(300, 0);
         content.showText("CANTIDAD");
         content.newLineAtOffset(100, 0);
-        content.showText("PRECIO UNITARIO");
+        content.showText("PRECIO C/U");
         content.newLineAtOffset(100, 0);
         content.showText("TOTAL");
         content.endText();
@@ -133,7 +133,8 @@ public class RecipeGeneratorService  implements IrecipeGenerator {
         content.setFont(PDType1Font.HELVETICA, 10);
         content.setNonStrokingColor(255, 255, 255); // Blanco
         content.newLineAtOffset(50, 20);
-        content.showText("Gracias por su compra - HerzonTEIS Joyería Fina");
+        content.showText("Gracias por su compra - HerzonTEIS Joyería Suiza a tu alcance");
+        content.showText("© 2025 HerzonTEIS - Todos los derechos reservados");
         content.newLineAtOffset(0, -15);
         content.showText("Tel: +57 123 456 7890 | info@herzonteis.com");
         content.endText();
