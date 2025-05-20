@@ -69,7 +69,7 @@ const translations = {
 function googleTranslateElementInit() {
   new google.translate.TranslateElement(
     {
-      pageLanguage: "es",
+      pageLanguage: "en",
       includedLanguages: "es,en,fr,it,pt,de",
       autoDisplay: false,
     },
@@ -171,6 +171,10 @@ function applySavedLanguage() {
   updateFlag(lang);
   updateAllTexts(lang);
 
+  // Si el idioma es inglés, no dispares Google Translate
+  if (lang === "en") return;
+
+  // Si es otro idioma, espera a que Google Translate esté listo y traduce
   const maxTries = 30;
   let tries = 0;
   const checkTranslateReady = setInterval(() => {
