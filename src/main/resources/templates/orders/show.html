@@ -6,115 +6,159 @@
 </head>
 
 <body>
-  <header th:replace="~{fragments/header :: header}"></header>
+<header th:replace="~{fragments/header :: header}"></header>
 
-  <main class="container my-5 py-4">
-    <!-- Alert Messages -->
-    <div class="row w-100 g-0">
-      <div id="messagesAlert" class="d-none py-2"
-           th:data-messages="${#strings.listJoin(messages, '||')}"
-           th:data-error="${error != null ? error : 'false'}">
-        <!-- Alerts will be handled via JavaScript -->
+<main class="container my-5 py-4">
+  <!-- Alert Messages -->
+  <div class="row w-100 g-0">
+    <div id="messagesAlert" class="d-none py-2"
+         th:data-messages="${#strings.listJoin(messages, '||')}"
+         th:data-error="${error != null ? error : 'false'}">
+      <!-- Alerts will be handled via JavaScript -->
+    </div>
+  </div>
+
+  <div class="jewel-details-card p-4">
+    <div class="row">
+      <!-- Order Info -->
+      <div class="col-12">
+        <h1 class="text-gold fw-bold mb-3 text-center">
+          Order #<span th:text="${order.id}" id="auctionId"></span>
+        </h1>
+        <p class="text-muted mb-2 text-center">
+          Status: <span th:text="#{'order.status.' + ${order.status}}"></span>
+        </p>
+        <p class="text-muted mb-2 text-center">
+          Date: <span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+        </p>
+        <p class="lead text-white mb-3 text-center">
+          Total Price:
+          <span th:text="${'$' + #numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT')}" class="text-white"></span>
+        </p>
       </div>
     </div>
 
-    <div class="jewel-details-card p-4">
-      <div class="row">
-        <!-- Order Info -->
-        <div class="col-12">
-          <h1 class="text-gold fw-bold mb-3 text-center">
-            Order #<span th:text="${order.id}" id="auctionId"></span>
-          </h1>
-          <p class="text-muted mb-2 text-center">
-            Status: <span th:text="#{'order.status.' + ${order.status}}"></span>
-          </p>
-          <p class="text-muted mb-2 text-center">
-            Date: <span th:text="${#temporals.format(order.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
-          </p>
-          <p class="lead text-white mb-3 text-center">
-            Total Price:
-            <span th:text="${'$' + #numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT')}" class="text-white"></span>
-          </p>
+    <!-- Cart Items -->
+    <div class="row mt-4">
+      <div class="col-12">
+        <h3 class="text-gold mb-4">Items in the Order</h3>
+        <div class="table-responsive">
+          <table class="table table-dark table-hover">
+            <thead>
+            <tr>
+              <th class="text-gold">Product</th>
+              <th class="text-gold text-center">Quantity</th>
+              <th class="text-gold text-end">Unit Price</th>
+              <th class="text-gold text-end">Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cartItem : ${order.cartItems}">
+              <td>
+                <div class="d-flex align-items-center">
+                  <img th:src="${cartItem.jewel.imageUrl}"
+                       alt="Jewel image"
+                       class="img-thumbnail me-3"
+                       style="width: 80px; height: 80px; object-fit: cover;">
+                  <div>
+                    <h6 class="text-white mb-0" th:text="${cartItem.jewel.name}"></h6>
+                    <small class="text-muted" th:text="${cartItem.jewel.category}"></small>
+                  </div>
+                </div>
+              </td>
+              <td class="text-center align-middle" th:text="${cartItem.quantity}"></td>
+              <td class="text-end align-middle">
+                <span th:text="${'$' + #numbers.formatDecimal(cartItem.jewel.price, 1, 'COMMA', 2, 'POINT')}"></span>
+              </td>
+              <td class="text-end align-middle">
+                <span th:text="${'$' + #numbers.formatDecimal(cartItem.jewel.price * cartItem.quantity, 1, 'COMMA', 2, 'POINT')}"></span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
         </div>
       </div>
+    </div>
 
-      <!-- Cart Items -->
-      <div class="row mt-4">
-        <div class="col-12">
-          <h3 class="text-gold mb-4">Items in the Order</h3>
-          <div class="table-responsive">
-            <table class="table table-dark table-hover">
-              <thead>
-                <tr>
-                  <th class="text-gold">Product</th>
-                  <th class="text-gold text-center">Quantity</th>
-                  <th class="text-gold text-end">Unit Price</th>
-                  <th class="text-gold text-end">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr th:each="cartItem : ${order.cartItems}">
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <img th:src="${cartItem.jewel.imageUrl}"
-                           alt="Jewel image"
-                           class="img-thumbnail me-3"
-                           style="width: 80px; height: 80px; object-fit: cover;">
-                      <div>
-                        <h6 class="text-white mb-0" th:text="${cartItem.jewel.name}"></h6>
-                        <small class="text-muted" th:text="${cartItem.jewel.category}"></small>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="text-center align-middle" th:text="${cartItem.quantity}"></td>
-                  <td class="text-end align-middle">
-                    <span th:text="${'$' + #numbers.formatDecimal(cartItem.jewel.price, 1, 'COMMA', 2, 'POINT')}"></span>
-                  </td>
-                  <td class="text-end align-middle">
-                    <span th:text="${'$' + #numbers.formatDecimal(cartItem.jewel.price * cartItem.quantity, 1, 'COMMA', 2, 'POINT')}"></span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+    <!-- Navigation and Actions -->
+    <div class="row mt-4">
+      <div class="col-12 d-flex justify-content-between gap-3">
+        <!-- Back Button -->
+        <a th:href="@{/orders}" class="btn-regresar">
+          <i class="fas fa-arrow-left me-2"></i> Back to List
+        </a>
       </div>
+    </div>
 
-      <!-- Navigation and Actions -->
-      <div class="row mt-4">
-        <div class="col-12 d-flex justify-content-between gap-3">
-          <!-- Back Button -->
-          <a th:href="@{/orders}" class="btn-regresar">
-            <i class="fas fa-arrow-left me-2"></i> Back to List
-          </a>
-        </div>
+    <div class="row mt-4">
+      <div class="col-12 d-flex justify-content-between gap-3">
+        <!-- Pay Button -->
+        <form th:action="@{/orders/order/pay}" method="post" th:object="${orderForm}" th:if="${order.status.name() == 'PENDING'}">
+          <input type="hidden" name="id" th:value="${order.id}" />
+          <button type="submit" class="btn btn-gold btn-lg px-5">
+            <i class="fas fa-credit-card-alt me-2"></i> Pay
+          </button>
+        </form>
+
+        <!-- Cancel Button -->
+        <form th:action="@{/orders/order/cancel}" method="post" th:object="${orderForm}" th:if="${order.status.name() == 'PENDING'}">
+          <input type="hidden" name="id" th:value="${order.id}" />
+          <button type="submit" class="btn btn-danger btn-lg px-5">
+            <i class="fas fa-ban me-2"></i> Cancel
+          </button>
+        </form>
       </div>
+    </div>
 
-      <div class="row mt-4">
-        <div class="col-12 d-flex justify-content-between gap-3">
-          <!-- Pay Button -->
-          <form th:action="@{/orders/order/pay}" method="post" th:object="${orderForm}" th:if="${order.status.name() == 'PENDING'}">
-            <input type="hidden" name="id" th:value="${order.id}" />
-            <button type="submit" class="btn btn-gold btn-lg px-5">
-              <i class="fas fa-credit-card-alt me-2"></i> Pay
+    <!-- Document Generation Buttons -->
+    <div class="row mt-5">
+      <div class="col-12">
+        <h3 class="text-gold mb-4 text-center">Generate Documents</h3>
+        <div class="d-flex justify-content-center gap-4 flex-wrap">
+          <!-- Generate Certificate Button -->
+          <form th:action="@{/api/documents/certify}" method="post" th:object="${order}">
+            <input type="hidden" name="orderId" th:value="${order.id}" />
+            <input type="hidden" name="jewelIds"
+                   th:value="${#strings.listJoin(order.cartItems.?[jewel != null].![jewel.id], ',')}">
+            <button type="submit"
+                    class="text-decoration-none"
+                    style="width: 220px; height: 180px; border-radius: 12px; display: flex; align-items: center; justify-content: center; text-align: center; transition: all 0.3s ease; border: 2px solid transparent; padding: 1.5rem; background: linear-gradient(135deg, #D4AF37 0%, #F9E076 100%); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);">
+              <div>
+                <i class="fas fa-award fa-2x mb-2 text-white"></i>
+                <span class="d-block text-white fw-bold" style="font-size: 1.1rem;">Certificate of Authenticity</span>
+                <small class="d-block mt-1 text-white-80" style="font-size: 0.85rem;">PDF Document</small>
+              </div>
             </button>
           </form>
 
-          <!-- Cancel Button -->
-          <form th:action="@{/orders/order/cancel}" method="post" th:object="${orderForm}" th:if="${order.status.name() == 'PENDING'}">
-            <input type="hidden" name="id" th:value="${order.id}" />
-            <button type="submit" class="btn btn-danger btn-lg px-5">
-              <i class="fas fa-ban me-2"></i> Cancel
+          <!-- Generate Receipt Button -->
+          <form th:if="${order != null and order.cartItems != null}"
+                th:action="@{/api/documents/recipe}" method="post" th:object="${order}">
+            <input type="hidden" name="orderId" th:value="${order.id}" />
+            <input type="hidden"
+                   name="jewelIds"
+                   th:value="${#strings.listJoin(order.cartItems.?[jewel != null].![jewel.id], ',')}">
+            <button type="submit"
+                    class="text-decoration-none"
+                    style="width: 220px; height: 180px; border-radius: 12px; display: flex; align-items: center; justify-content: center; text-align: center; transition: all 0.3s ease; border: 2px solid transparent; padding: 1.5rem; background: linear-gradient(135deg, #C0C0C0 0%, #F0F0F0 100%); box-shadow: 0 4px 15px rgba(192, 192, 192, 0.4);">
+              <div>
+                <i class="fas fa-file-invoice-dollar fa-2x mb-2 text-white"></i>
+                <span class="d-block text-white fw-bold" style="font-size: 1.1rem;">Purchase Receipt</span>
+                <small class="d-block mt-1 text-white-80" style="font-size: 0.85rem;">PDF Document</small>
+              </div>
             </button>
           </form>
         </div>
       </div>
     </div>
-  </main>
 
-  <footer th:replace="~{fragments/footer :: footer}"></footer>
+    <!-- ... (resto del contenido existente) ... -->
+  </div>
+</main>
 
-  <script th:src="@{/js/messages.js}"></script>
-  <script th:src="@{/js/order/show.js}"></script>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<script th:src="@{/js/messages.js}"></script>
+<script th:src="@{/js/order/show.js}"></script>
 </body>
 </html>
