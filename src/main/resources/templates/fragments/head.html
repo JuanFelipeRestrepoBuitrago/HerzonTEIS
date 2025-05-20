@@ -3,7 +3,9 @@
   <head th:fragment="head">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:text="${title} ?: 'Herzon'" class="notranslate" translate="no">Herzon</title>
+    <title th:text="${title} ?: 'Herzon'" class="notranslate" translate="no">
+      Herzon
+    </title>
 
     <!-- Bootstrap 5 -->
     <link
@@ -18,8 +20,14 @@
     />
 
     <!-- Fonts -->
-    <link href="https://fonts.cdnfonts.com/css/angrandir-wide" rel="stylesheet" />
-    <link href="https://fonts.cdnfonts.com/css/copperplate-gothic-29" rel="stylesheet" />
+    <link
+      href="https://fonts.cdnfonts.com/css/angrandir-wide"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.cdnfonts.com/css/copperplate-gothic-29"
+      rel="stylesheet"
+    />
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/app.css" th:href="@{/css/app.css}" />
@@ -46,5 +54,24 @@
         margin-top: 0 !important;
       }
     </style>
+
+    <!-- Script para mantener el idioma consistente -->
+    <script>
+      // Verificar y aplicar el idioma guardado al cargar la página
+      document.addEventListener("DOMContentLoaded", function () {
+        const savedLanguage = localStorage.getItem("language");
+        if (savedLanguage) {
+          // Esperar a que Google Translate esté listo
+          const checkTranslateReady = setInterval(() => {
+            const select = document.querySelector(".goog-te-combo");
+            if (select) {
+              select.value = savedLanguage.toLowerCase();
+              select.dispatchEvent(new Event("change"));
+              clearInterval(checkTranslateReady);
+            }
+          }, 100);
+        }
+      });
+    </script>
   </head>
 </html>
